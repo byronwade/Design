@@ -1,13 +1,13 @@
 ---
 id: governance.decisions
 kind: governance
-version: 1.1.0
+version: 1.2.0
 status: project-owned
 ---
 
 # Design decisions
 
-Project owners append accepted decisions here. The installer preserves this file during synchronization. Decisions include status, date, owner, scope, rationale, alternatives, consequences, migration, and evidence.
+This file records canonical engine decisions. Installed projects record their own decisions, exceptions, gaps, migrations, and baseline approvals in `design/DECISIONS.md`.
 
 ## D-001 — Source authority
 
@@ -18,13 +18,13 @@ Project owners append accepted decisions here. The installer preserves this file
 ## D-002 — Google-compatible visual core
 
 - **Status:** accepted
-- **Decision:** `DESIGN.md` uses only Google’s current alpha top-level schema and canonical section order. Inheritance and custom metadata live in `manifest.json` and contract files.
+- **Decision:** `DESIGN.md` uses only Google’s current alpha top-level schema and canonical section order. Inheritance and custom metadata live outside that YAML.
 - **Reason:** portable linting and export remain possible without weakening application structure.
 
-## D-003 — Resolved context, not full-repository context
+## D-003 — Compiled context, not full-engine context
 
 - **Status:** accepted
-- **Decision:** agents consume one generated target contract. Sibling verticals are excluded unless comparison is the task.
+- **Decision:** agents consume one compiled target contract. Sibling verticals are excluded unless comparison is the task.
 - **Reason:** contradictory platform guidance reduces consistency and wastes context.
 
 ## D-004 — Canonical Skills with thin adapters
@@ -39,11 +39,11 @@ Project owners append accepted decisions here. The installer preserves this file
 - **Decision:** Linux has a base contract plus GNOME and KDE Plasma overlays. Projects select one rather than treating Linux as a single visual platform.
 - **Reason:** the environments have materially different navigation and command conventions.
 
-## D-006 — Project truth is part of resolved context
+## D-006 — Project truth is part of compiled context
 
 - **Status:** accepted
-- **Decision:** product context, terminology, surface registry, production component mappings, themes, assets, golden references, accepted decisions, and active exceptions are appended to every generated target contract after global and platform layers.
-- **Reason:** an abstract design system cannot determine a project’s actual objects, vocabulary, component APIs, evidence, or intentional departures.
+- **Decision:** root visual identity, product context, terminology, surface inventory, production component mappings, themes, assets, references, decisions, and active exceptions are applied after shared engine and selected profile layers.
+- **Reason:** an abstract engine cannot determine a project’s actual objects, vocabulary, component APIs, evidence, or intentional departures.
 
 ## D-007 — Shell and layout are separate decisions
 
@@ -54,5 +54,29 @@ Project owners append accepted decisions here. The installer preserves this file
 ## D-008 — Quality is executable and evidence-backed
 
 - **Status:** accepted
-- **Decision:** `quality/RULES.json`, the scorecard, and the evidence contract are normative. Validation checks structural integrity and generated-context freshness; product repositories add rendered, interaction, accessibility, performance, and visual checks.
+- **Decision:** `quality/RULES.json`, the scorecard, and the evidence contract are normative. Validation checks structural integrity and context freshness; product repositories add rendered, interaction, accessibility, performance, and visual checks.
 - **Reason:** prose guidance without stable rule IDs, mappings, fixtures, and evidence cannot reliably prevent drift.
+
+## D-009 — Simple project façade, versioned package engine
+
+- **Status:** accepted
+- **Decision:** consuming projects expose root `DESIGN.md`, root `AGENTS.md`, and `design/PROJECT.md`, `design/COMPONENTS.md`, and `design/DECISIONS.md`. The detailed global, component, pattern, quality, platform, and source contracts remain in the versioned package engine.
+- **Reason:** daily adoption should be obvious and standard-aligned without sacrificing inheritance, selective context, governance, or enforcement.
+
+## D-010 — Root DESIGN.md is canonical in a consuming project
+
+- **Status:** accepted
+- **Decision:** an installed project owns one editable root `DESIGN.md`. The package repository may keep an internal mirror for package integrity, but the installer never creates a second editable project copy.
+- **Reason:** two visible visual-contract files create ambiguity even when hashes are synchronized.
+
+## D-011 — Generated context is disposable compiler output
+
+- **Status:** accepted
+- **Decision:** `.design/generated/` contains reproducible Markdown and JSON target contracts. Authored inputs and generated outputs are fingerprinted; stale or hand-edited output fails health checks.
+- **Reason:** agents need focused, durable context, but generated output must never become a competing source of truth.
+
+## D-012 — Project-authored truth survives synchronization
+
+- **Status:** accepted
+- **Decision:** `DESIGN.md` and `design/` are never silently replaced by package synchronization. Legacy copied-engine installations migrate their project content into the façade before obsolete engine copies are removed.
+- **Reason:** package upgrades must not erase product identity, implementation mappings, accepted decisions, or bounded exceptions.
