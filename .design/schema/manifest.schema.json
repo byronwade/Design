@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/byronwade/Design/.design/schema/manifest.schema.json",
+  "title": "Design Contract Manifest",
+  "type": "object",
+  "required": ["schemaVersion", "packageVersion", "googleDesignMd", "layers", "bundles", "profiles"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "packageVersion": {"type": "string"},
+    "googleDesignMd": {"type": "object"},
+    "requiredInEveryProfile": {"type": "array", "items": {"type": "string"}},
+    "layers": {"type": "object", "additionalProperties": {"type": "object", "required": ["file", "role"], "properties": {"file": {"type": "string"}, "role": {"type": "string"}, "extends": {"type": "array", "items": {"type": "string"}}}}},
+    "bundles": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}},
+    "profiles": {"type": "object", "additionalProperties": {"type": "object", "required": ["description", "bundles", "roots"], "properties": {"description": {"type": "string"}, "bundles": {"type": "array", "items": {"type": "string"}}, "roots": {"type": "array", "items": {"type": "string"}}, "composite": {"type": "boolean"}}}},
+    "sourceDocuments": {"type": "array", "items": {"type": "object", "required": ["file", "authority", "sha256"]}}
+  },
+  "additionalProperties": true
+}
