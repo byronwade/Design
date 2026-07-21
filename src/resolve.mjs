@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { expandProfile, loadManifest } from './manifest.mjs';
-import { loadProjectConfig, projectDocuments } from './project.mjs';
+import { loadProjectConfig, loadProjectLock, projectDocuments } from './project.mjs';
 import {
   GENERATED_DIRECTORY, contractRoot, exists, hash, hashFile, readJson,
   resolveWithin, safeId, writeJson,
@@ -26,9 +26,13 @@ async function describeDocument(target, document) {
   return { ...document, absolute: file, hash: await hashFile(file) };
 }
 
-export async function buildResolutionPlan({ target }) {
+export async function buildResolutionPlan({ target, allowVersionMismatch = false }) {
   const manifest = await loadManifest();
   const config = await loadProjectConfig(target);
+  const lock = await loadProjectLock(target);
+  if (!allowVersionMismatch && lock.packageVersion !== manifest.packageVersion) {
+    throw new Error(`Installed design engine is ${lock.packageVersion}, but this CLI is ${manifest.packageVersion}. Run design-contract sync before compiling context.`);
+  }
   if (!await exists(path.join(target, 'DESIGN.md'))) throw new Error('Missing root DESIGN.md. Run init or restore the project design file.');
 
   const plans = [];
@@ -69,7 +73,7 @@ export async function buildResolutionPlan({ target }) {
     config,
     targets: plans.map(({ id, profileId, root, default: isDefault, fingerprint: value }) => ({ id, profileId, root, default: isDefault, fingerprint: value })),
   }));
-  return { target, manifest, config, targets: plans, fingerprint };
+  return { target, manifest, lock, config, targets: plans, fingerprint };
 }
 
 function markdownForTarget(targetPlan, generatedAt) {
@@ -137,8 +141,17 @@ export async function resolveInstalledContract({ target, stdoutTarget = null }) 
 export async function getResolutionStatus({ target }) {
   const contextPath = path.join(target, GENERATED_DIRECTORY, 'CONTEXT.json');
   if (!await exists(path.join(target, '.design/config.json'))) return { state: 'not-installed', current: false };
+  try {
+    const [manifest, lock] = await Promise.all([loadManifest(), loadProjectLock(target)]);
+    if (lock.packageVersion !== manifest.packageVersion) {
+      return { state: 'engine-update-required', current: false, installedVersion: lock.packageVersion, availableVersion: manifest.packageVersion };
+    }
+  } catch (error) {
+    return { state: 'invalid', current: false, message: error.message };
+  }
+
   let plan;
-  try { plan = await buildResolutionPlan({ target }); }
+  try { plan = await buildResolutionPlan({ target, allowVersionMismatch: true }); }
   catch (error) { return { state: 'invalid', current: false, message: error.message }; }
   if (!await exists(contextPath)) return { state: 'missing', current: false, expectedFingerprint: plan.fingerprint };
   try {
