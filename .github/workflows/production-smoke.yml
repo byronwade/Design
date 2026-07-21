@@ -1,0 +1,25 @@
+name: Production install smoke
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  install-from-github:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install exact main commit into a clean project
+        run: node ./scripts/production-smoke.mjs
+        env:
+          GITHUB_SHA: ${{ github.sha }}
