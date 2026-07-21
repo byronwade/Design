@@ -58,12 +58,6 @@ Accepted decisions are normative. Proposed or experimental decisions do not over
 - **Decision:** Advanced features should remain available through saved views, inspectors, contextual menus, command surfaces, previews, and progressive disclosure.
 - **Rationale:** Removing useful controls is not simplicity; the common path should be clear while advanced paths stay nearby.
 
-### D-010 — Supporting preference reference
-
-- **Status:** accepted
-- **Decision:** Preserve the comprehensive “Calm Paper Workbench” preference synthesis as a supporting reference while keeping Warm Paper Workbench, `DESIGN.md`, accepted decisions, and canonical executable tokens normative.
-- **Rationale:** The reference contains detailed shell variants, product and marketing patterns, explicit do/don’t guidance, and review criteria that should remain searchable without creating a competing canonical system.
-
 ## Proposed decision template
 
 ```text
