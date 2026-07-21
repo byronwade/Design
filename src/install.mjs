@@ -6,16 +6,33 @@ import { defaultTargets, loadProjectConfig } from './project.mjs';
 import { resolveInstalledContract } from './resolve.mjs';
 import {
   CACHE_DIRECTORY, CONFIG_FILE, GENERATED_DIRECTORY, LOCK_FILE, PROJECT_FILES,
-  copyIfMissing, exists, packageRoot, readJson, templateRoot, writeJson, writeText,
+  copyIfMissing, exists, hash, packageRoot, readJson, resolveWithin, safeId,
+  templateRoot, writeJson, writeText,
 } from './utils.mjs';
 
 const LEGACY_PATHS = [
   'AGENT.md', 'DESIGN.md', 'INDEX.md', 'manifest.json', 'project.json', '.install.json',
-  'global', 'components', 'patterns', 'verticals', 'quality', 'governance', 'project', 'schema', 'sources',
+  'generated', 'cache', 'global', 'components', 'patterns', 'verticals', 'quality',
+  'governance', 'project', 'schema', 'sources',
 ];
 
-async function combineExisting(target, paths, title) {
-  const sections = [`# ${title}`, '', '> Migrated from the previous installed design-contract layout.', ''];
+async function readOptional(file) {
+  return await exists(file) ? fs.readFile(file, 'utf8') : null;
+}
+
+async function backupMigration(target, name, content, backups) {
+  if (!content) return null;
+  const extension = path.extname(name) || '.md';
+  const base = safeId(path.basename(name, extension)) || 'legacy';
+  const relative = `design/migrations/${base}-${hash(content).slice(0, 10)}${extension}`;
+  const destination = path.join(target, relative);
+  if (!await exists(destination)) await writeText(destination, content);
+  if (!backups.includes(relative)) backups.push(relative);
+  return relative;
+}
+
+async function combineLegacy(target, paths, title) {
+  const sections = [`# ${title}`, '', '> Migrated from the previous copied-engine installation.', ''];
   let found = false;
   for (const relative of paths) {
     const file = path.join(target, '.design', relative);
@@ -26,34 +43,83 @@ async function combineExisting(target, paths, title) {
   return found ? `${sections.join('\n')}\n` : null;
 }
 
+async function migrateAuthoredDocument(target, legacyContent, destinationRelative, backupName, backups) {
+  if (!legacyContent) return;
+  const destination = path.join(target, destinationRelative);
+  if (!await exists(destination)) {
+    await writeText(destination, legacyContent);
+    return;
+  }
+  const current = await fs.readFile(destination, 'utf8');
+  if (current !== legacyContent) await backupMigration(target, backupName, legacyContent, backups);
+}
+
+async function migrateLegacyOverrides(target, legacy, backups) {
+  const legacyRoot = path.join(target, '.design');
+  const migrated = new Map();
+  async function one(relative) {
+    if (migrated.has(relative)) return migrated.get(relative);
+    const source = resolveWithin(legacyRoot, relative, 'Legacy override');
+    if (!await exists(source)) throw new Error(`Legacy override is missing: .design/${relative}`);
+    const content = await fs.readFile(source, 'utf8');
+    const extension = path.extname(relative) || '.md';
+    const base = safeId(path.basename(relative, extension)) || 'override';
+    const next = `design/migrations/overrides/${base}-${hash(content).slice(0, 10)}${extension}`;
+    const destination = path.join(target, next);
+    if (!await exists(destination)) {
+      await fs.mkdir(path.dirname(destination), { recursive: true });
+      await fs.writeFile(destination, content);
+    }
+    if (!backups.includes(next)) backups.push(next);
+    migrated.set(relative, next);
+    return next;
+  }
+
+  const overrides = [];
+  for (const relative of legacy.overrides ?? []) overrides.push(await one(relative));
+  const targets = [];
+  for (const item of legacy.targets ?? []) {
+    const targetOverrides = [];
+    for (const relative of item.overrides ?? []) targetOverrides.push(await one(relative));
+    targets.push({ ...item, overrides: targetOverrides });
+  }
+  return { overrides, targets };
+}
+
 async function migrateLegacyInstall(target) {
   const configPath = path.join(target, CONFIG_FILE);
   const legacyConfigPath = path.join(target, '.design/project.json');
   if (await exists(configPath) || !await exists(legacyConfigPath)) return null;
+
   const legacy = await readJson(legacyConfigPath);
+  const backups = [];
+  const oldDesign = await readOptional(path.join(target, '.design/DESIGN.md'));
+  await migrateAuthoredDocument(target, oldDesign, 'DESIGN.md', 'DESIGN-v1.md', backups);
+
+  const oldProject = await combineLegacy(target, [
+    'project/CONTEXT.md', 'project/TERMINOLOGY.md', 'project/SURFACES.md',
+    'project/THEMES.md', 'project/ASSETS.md', 'project/REFERENCES.md',
+  ], 'Project design context');
+  await migrateAuthoredDocument(target, oldProject, 'design/PROJECT.md', 'PROJECT-v1.md', backups);
+
+  const oldComponents = await readOptional(path.join(target, '.design/project/COMPONENTS.md'));
+  await migrateAuthoredDocument(target, oldComponents, 'design/COMPONENTS.md', 'COMPONENTS-v1.md', backups);
+
+  const oldDecisions = await combineLegacy(target, ['governance/DECISIONS.md', 'governance/EXCEPTIONS.md'], 'Design decisions, exceptions, and gaps');
+  await migrateAuthoredDocument(target, oldDecisions, 'design/DECISIONS.md', 'DECISIONS-v1.md', backups);
+
+  const overrideMigration = await migrateLegacyOverrides(target, legacy, backups);
   const migrated = {
     $schema: 'https://raw.githubusercontent.com/byronwade/Design/main/schemas/config.schema.json',
     schemaVersion: 1,
-    targets: legacy.targets ?? defaultTargets(['web-app']),
-    overrides: legacy.overrides ?? [],
+    targets: overrideMigration.targets.length > 0 ? overrideMigration.targets : defaultTargets(['web-app']),
+    overrides: overrideMigration.overrides,
     adapters: legacy.adapters ?? ['codex', 'claude', 'copilot'],
   };
-
-  if (!await exists(path.join(target, 'design/PROJECT.md'))) {
-    const value = await combineExisting(target, ['project/CONTEXT.md', 'project/TERMINOLOGY.md', 'project/SURFACES.md', 'project/THEMES.md', 'project/ASSETS.md', 'project/REFERENCES.md'], 'Project design context');
-    if (value) await writeText(path.join(target, 'design/PROJECT.md'), value);
-  }
-  if (!await exists(path.join(target, 'design/COMPONENTS.md')) && await exists(path.join(target, '.design/project/COMPONENTS.md'))) {
-    await fs.mkdir(path.join(target, 'design'), { recursive: true });
-    await fs.copyFile(path.join(target, '.design/project/COMPONENTS.md'), path.join(target, 'design/COMPONENTS.md'));
-  }
-  if (!await exists(path.join(target, 'design/DECISIONS.md'))) {
-    const value = await combineExisting(target, ['governance/DECISIONS.md', 'governance/EXCEPTIONS.md'], 'Design decisions, exceptions, and gaps');
-    if (value) await writeText(path.join(target, 'design/DECISIONS.md'), value);
-  }
   await writeJson(configPath, migrated);
+
   for (const relative of LEGACY_PATHS) await fs.rm(path.join(target, '.design', relative), { recursive: true, force: true });
-  return { from: '1.0', to: '1.1-facade', migratedAt: new Date().toISOString() };
+  return { from: '1.0-copied-engine', to: '1.1-facade', migratedAt: new Date().toISOString(), backups };
 }
 
 async function ensureAuthoredFacade(target) {
