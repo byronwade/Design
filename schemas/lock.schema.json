@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schemaVersion", "packageVersion", "installedAt", "source"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "packageVersion": {"type": "string"},
+    "installedAt": {"type": "string"},
+    "synchronizedAt": {"type": "string"},
+    "source": {"type": "string"},
+    "adapters": {"type": "array", "items": {"type": "string"}},
+    "migration": {"type": "object"}
+  },
+  "additionalProperties": true
+}
