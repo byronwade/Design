@@ -1,19 +1,12 @@
-# Design repository instructions
+# Repository agent instructions
 
-Before performing visual, interaction, frontend, product-design, or design-system work:
+This repository is the canonical package for installed `.design/` contracts. Treat changes as design-system and tooling migrations, not isolated documentation edits.
 
-1. Read `docs/DESIGN_PRINCIPLES.md` for the product values, tensions, quality floor, trust model, and definition of done.
-2. Read `DESIGN.md` for canonical visual tokens and project-level rationale.
-3. Read `docs/DESIGN_SYSTEM.md` and accepted entries in `docs/DECISIONS.md`.
-4. Read the relevant layout, motion, review, or detailed reference document for the task.
-5. Use `.agents/skills/warm-paper-workbench/SKILL.md` for interface design or implementation.
-6. Use `.agents/skills/improve-animations/SKILL.md` for read-only motion audits and implementation planning.
-7. Review substantial interface work with `docs/review/UI_REVIEW_GUIDELINES.md`.
-
-Use this authority order: accessibility, safety, legal, and platform constraints; the actual person and current brief; Calm Capability principles; canonical visual and motion decisions; detailed references; existing repository conventions; framework defaults.
-
-Preserve the system’s calm professional character, warm paper palette, compact accessible controls, integrated container chrome, stable context, scope-based control placement, task-specific density, progressive disclosure, source-backed trust, complete states, and purposeful interruptible motion unless the current brief explicitly overrides them.
-
-Do not treat research or another company’s visual language as a template to copy. Translate useful principles to the product’s domain, natural color world, information model, signature, and actual constraints.
-
-When introducing a durable rule, update the decision log, principles or canonical documentation, executable tokens, affected skills, tests and fixtures, source manifest where relevant, and changelog in the same change. Record an explicit exception instead of silently creating a parallel system.
+1. Read `README.md`, `CONTRIBUTING.md`, `.design/INDEX.md`, and the owning contract before editing.
+2. Preserve `.design/DESIGN.md` as the canonical visual core and keep root `DESIGN.md` as its exact verified mirror.
+3. Keep each normative rule owned by one primary contract. Use references rather than copying the rule into multiple files.
+4. Update `manifest.json`, schemas, project templates, quality rules, source coverage, decisions, changelog, installer/resolver/validator behavior, and tests when the change affects them.
+5. Never edit generated target contracts directly.
+6. Do not weaken source integrity, project-owned-file preservation, platform isolation, accessibility, trust, or evidence checks.
+7. Run `npm run check` and inspect representative native, web, and composite resolution before completion.
+8. Report the exact revision, checks run, known limitations, and any intentional migration or exception.

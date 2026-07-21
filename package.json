@@ -1,0 +1,52 @@
+{
+  "name": "@byronwade/design-contract",
+  "version": "1.0.0-alpha.2",
+  "description": "Installable, inheritance-aware design contracts for AI agents, extending Google DESIGN.md.",
+  "type": "module",
+  "bin": {
+    "design-contract": "./bin/design-contract.mjs"
+  },
+  "exports": {
+    ".": "./src/core.mjs"
+  },
+  "files": [
+    ".design",
+    "bin",
+    "src",
+    "scripts",
+    "skills",
+    "README.md",
+    "CONTRIBUTING.md",
+    "DESIGN.md",
+    "AGENTS.md",
+    "CLAUDE.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "validate": "node ./bin/design-contract.mjs validate --source .design --no-google",
+    "validate:strict": "node ./bin/design-contract.mjs validate --source .design --require-google",
+    "design:lint": "designmd lint .design/DESIGN.md",
+    "check": "npm run validate:strict && npm test && npm run smoke",
+    "smoke": "node ./scripts/package-smoke.mjs"
+  },
+  "dependencies": {
+    "@google/design.md": "0.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "design-system",
+    "design.md",
+    "ai-agent",
+    "agent-skills",
+    "design-tokens",
+    "ui",
+    "ux"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byronwade/Design.git"
+  },
+  "license": "UNLICENSED"
+}

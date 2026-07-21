@@ -1,81 +1,154 @@
-# Design
+# Design Contract
 
-A living design system for calm, warm, compact, trustworthy, feature-rich professional software.
+An installable, target-aware `.design/` system for AI-assisted product design and implementation.
 
-The repository separates enduring design judgment, canonical tokens, the current visual expression, motion, executable review, agent workflows, detailed references, and source provenance so each layer can evolve without becoming a competing source of truth.
+Google’s `DESIGN.md` remains the portable visual core. This repository adds the structure that a token file cannot express reliably: product judgment, authority, platform inheritance, shells, layouts, page and flow patterns, component intent, project mappings, agent workflows, quality rules, evidence, installation, synchronization, and validation.
 
-> **Design contract:** Carry complexity for the person. Make the main path clear, keep advanced capability within reach, preserve context, expose consequence, and craft every state with the same care as the ideal one.
-
-## Core character
-
-**Calm · warm · precise · compact · capable · legible · deliberate · trustworthy**
-
-Calm does not mean empty. Minimal visual noise is paired with professional depth, stable location, task-specific density, progressive disclosure, keyboard access, source-backed truth, and reliable recovery.
+> **Global contract:** Carry complexity for the person. Make the main path clear, preserve context, expose consequence, provide reliable recovery, and adapt the expression to the target platform without losing the product’s identity.
 
 ## Start here
 
-| Need | Read |
+For humans:
+
+1. Read [`.design/INDEX.md`](.design/INDEX.md).
+2. Review [the global principles](.design/global/PRINCIPLES.md) and [visual core](.design/DESIGN.md).
+3. Select a target profile in [`.design/manifest.json`](.design/manifest.json).
+4. Complete the project-owned files under [`.design/project/`](.design/project/).
+5. Map product surfaces, production components, themes, assets, and golden references before scaling implementation.
+6. Use [the quality review](.design/quality/REVIEW.md) and [evidence contract](.design/quality/EVIDENCE.md) as the release definition.
+
+For agents, the installed adapters route to one generated target contract. Agents must not load sibling platform verticals unless cross-platform comparison is explicitly the task.
+
+## Architecture
+
+```text
+.design/
+├── DESIGN.md                 Google-compatible visual tokens and rationale
+├── manifest.json             inheritance, profiles, ownership, source integrity
+├── INDEX.md                  smallest human/agent entry point
+├── AGENT.md                  mandatory design and implementation workflow
+├── global/                   cross-platform philosophy and system behavior
+├── components/               intent, anatomy, state, and selection contracts
+├── patterns/                 shells, layouts, pages, states, and flows
+├── verticals/                mobile, desktop, web, and hybrid overlays
+├── project/                  project-owned context, surfaces, mappings, themes, assets, terminology, references
+├── quality/                  definition of done, evidence, and lintable rules
+├── governance/               decisions, exceptions, and version history
+├── schema/                   manifest, project, and quality-rule schemas
+└── sources/                  protected provenance and coverage map
+```
+
+Root `DESIGN.md` is an exact CI-verified mirror of `.design/DESIGN.md` for tool discovery; `.design/DESIGN.md` remains canonical.
+
+The contract grammar is:
+
+```text
+person and situation
+→ target profile
+→ global product and trust contract
+→ platform/surface overlay
+→ shell
+→ layout archetype
+→ page or flow
+→ regions and scroll ownership
+→ component intent and variant
+→ semantic token
+→ production mapping
+→ rendered evidence
+```
+
+## Profiles
+
+| Profile | Resolution |
 | --- | --- |
-| Product values, tensions, critique questions, and definition of done | [`docs/DESIGN_PRINCIPLES.md`](docs/DESIGN_PRINCIPLES.md) |
-| Canonical tokens and agent-readable visual rationale | [`DESIGN.md`](DESIGN.md) |
-| Complete Warm Paper Workbench operating guide | [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) |
-| Comprehensive preference reference and do/don’t catalog | [`docs/references/CALM_PAPER_WORKBENCH.md`](docs/references/CALM_PAPER_WORKBENCH.md) |
-| Executable Calm Capability UI review | [`docs/review/UI_REVIEW_GUIDELINES.md`](docs/review/UI_REVIEW_GUIDELINES.md) |
-| Detailed design and release checklist | [`docs/checklists/DESIGN_REVIEW.md`](docs/checklists/DESIGN_REVIEW.md) |
-| Normative motion contract | [`docs/motion/MOTION_PRINCIPLES.md`](docs/motion/MOTION_PRINCIPLES.md) |
-| Detailed fluid-interaction and Apple-oriented web translation | [`docs/motion/APPLE_FLUID_INTERACTION.md`](docs/motion/APPLE_FLUID_INTERACTION.md) |
-| Animation-audit workflow | [`docs/motion/ANIMATION_AUDIT_WORKFLOW.md`](docs/motion/ANIMATION_AUDIT_WORKFLOW.md) |
-| Detailed layout research and measured targets | [`docs/layout/LINEAR_LAYOUT_RESEARCH.md`](docs/layout/LINEAR_LAYOUT_RESEARCH.md) |
-| External influence map, adaptations, and intentional departures | [`docs/INFLUENCES.md`](docs/INFLUENCES.md) |
-| Executable CSS tokens | [`tokens/tokens.css`](tokens/tokens.css) |
-| Machine-readable JSON token bundle | [`tokens/calm-paper-workbench.tokens.json`](tokens/calm-paper-workbench.tokens.json) |
-| Starter shell and component CSS | [`styles/calm-paper-workbench.css`](styles/calm-paper-workbench.css) |
-| Accepted and proposed design decisions | [`docs/DECISIONS.md`](docs/DECISIONS.md) |
-| Source-artifact coverage map | [`docs/SOURCE_MANIFEST.md`](docs/SOURCE_MANIFEST.md) |
-| Version history | [`docs/CHANGELOG.md`](docs/CHANGELOG.md) |
+| `ios-native` | global → mobile → Apple → iPhone |
+| `ipados-native` | global → mobile → Apple → iPadOS |
+| `android-native` | global → mobile → Android |
+| `macos-native` | global → desktop → macOS |
+| `windows-native` | global → desktop → Windows |
+| `linux-gnome` | global → desktop → Linux → GNOME |
+| `linux-kde` | global → desktop → Linux → KDE Plasma |
+| `web-app` | global → web → application |
+| `web-marketing` | global → web → marketing |
+| `electron-*` | global → web app → desktop-webview → host desktop |
 
-## Authority order
+A responsive browser app on iPhone remains `web-app`; it does not inherit native iOS behavior. Select the shipped experience, not the implementation language alone.
 
-Use this precedence order:
+## Install into a project
 
-1. Accessibility, safety, legal, and platform constraints.
-2. The actual person, task, domain, risk, and current project brief.
-3. `docs/DESIGN_PRINCIPLES.md`.
-4. `DESIGN.md`, accepted decisions, `docs/DESIGN_SYSTEM.md`, and the applicable motion contract.
-5. Detailed preference and research references when no accepted rule conflicts.
-6. Existing repository and platform conventions that do not conflict with the first five levels.
-7. External references, framework defaults, and model preference.
+From the target repository:
 
-Research and supporting-reference documents explain where decisions came from and preserve detail. They do not override canonical tokens, accepted decisions, or the task’s actual constraints.
+```bash
+npx --yes github:byronwade/Design init --profile web-app
+```
 
-## Agent entry points
+For a multi-product repository:
 
-- Codex reads [`AGENTS.md`](AGENTS.md) and uses project skills under [`.agents/skills`](.agents/skills).
-- Claude Code reads [`CLAUDE.md`](CLAUDE.md) and uses project skills under [`.claude/skills`](.claude/skills).
-- The `warm-paper-workbench` skill governs visual design, layout, components, implementation behavior, responsive transformation, and verification.
-- The `improve-animations` skill performs read-only motion recon and audits, then writes executor-ready plans from its `AUDIT.md` and `PLAN-TEMPLATE.md`.
+```bash
+npx --yes github:byronwade/Design init \
+  --profile web-app \
+  --profile ios-native \
+  --profile android-native
+```
 
-## Start a product task
+Then complete `.design/project/`, refine target IDs/roots in `.design/project.json`, and run:
 
-1. Define the person, moment, outcome, constraints, desired feeling, domain concepts, natural color world, signature, and three generic defaults to reject.
-2. Select the shell and body archetype from the living design system.
-3. Map regions, scroll owners, control scopes, responsive transformation, critical states, risk, and recovery.
-4. Reuse approved tokens and patterns before adding new ones.
-5. Apply motion only where it improves feedback, continuity, spatial understanding, or rare meaningful acknowledgement.
-6. Verify realistic states, wide and constrained widths, keyboard, focus, screen reader, zoom, contrast, touch, reduced motion, runtime behavior, and recovery.
-7. Review with `docs/review/UI_REVIEW_GUIDELINES.md` and record intentional departures.
+```bash
+npx --yes github:byronwade/Design resolve
+npx --yes github:byronwade/Design status
+npx --yes github:byronwade/Design validate
+```
 
-## Updating the system
+The installer creates:
 
-For a durable change:
+- the canonical `.design/` contract
+- target-specific generated contracts under `.design/generated/`
+- a managed root `DESIGN.md` mirror when the project does not own one
+- thin Codex, Claude, and GitHub Copilot adapters
+- `.design/.install.json` hashes for conflict-safe synchronization
 
-1. Add or update an entry in `docs/DECISIONS.md`.
-2. Update `docs/DESIGN_PRINCIPLES.md` when product judgment or the quality floor changes.
-3. Update `DESIGN.md` and executable tokens when normative visual values change.
-4. Update `docs/DESIGN_SYSTEM.md` and the relevant layout, motion, review, or reference document.
-5. Synchronize `.agents/skills` and `.claude/skills` when agent behavior changes.
-6. Update tests, fixtures, examples, migrations, and deprecations with the rule they implement.
-7. Update `docs/SOURCE_MANIFEST.md` when a supplied or generated source is added, superseded, or relocated.
-8. Record the change in `docs/CHANGELOG.md`.
+## Commands
 
-Avoid adding one-off preferences as system rules until they recur, resolve contradictory guidance, or require a shared token, primitive, state model, or layout decision.
+Use the GitHub package directly for one-off or always-current operation:
+
+```bash
+npx --yes github:byronwade/Design list
+npx --yes github:byronwade/Design resolve
+npx --yes github:byronwade/Design status
+npx --yes github:byronwade/Design sync
+npx --yes github:byronwade/Design validate --require-google
+```
+
+Or install the tool as a development dependency and use the shorter local command:
+
+```bash
+npm install --save-dev github:byronwade/Design
+npx design-contract status
+```
+
+`sync` updates only unchanged managed files. Project context, surfaces, component mappings, themes, assets, terminology, references, decisions, exceptions, and configuration remain project-owned. Conflicts are reported rather than overwritten unless `--force` is explicit.
+
+## Source of truth and precedence
+
+1. accessibility, safety, legal, privacy, security, and platform enforcement
+2. the actual person, task, domain, risk, and explicit project requirement
+3. project context, accepted decisions, and active exceptions
+4. global contracts
+5. selected platform and surface overlays
+6. compliant production components and mapped design assets
+7. supporting sources and research
+8. framework defaults and model preference
+
+The supplied Warm Paper source is the primary visual/application authority. Calm Capability supplies product judgment, trust, review, and agent principles. Apple and animation sources specialize interaction and motion. [Source coverage](.design/sources/COVERAGE.md) shows where each durable requirement is operationalized.
+
+## Release quality
+
+A change is ready only when the selected target, shell, layout, page/flow, states, responsive transformations, project mappings, accessibility, performance, trust, evidence, and recovery are explicit. Run:
+
+```bash
+npm run check
+```
+
+The check validates inheritance, source integrity, schemas, links, generated-context freshness, quality-rule IDs, Google `DESIGN.md`, and installer behavior. Product repositories must add rendered component/page tests, accessibility checks, runtime flows, performance evidence, and intentional visual-regression approval.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) before changing the canonical contract.

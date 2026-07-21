@@ -1,0 +1,354 @@
+{
+  "$schema": "../schema/rules.schema.json",
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "DS-LAYOUT-001",
+      "severity": "error",
+      "category": "layout",
+      "requirement": "Authenticated application work uses an approved target profile, shell, and layout archetype."
+    },
+    {
+      "id": "DS-LAYOUT-002",
+      "severity": "error",
+      "category": "layout",
+      "requirement": "Global destinations are not duplicated across competing navigation owners."
+    },
+    {
+      "id": "DS-LAYOUT-003",
+      "severity": "warning",
+      "category": "layout",
+      "requirement": "Narrative content does not exceed an approximately 800px readable measure without an explicit decision."
+    },
+    {
+      "id": "DS-LAYOUT-004",
+      "severity": "error",
+      "category": "layout",
+      "requirement": "A docked supporting pane transforms before primary reading width falls below approximately 640px."
+    },
+    {
+      "id": "DS-LAYOUT-005",
+      "severity": "warning",
+      "category": "layout",
+      "requirement": "Board columns preserve a useful 280px minimum and normally target approximately 320px."
+    },
+    {
+      "id": "DS-LAYOUT-006",
+      "severity": "warning",
+      "category": "layout",
+      "requirement": "A timeline preserves a semantic pane or documents an accessible alternative."
+    },
+    {
+      "id": "DS-LAYOUT-007",
+      "severity": "error",
+      "category": "layout",
+      "requirement": "The primary task and viewport do not become accidental competing vertical scroll owners."
+    },
+    {
+      "id": "DS-SHELL-001",
+      "severity": "error",
+      "category": "shell",
+      "requirement": "Deep workbench tools remain one application frame rather than a set of unrelated floating cards."
+    },
+    {
+      "id": "DS-SHELL-002",
+      "severity": "warning",
+      "category": "shell",
+      "requirement": "Focus mode restores prior layout, selection, open tools, and scroll."
+    },
+    {
+      "id": "DS-CONTROL-001",
+      "severity": "warning",
+      "category": "controls",
+      "requirement": "Routine pointer-first desktop controls use approved 28px, 32px, or 36px tiers."
+    },
+    {
+      "id": "DS-CONTROL-002",
+      "severity": "error",
+      "category": "controls",
+      "requirement": "No declared action region has more than one dominant primary action."
+    },
+    {
+      "id": "DS-CONTROL-003",
+      "severity": "error",
+      "category": "accessibility",
+      "requirement": "Icon-only controls have an accessible name and non-hover access path."
+    },
+    {
+      "id": "DS-CONTROL-004",
+      "severity": "error",
+      "category": "accessibility",
+      "requirement": "Visible focus is not removed or replaced by an imperceptible treatment."
+    },
+    {
+      "id": "DS-CONTROL-005",
+      "severity": "error",
+      "category": "accessibility",
+      "requirement": "Effective targets and spacing meet the selected platform and input-mode minimums."
+    },
+    {
+      "id": "DS-CONTROL-006",
+      "severity": "error",
+      "category": "controls",
+      "requirement": "Links navigate, buttons issue commands, and selection controls expose current value."
+    },
+    {
+      "id": "DS-COLOR-001",
+      "severity": "error",
+      "category": "tokens",
+      "requirement": "Raw one-off colors are prohibited outside approved token definitions or exceptions."
+    },
+    {
+      "id": "DS-COLOR-002",
+      "severity": "error",
+      "category": "accessibility",
+      "requirement": "State and meaning are not communicated by color alone."
+    },
+    {
+      "id": "DS-COLOR-003",
+      "severity": "warning",
+      "category": "color",
+      "requirement": "Accent color does not dominate persistent navigation or broad page backgrounds."
+    },
+    {
+      "id": "DS-SHAPE-001",
+      "severity": "warning",
+      "category": "shape",
+      "requirement": "Routine radii above 16px require a documented component or brand reason."
+    },
+    {
+      "id": "DS-DEPTH-001",
+      "severity": "error",
+      "category": "depth",
+      "requirement": "Nested paper shadows are prohibited."
+    },
+    {
+      "id": "DS-DEPTH-002",
+      "severity": "warning",
+      "category": "depth",
+      "requirement": "Persistent rows and navigation items do not use external drop shadows."
+    },
+    {
+      "id": "DS-TYPE-001",
+      "severity": "warning",
+      "category": "typography",
+      "requirement": "Application text below 12px equivalent requires explicit accessibility review."
+    },
+    {
+      "id": "DS-TYPE-002",
+      "severity": "warning",
+      "category": "typography",
+      "requirement": "Aligned metrics and dates use tabular numerals where supported."
+    },
+    {
+      "id": "DS-TYPE-003",
+      "severity": "error",
+      "category": "content",
+      "requirement": "Essential instructions and status do not use muted contrast or ambiguous wording."
+    },
+    {
+      "id": "DS-CARD-001",
+      "severity": "warning",
+      "category": "composition",
+      "requirement": "Equal-card dashboard grids require a documented recurring decision need."
+    },
+    {
+      "id": "DS-CARD-002",
+      "severity": "warning",
+      "category": "composition",
+      "requirement": "Toolbar, body, and footer regions belonging to one object use one integrated outer surface."
+    },
+    {
+      "id": "DS-NAV-001",
+      "severity": "error",
+      "category": "navigation",
+      "requirement": "Local tabs preserve object context and are not used for unrelated global destinations."
+    },
+    {
+      "id": "DS-NAV-002",
+      "severity": "warning",
+      "category": "navigation",
+      "requirement": "Deep navigation nesting requires an information-architecture review."
+    },
+    {
+      "id": "DS-IA-001",
+      "severity": "error",
+      "category": "information-architecture",
+      "requirement": "Every screen has explicit global, object, view, local, metadata, and temporary ownership where applicable."
+    },
+    {
+      "id": "DS-IA-002",
+      "severity": "warning",
+      "category": "information-architecture",
+      "requirement": "Meaningful web location and view state are restorable or shareable when safe."
+    },
+    {
+      "id": "DS-COMMAND-001",
+      "severity": "warning",
+      "category": "commands",
+      "requirement": "Meaningful repeated actions are keyboard operable and discoverable through an appropriate command surface."
+    },
+    {
+      "id": "DS-COMMAND-002",
+      "severity": "error",
+      "category": "commands",
+      "requirement": "Buttons, menus, palettes, context menus, and shortcuts invoke one permission-aware command implementation."
+    },
+    {
+      "id": "DS-STATE-001",
+      "severity": "error",
+      "category": "states",
+      "requirement": "Loading, empty, error, permission, and unavailable states are implemented where applicable."
+    },
+    {
+      "id": "DS-STATE-002",
+      "severity": "warning",
+      "category": "states",
+      "requirement": "Local mutations do not force a full-page or full-shell reset without justification."
+    },
+    {
+      "id": "DS-STATE-003",
+      "severity": "error",
+      "category": "states",
+      "requirement": "Drafts and valid input survive validation, network, permission, and conflict failure where feasible."
+    },
+    {
+      "id": "DS-RESP-001",
+      "severity": "error",
+      "category": "responsive",
+      "requirement": "The applicable viewport/window and input matrix is captured and reviewed."
+    },
+    {
+      "id": "DS-RESP-002",
+      "severity": "error",
+      "category": "responsive",
+      "requirement": "Constrained layouts change representation before labels, relationships, or primary content become unusable."
+    },
+    {
+      "id": "DS-A11Y-001",
+      "severity": "error",
+      "category": "accessibility",
+      "requirement": "Keyboard path, semantics, labels, contrast, focus, zoom/scaling, and screen-reader behavior pass automated and manual checks."
+    },
+    {
+      "id": "DS-A11Y-002",
+      "severity": "error",
+      "category": "accessibility",
+      "requirement": "Drag, gesture, hover, chart, and spatial interactions provide non-spatial or non-gesture alternatives."
+    },
+    {
+      "id": "DS-MOTION-001",
+      "severity": "error",
+      "category": "motion",
+      "requirement": "Non-essential animation has reduced-motion behavior."
+    },
+    {
+      "id": "DS-MOTION-002",
+      "severity": "warning",
+      "category": "motion",
+      "requirement": "User-driven motion remains interruptible and begins from the presented value."
+    },
+    {
+      "id": "DS-CONTENT-001",
+      "severity": "warning",
+      "category": "content",
+      "requirement": "Primary actions use specific verb-first result labels."
+    },
+    {
+      "id": "DS-CONTENT-002",
+      "severity": "error",
+      "category": "content",
+      "requirement": "Errors and destructive actions name the object, consequence, retained state, and recovery."
+    },
+    {
+      "id": "DS-TRUST-001",
+      "severity": "error",
+      "category": "trust",
+      "requirement": "No completion, synchronization, publication, verification, collaboration, or deployment claim exceeds underlying evidence."
+    },
+    {
+      "id": "DS-TRUST-002",
+      "severity": "error",
+      "category": "trust",
+      "requirement": "High-impact work exposes scope, environment, permissions, side effects, authority, and recovery before commitment."
+    },
+    {
+      "id": "DS-AGENT-001",
+      "severity": "error",
+      "category": "agentic",
+      "requirement": "Agent proposals, execution, evidence, acceptance, and deployment are represented as distinct states."
+    },
+    {
+      "id": "DS-AGENT-002",
+      "severity": "error",
+      "category": "agentic",
+      "requirement": "People can pause, redirect, narrow, revoke, review, or take over agent work without losing valid isolated progress."
+    },
+    {
+      "id": "DS-COLLAB-001",
+      "severity": "error",
+      "category": "collaboration",
+      "requirement": "Presence, notification, assignment, and shared-state claims correspond to durable system state."
+    },
+    {
+      "id": "DS-COLLAB-002",
+      "severity": "error",
+      "category": "collaboration",
+      "requirement": "Concurrent changes do not silently overwrite another participant’s work."
+    },
+    {
+      "id": "DS-PERF-001",
+      "severity": "warning",
+      "category": "performance",
+      "requirement": "Primary interactions acknowledge input immediately and avoid avoidable blocking work."
+    },
+    {
+      "id": "DS-PERF-002",
+      "severity": "error",
+      "category": "performance",
+      "requirement": "Loading, media, fonts, data updates, and animation do not create destructive layout instability."
+    },
+    {
+      "id": "DS-PROJECT-001",
+      "severity": "error",
+      "category": "governance",
+      "requirement": "New UI uses an approved production component mapping or records a design-system gap."
+    },
+    {
+      "id": "DS-PROJECT-002",
+      "severity": "warning",
+      "category": "governance",
+      "requirement": "Representative golden references and realistic fixtures exist for adopted shells and critical flows."
+    },
+    {
+      "id": "DS-PROJECT-003",
+      "severity": "warning",
+      "category": "governance",
+      "requirement": "Project context, terminology, production mappings, and golden references are completed before claiming full design-system conformance."
+    },
+    {
+      "id": "DS-PROJECT-004",
+      "severity": "error",
+      "category": "governance",
+      "requirement": "Every durable route, native screen, window, major modal flow, and public page maps to an approved shell, layout archetype, page or flow, regions, states, and production implementation."
+    },
+    {
+      "id": "DS-PROJECT-005",
+      "severity": "warning",
+      "category": "governance",
+      "requirement": "Every shipped theme and asset family has an executable production source, design mapping, target scope, accessibility behavior, and owner."
+    },
+    {
+      "id": "DS-EVIDENCE-001",
+      "severity": "error",
+      "category": "evidence",
+      "requirement": "Completion evidence is tied to the exact source revision, target, environment, fixture, and time."
+    },
+    {
+      "id": "DS-GOV-001",
+      "severity": "error",
+      "category": "governance",
+      "requirement": "Intentional exceptions identify rule, reason, scope, owner, accessibility impact, and expiration or migration."
+    }
+  ]
+}
