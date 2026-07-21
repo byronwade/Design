@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {
-  doctorContract, installContract, resolveInstalledContract,
+  doctorContract, explainContract, installContract, resolveInstalledContract,
   statusContract, syncContract, validatePackage, validateProject,
 } from '../src/core.mjs';
 
@@ -25,6 +25,20 @@ test('installs a minimal façade instead of copying the engine', async () => {
   const contract = await fs.readFile(path.join(target, '.design/generated/web-app.md'), 'utf8');
   assert.match(contract, /Web application overlay/);
   assert.doesNotMatch(contract, /Web marketing overlay/);
+});
+
+test('compiles several targets without mixing sibling profiles', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app','web-marketing','ios-native'], adapters: [] });
+  const app = await fs.readFile(path.join(target, '.design/generated/web-app.md'), 'utf8');
+  const marketing = await fs.readFile(path.join(target, '.design/generated/web-marketing.md'), 'utf8');
+  const ios = await fs.readFile(path.join(target, '.design/generated/ios-native.md'), 'utf8');
+  assert.match(app, /Web application overlay/);
+  assert.doesNotMatch(app, /Web marketing overlay/);
+  assert.match(marketing, /Web marketing overlay/);
+  assert.doesNotMatch(marketing, /iPhone conventions/);
+  assert.match(ios, /iPhone conventions/);
+  assert.doesNotMatch(ios, /Android overlay/);
 });
 
 test('detects stale and hand-edited generated context', async () => {
@@ -48,6 +62,25 @@ test('sync preserves project-owned identity and decisions', async () => {
   assert.match(await fs.readFile(path.join(target, 'design/DECISIONS.md'), 'utf8'), /Preserve me/);
 });
 
+test('sync migrates the previous copied-engine installation', async () => {
+  const target = await temp();
+  await fs.mkdir(path.join(target, '.design/project'), { recursive: true });
+  await fs.mkdir(path.join(target, '.design/governance'), { recursive: true });
+  await fs.mkdir(path.join(target, '.design/global'), { recursive: true });
+  await fs.writeFile(path.join(target, '.design/project.json'), JSON.stringify({ schemaVersion: 1, targets: [{ id: 'app', profile: 'web-app', root: '.', default: true }], adapters: [] }));
+  await fs.writeFile(path.join(target, '.design/project/CONTEXT.md'), '# Legacy context\n\nPreserve project context.\n');
+  await fs.writeFile(path.join(target, '.design/project/COMPONENTS.md'), '# Legacy components\n\nPreserve component mapping.\n');
+  await fs.writeFile(path.join(target, '.design/governance/DECISIONS.md'), '# Legacy decisions\n\nPreserve decision.\n');
+  await fs.writeFile(path.join(target, '.design/global/PRINCIPLES.md'), '# Copied engine file\n');
+  const result = await syncContract({ target });
+  assert.equal(result.migration?.to, '1.1-facade');
+  assert.match(await fs.readFile(path.join(target, 'design/PROJECT.md'), 'utf8'), /Preserve project context/);
+  assert.match(await fs.readFile(path.join(target, 'design/COMPONENTS.md'), 'utf8'), /Preserve component mapping/);
+  assert.match(await fs.readFile(path.join(target, 'design/DECISIONS.md'), 'utf8'), /Preserve decision/);
+  await assert.rejects(() => fs.access(path.join(target, '.design/global/PRINCIPLES.md')));
+  await fs.access(path.join(target, '.design/generated/app.md'));
+});
+
 test('development allows placeholders while release mode blocks them', async () => {
   const target = await temp();
   await installContract({ target, profiles: ['web-app'], adapters: [] });
@@ -57,6 +90,14 @@ test('development allows placeholders while release mode blocks them', async () 
   await ready(target);
   await resolveInstalledContract({ target });
   assert.equal((await validateProject({ target, google: false, mode: 'release' })).summary.errors, 0);
+});
+
+test('explains profiles and stable quality rules', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  assert.equal((await explainContract({ target, query: 'web-app' })).type, 'profile');
+  const search = await explainContract({ target, query: 'accessibility' });
+  assert.ok(search.candidates.some((item) => item.type === 'rule' || item.type === 'layer'));
 });
 
 test('rejects path traversal and validates the package structure', async () => {
