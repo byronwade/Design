@@ -1,171 +1,155 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { expandProfile, loadManifest } from './manifest.mjs';
-import { exists, hash, readJson, resolveWithin, safeId, writeJson } from './utils.mjs';
+import { loadProjectConfig, projectDocuments } from './project.mjs';
+import {
+  GENERATED_DIRECTORY, contractRoot, exists, hash, hashFile, readJson,
+  resolveWithin, safeId, writeJson,
+} from './utils.mjs';
 
-function yamlScalar(value) {
-  return JSON.stringify(String(value));
-}
+function yaml(value) { return JSON.stringify(String(value)); }
 
 function uniqueDocuments(documents) {
   const seen = new Set();
-  const result = [];
-  for (const document of documents) {
-    if (seen.has(document.file)) continue;
-    seen.add(document.file);
-    result.push(document);
-  }
-  return result;
+  return documents.filter((document) => {
+    const key = `${document.source}:${document.file}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+async function describeDocument(target, document) {
+  const base = document.source === 'engine' ? contractRoot : target;
+  const file = resolveWithin(base, document.file, `Resolved ${document.source} document`);
+  if (!await exists(file)) throw new Error(`Resolved document does not exist: ${document.source}:${document.file}`);
+  return { ...document, absolute: file, hash: await hashFile(file) };
 }
 
 export async function buildResolutionPlan({ target }) {
-  const designDir = path.join(target, '.design');
-  const manifest = await loadManifest(designDir);
-  const configPath = path.join(designDir, 'project.json');
-  if (!await exists(configPath)) throw new Error('Missing .design/project.json. Run init or create a project config.');
-  const config = await readJson(configPath);
-  if (!Array.isArray(config.targets) || config.targets.length === 0) throw new Error('.design/project.json must define at least one target.');
+  const manifest = await loadManifest();
+  const config = await loadProjectConfig(target);
+  if (!await exists(path.join(target, 'DESIGN.md'))) throw new Error('Missing root DESIGN.md. Run init or restore the project design file.');
 
-  const targets = [];
+  const plans = [];
   for (const targetConfig of config.targets) {
     const profile = manifest.profiles[targetConfig.profile];
-    if (!profile) throw new Error(`Unknown profile in project.json: ${targetConfig.profile}`);
-    const targetId = safeId(targetConfig.id || targetConfig.profile);
-    if (!targetId || targetId !== targetConfig.id) throw new Error(`Target id must already be a safe lowercase identifier: ${targetConfig.id}`);
-    const layerIds = expandProfile(manifest, targetConfig.profile);
+    if (!profile) throw new Error(`Unknown profile in .design/config.json: ${targetConfig.profile}`);
+    const id = safeId(targetConfig.id);
+    const layers = expandProfile(manifest, targetConfig.profile);
     const overrides = [...(config.overrides ?? []), ...(targetConfig.overrides ?? [])];
-    const documents = uniqueDocuments([
-      { id: 'agent.workflow', file: 'AGENT.md', role: 'mandatory workflow' },
-      { id: 'google.design-md', file: 'DESIGN.md', role: 'portable visual core' },
-      ...layerIds.map((id) => ({ id, file: manifest.layers[id].file, role: manifest.layers[id].role })),
-      ...(manifest.projectDocumentDefaults ?? []).map((file, index) => ({ id: `project.default.${index + 1}`, file, role: 'project-owned context' })),
-      ...overrides.map((file, index) => ({ id: `project.override.${index + 1}`, file, role: 'project override' })),
+    const descriptors = uniqueDocuments([
+      { id: 'agent.workflow', source: 'engine', file: 'AGENT.md', role: 'mandatory design and implementation workflow' },
+      ...layers.map((layerId) => ({ id: layerId, source: 'engine', file: manifest.layers[layerId].file, role: manifest.layers[layerId].role })),
+      { id: 'project.design', source: 'project', file: 'DESIGN.md', role: 'project-owned Google-compatible visual contract' },
+      ...projectDocuments().map((item) => ({ ...item, source: 'project' })),
+      ...overrides.map((file, index) => ({ id: `project.override.${index + 1}`, source: 'project', file, role: 'project override' })),
     ]);
-
-    const documentHashes = [];
-    for (const document of documents) {
-      const file = resolveWithin(designDir, document.file, 'Resolved document');
-      if (!await exists(file)) throw new Error(`Resolved document does not exist: ${document.file}`);
-      documentHashes.push({ file: document.file, hash: hash(await fs.readFile(file)) });
-    }
-
-    const targetFingerprint = hash(JSON.stringify({
+    const documents = [];
+    for (const descriptor of descriptors) documents.push(await describeDocument(target, descriptor));
+    const fingerprint = hash(JSON.stringify({
       packageVersion: manifest.packageVersion,
       target: targetConfig,
-      profile: targetConfig.profile,
-      documents: documentHashes,
+      documents: documents.map(({ id: docId, source, file, hash: fileHash }) => ({ id: docId, source, file, hash: fileHash })),
     }));
-    targets.push({
-      id: targetId,
+    plans.push({
+      id,
       profileId: targetConfig.profile,
       profile,
-      description: targetConfig.description ?? profile.description,
       root: targetConfig.root ?? '.',
       default: Boolean(targetConfig.default),
+      description: targetConfig.description ?? profile.description,
       documents,
-      fingerprint: targetFingerprint,
+      fingerprint,
     });
   }
 
   const fingerprint = hash(JSON.stringify({
     packageVersion: manifest.packageVersion,
-    targets: targets.map(({ id, profileId, root, default: isDefault, fingerprint: value }) => ({ id, profileId, root, default: isDefault, fingerprint: value })),
+    config,
+    targets: plans.map(({ id, profileId, root, default: isDefault, fingerprint: value }) => ({ id, profileId, root, default: isDefault, fingerprint: value })),
   }));
-  return { designDir, manifest, config, targets, fingerprint };
+  return { target, manifest, config, targets: plans, fingerprint };
+}
+
+function markdownForTarget(targetPlan, generatedAt) {
+  const lines = [
+    '---',
+    'generated: true',
+    `target: ${yaml(targetPlan.id)}`,
+    `profile: ${yaml(targetPlan.profileId)}`,
+    `root: ${yaml(targetPlan.root)}`,
+    `fingerprint: ${yaml(targetPlan.fingerprint)}`,
+    `generated_at: ${yaml(generatedAt)}`,
+    'do_not_edit: true',
+    '---', '',
+    `# Compiled design contract: ${targetPlan.id}`, '',
+    `Profile: **${targetPlan.profileId}** — ${targetPlan.description}`, '',
+    `Product root: \`${targetPlan.root}\`${targetPlan.default ? ' · default target' : ''}`, '',
+    '> This is generated context. Project-authored truth lives in DESIGN.md and design/. Engine rules come from the pinned Design package. Later project documents specialize engine defaults without weakening accessibility, safety, legal, privacy, security, or explicit product requirements.', '',
+    '## Contract model', '',
+    '`global engine + selected profile + project visual identity + project mappings and decisions = this target contract`', '',
+    '## Source order', '',
+    ...targetPlan.documents.map((document, index) => `${index + 1}. \`${document.source}:${document.file}\` — ${document.role} — \`${document.hash.slice(0, 12)}\``), '',
+  ];
+  for (const document of targetPlan.documents) lines.push('---', '', `## Source: ${document.source}:${document.file}`, '', document.content.trim(), '');
+  return `${lines.join('\n')}\n`;
+}
+
+export async function resolveInstalledContract({ target, stdoutTarget = null }) {
+  const plan = await buildResolutionPlan({ target });
+  const generated = path.join(target, GENERATED_DIRECTORY);
+  await fs.rm(generated, { recursive: true, force: true });
+  await fs.mkdir(generated, { recursive: true });
+  const generatedAt = new Date().toISOString();
+  const context = { schemaVersion: 1, packageVersion: plan.manifest.packageVersion, generatedAt, fingerprint: plan.fingerprint, targets: [], outputHashes: {} };
+  const index = ['# Compiled design targets', '', '> Generated. Do not edit.', '', 'Select the target named by the task, the single default target, or the target whose root contains the product being changed.', ''];
+  let stdout = null;
+
+  for (const targetPlan of plan.targets) {
+    for (const document of targetPlan.documents) document.content = await fs.readFile(document.absolute, 'utf8');
+    const markdown = markdownForTarget(targetPlan, generatedAt);
+    const json = {
+      schemaVersion: 1,
+      packageVersion: plan.manifest.packageVersion,
+      generatedAt,
+      target: { id: targetPlan.id, profile: targetPlan.profileId, root: targetPlan.root, default: targetPlan.default, description: targetPlan.description },
+      fingerprint: targetPlan.fingerprint,
+      documents: targetPlan.documents.map(({ id, source, file, role, hash: fileHash, content }) => ({ id, source, file, role, hash: fileHash, content })),
+    };
+    const markdownRelative = `${targetPlan.id}.md`;
+    const jsonRelative = `${targetPlan.id}.json`;
+    await fs.writeFile(path.join(generated, markdownRelative), markdown, 'utf8');
+    await writeJson(path.join(generated, jsonRelative), json);
+    context.outputHashes[markdownRelative] = hash(markdown);
+    context.outputHashes[jsonRelative] = await hashFile(path.join(generated, jsonRelative));
+    context.targets.push({ id: targetPlan.id, profile: targetPlan.profileId, root: targetPlan.root, default: targetPlan.default, fingerprint: targetPlan.fingerprint, markdown: markdownRelative, json: jsonRelative });
+    index.push(`- [${targetPlan.id}](${markdownRelative}) — \`${targetPlan.profileId}\`${targetPlan.default ? ' · default' : ''}: ${targetPlan.description}`);
+    if (stdoutTarget === targetPlan.id) stdout = markdown;
+  }
+  const indexText = `${index.join('\n')}\n`;
+  await fs.writeFile(path.join(generated, 'INDEX.md'), indexText, 'utf8');
+  context.outputHashes['INDEX.md'] = hash(indexText);
+  await writeJson(path.join(generated, 'CONTEXT.json'), context);
+  return { action: 'context', target, fingerprint: plan.fingerprint, targets: context.targets.map((entry) => entry.id), stdout };
 }
 
 export async function getResolutionStatus({ target }) {
-  const designDir = path.join(target, '.design');
-  const contextPath = path.join(designDir, 'generated', 'CONTEXT.json');
-  if (!await exists(path.join(designDir, 'project.json'))) return { state: 'not-installed', current: false };
+  const contextPath = path.join(target, GENERATED_DIRECTORY, 'CONTEXT.json');
+  if (!await exists(path.join(target, '.design/config.json'))) return { state: 'not-installed', current: false };
   let plan;
   try { plan = await buildResolutionPlan({ target }); }
   catch (error) { return { state: 'invalid', current: false, message: error.message }; }
   if (!await exists(contextPath)) return { state: 'missing', current: false, expectedFingerprint: plan.fingerprint };
   try {
     const context = await readJson(contextPath);
-    const current = context.fingerprint === plan.fingerprint;
-    return {
-      state: current ? 'current' : 'stale',
-      current,
-      expectedFingerprint: plan.fingerprint,
-      actualFingerprint: context.fingerprint ?? null,
-      generatedAt: context.generatedAt ?? null,
-    };
+    if (context.fingerprint !== plan.fingerprint) return { state: 'stale', current: false, expectedFingerprint: plan.fingerprint, actualFingerprint: context.fingerprint ?? null, generatedAt: context.generatedAt ?? null };
+    for (const [relative, expected] of Object.entries(context.outputHashes ?? {})) {
+      const file = path.join(target, GENERATED_DIRECTORY, relative);
+      if (!await exists(file) || await hashFile(file) !== expected) return { state: 'tampered', current: false, expectedFingerprint: plan.fingerprint, actualFingerprint: context.fingerprint, file: relative };
+    }
+    return { state: 'current', current: true, expectedFingerprint: plan.fingerprint, actualFingerprint: context.fingerprint, generatedAt: context.generatedAt ?? null };
   } catch (error) {
     return { state: 'invalid-generated-context', current: false, expectedFingerprint: plan.fingerprint, message: error.message };
   }
-}
-
-export async function resolveInstalledContract({ target }) {
-  const plan = await buildResolutionPlan({ target });
-  const generated = path.join(plan.designDir, plan.manifest.generatedDirectory ?? 'generated');
-  await fs.rm(generated, { recursive: true, force: true });
-  await fs.mkdir(generated, { recursive: true });
-
-  const generatedAt = new Date().toISOString();
-  const context = {
-    schemaVersion: 1,
-    packageVersion: plan.manifest.packageVersion,
-    generatedAt,
-    fingerprint: plan.fingerprint,
-    targets: [],
-  };
-  const indexLines = [
-    '# Resolved design targets', '', '> Generated. Do not edit.', '',
-    'Select the target named by the task. When none is named, use the single default target or the target whose configured root contains the changed product.', '',
-  ];
-
-  for (const targetPlan of plan.targets) {
-    const targetDir = path.join(generated, targetPlan.id);
-    await fs.mkdir(targetDir, { recursive: true });
-    const contract = [
-      '---',
-      'generated: true',
-      `target: ${yamlScalar(targetPlan.id)}`,
-      `profile: ${yamlScalar(targetPlan.profileId)}`,
-      `root: ${yamlScalar(targetPlan.root)}`,
-      `fingerprint: ${yamlScalar(targetPlan.fingerprint)}`,
-      `generated_at: ${yamlScalar(generatedAt)}`,
-      'do_not_edit: true',
-      '---', '',
-      `# Resolved design contract: ${targetPlan.id}`, '',
-      `Profile: **${targetPlan.profileId}** — ${targetPlan.description}`, '',
-      `Product root: \`${targetPlan.root}\`${targetPlan.default ? ' · default target' : ''}`, '',
-      '> Later documents specialize earlier documents only for their declared scope. Project context, accepted decisions, active exceptions, accessibility, safety, legal, privacy, security, and explicit requirements remain higher authority.', '',
-      '## Read order', '',
-      ...targetPlan.documents.map((document, index) => `${index + 1}. \`.design/${document.file}\` — ${document.role ?? document.id}`), '',
-    ];
-
-    for (const document of targetPlan.documents) {
-      const file = resolveWithin(plan.designDir, document.file, 'Resolved document');
-      const content = await fs.readFile(file, 'utf8');
-      contract.push('---', '', `## Source: .design/${document.file}`, '', content.trim(), '');
-    }
-
-    await fs.writeFile(path.join(targetDir, 'CONTRACT.md'), `${contract.join('\n')}\n`, 'utf8');
-    await fs.writeFile(path.join(targetDir, 'INDEX.md'), [
-      `# ${targetPlan.id}`, '',
-      `- Profile: \`${targetPlan.profileId}\``,
-      `- Product root: \`${targetPlan.root}\``,
-      `- Default: ${targetPlan.default ? 'yes' : 'no'}`,
-      `- Fingerprint: \`${targetPlan.fingerprint}\``,
-      '- Resolved contract: [CONTRACT.md](CONTRACT.md)',
-      `- Document count: ${targetPlan.documents.length}`, '',
-      'Read the contract before UI work. Do not load sibling targets unless cross-platform comparison is required.', '',
-    ].join('\n'), 'utf8');
-    indexLines.push(`- [${targetPlan.id}](${targetPlan.id}/INDEX.md) — \`${targetPlan.profileId}\`${targetPlan.default ? ' · default' : ''}: ${targetPlan.description}`);
-    context.targets.push({
-      id: targetPlan.id,
-      profile: targetPlan.profileId,
-      root: targetPlan.root,
-      default: targetPlan.default,
-      fingerprint: targetPlan.fingerprint,
-      documents: targetPlan.documents,
-    });
-  }
-
-  await fs.writeFile(path.join(generated, 'INDEX.md'), `${indexLines.join('\n')}\n`, 'utf8');
-  await writeJson(path.join(generated, 'CONTEXT.json'), context);
-  return { action: 'resolved', target, fingerprint: plan.fingerprint, targets: context.targets.map((entry) => entry.id) };
 }
