@@ -14,6 +14,7 @@ export const CACHE_DIRECTORY = '.design/cache';
 export const PROJECT_FILES = ['design/PROJECT.md', 'design/COMPONENTS.md', 'design/DECISIONS.md'];
 export const MANAGED_START = '<!-- design-contract:start -->';
 export const MANAGED_END = '<!-- design-contract:end -->';
+const WALK_IGNORED_DIRECTORIES = new Set(['.git', 'node_modules', 'dist']);
 
 export async function exists(file) {
   try { await fs.access(file); return true; } catch { return false; }
@@ -50,6 +51,7 @@ export async function walk(root, relative = '') {
   const entries = await fs.readdir(directory, { withFileTypes: true });
   const files = [];
   for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+    if (entry.isDirectory() && WALK_IGNORED_DIRECTORIES.has(entry.name)) continue;
     const child = path.join(relative, entry.name);
     if (entry.isDirectory()) files.push(...await walk(root, child));
     else files.push(child.replaceAll(path.sep, '/'));
