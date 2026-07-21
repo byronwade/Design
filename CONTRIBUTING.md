@@ -1,29 +1,30 @@
 # Contributing to the design contract
 
-This repository is the canonical package from which project `.design/` contracts are installed. Treat a change as a design-system migration, not a documentation edit.
+This repository is the canonical engine that compiles a minimal project façade into focused target-aware context. Treat changes as design-system, compiler, migration, adapter, and verification changes—not isolated documentation edits.
 
 ## Change sequence
 
-1. Identify the person, product need, affected profiles, and evidence.
-2. Confirm which canonical file owns the decision; do not restate the same rule in several places.
-3. Add or update an accepted decision when the change is durable, or an exception when it is bounded.
-4. Update the normative contract, profile inheritance, project templates, quality rules, and source coverage as applicable.
-5. Update installer/resolver/validator behavior when context or ownership changes.
-6. Add tests for resolution order, synchronization, validation, and failure modes.
+1. Identify the person, product need, affected profiles, migration impact, and required evidence.
+2. Confirm which canonical contract owns the decision; do not copy the same rule into several files.
+3. Update an accepted decision for durable behavior or an exception for bounded divergence.
+4. Update the owning contract, manifest, quality rule, source coverage, template, or schema.
+5. Update compiler, installer, migration, adapter, status, doctor, or validation behavior when ownership or context changes.
+6. Add tests for profile isolation, project-file preservation, stale/tampered context, schema failure, and package installation.
 7. Run `npm run check`.
-8. Review the generated contracts for a representative native, web, and composite profile.
-9. Record the change in `.design/governance/CHANGELOG.md`.
+8. Inspect a clean installed project and representative native, web, and composite compiled targets.
+9. Record the release in `.design/governance/CHANGELOG.md`.
 
-## Ownership rules
+## Ownership
 
-- `.design/DESIGN.md` owns Google-compatible portable visual tokens and rationale.
-- `manifest.json` owns inheritance and target profiles.
-- each normative rule has one primary document owner
-- `project/` files are installed templates and become project-owned
-- `quality/RULES.json` provides stable IDs; prose documents explain them
-- raw sources preserve provenance and do not become parallel operational contracts
-- generated files are never edited directly
+- root `DESIGN.md` and `.design/DESIGN.md` are package-repository mirrors; installed projects own only root `DESIGN.md`
+- `.design/manifest.json` owns engine inheritance and profiles
+- `templates/` owns the initial consuming-project façade
+- installed `design/` files are project-owned and must survive `sync`
+- `schemas/` owns consuming-project configuration and generated-context validation
+- `.design/quality/RULES.json` provides stable rule IDs
+- generated context is reproducible and never edited directly
+- raw sources preserve provenance; they are not ordinary implementation instructions
 
 ## Quality bar
 
-A proposed change must remain understandable to a human, resolvable to a narrow agent context, compatible with the Google linter, accessible across affected platforms, and enforceable through mappings, tests, evidence, or stable review criteria. Avoid adding shallow verticals or component variants merely for completeness.
+A change must remain understandable to humans, compile to narrow agent context, preserve Google `DESIGN.md` portability, maintain platform isolation, protect project ownership, and be enforceable through schemas, fingerprints, tests, evidence, or stable review criteria. The package and exact GitHub installation path must pass on Ubuntu and Windows before release.
