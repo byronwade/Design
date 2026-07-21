@@ -2,7 +2,7 @@
 id: governance.decisions
 kind: governance
 version: 1.2.0
-status: project-owned
+status: normative
 ---
 
 # Design decisions
