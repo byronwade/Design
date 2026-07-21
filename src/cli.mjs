@@ -1,41 +1,37 @@
 import path from 'node:path';
 import process from 'node:process';
 import {
-  installContract,
-  listProfiles,
-  resolveInstalledContract,
-  statusContract,
-  syncContract,
-  validateContract,
+  doctorContract, explainContract, installContract, listProfiles,
+  resolveInstalledContract, statusContract, syncContract,
+  validatePackage, validateProject,
 } from './core.mjs';
 
 function parseArgs(argv) {
   const command = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'help';
   const options = {};
-  const values = command === 'help' ? argv : argv.slice(1);
-  for (let index = 0; index < values.length; index += 1) {
-    const value = values[index];
-    if (!value.startsWith('--')) continue;
-    const [rawKey, inlineValue] = value.slice(2).split('=', 2);
-    const next = values[index + 1];
-    const parsed = inlineValue ?? (next && !next.startsWith('--') ? values[++index] : true);
-    if (options[rawKey] === undefined) options[rawKey] = parsed;
-    else if (Array.isArray(options[rawKey])) options[rawKey].push(parsed);
-    else options[rawKey] = [options[rawKey], parsed];
+  const positionals = [];
+  for (let index = command === 'help' ? 0 : 1; index < argv.length; index += 1) {
+    const value = argv[index];
+    if (!value.startsWith('--')) { positionals.push(value); continue; }
+    const [key, inline] = value.slice(2).split('=', 2);
+    const next = argv[index + 1];
+    const parsed = inline ?? (next && !next.startsWith('--') ? argv[++index] : true);
+    if (options[key] === undefined) options[key] = parsed;
+    else if (Array.isArray(options[key])) options[key].push(parsed);
+    else options[key] = [options[key], parsed];
   }
-  return { command, options };
+  return { command, options, positionals };
 }
 
-function splitMany(value, fallback = []) {
+function many(value, fallback = []) {
   if (value === undefined) return fallback;
   const list = Array.isArray(value) ? value : [value];
-  return list.flatMap((entry) => String(entry).split(',')).map((entry) => entry.trim()).filter(Boolean);
+  return list.flatMap((item) => String(item).split(',')).map((item) => item.trim()).filter(Boolean);
 }
 
-function print(value, json) {
-  if (json) console.log(JSON.stringify(value, null, 2));
-  else if (typeof value === 'string') console.log(value);
-  else console.log(JSON.stringify(value, null, 2));
+function output(value, json) {
+  if (json || typeof value !== 'string') console.log(JSON.stringify(value, null, 2));
+  else console.log(value);
 }
 
 const HELP = `Design Contract CLI
@@ -43,68 +39,63 @@ const HELP = `Design Contract CLI
 Usage:
   design-contract list [--json]
   design-contract init [--target DIR] [--profile ID ...] [--adapters LIST] [--force]
-  design-contract sync [--target DIR] [--force]
-  design-contract resolve [--target DIR]
+  design-contract context [--target DIR] [--id TARGET] [--stdout]
+  design-contract resolve [--target DIR]                 # compatibility alias
   design-contract status [--target DIR] [--json]
-  design-contract validate [--target DIR | --source DIR] [--require-google | --no-google] [--json]
+  design-contract doctor [--target DIR] [--mode development|release]
+  design-contract validate [--target DIR] [--mode development|release] [--require-google|--no-google]
+  design-contract validate --package [--require-google]
+  design-contract sync [--target DIR]
+  design-contract explain QUERY [--target DIR]
 
-Examples:
-  design-contract init --profile web-app
-  design-contract init --profile ios-native --profile android-native
-  design-contract resolve
-  design-contract status
-  design-contract validate --require-google
+Mental model:
+  DESIGN.md + selected profile + design/ project customizations = compiled target context
 `;
 
 export async function runCli(argv) {
-  const { command, options } = parseArgs(argv);
+  const { command, options, positionals } = parseArgs(argv);
   const json = Boolean(options.json);
   const target = path.resolve(String(options.target ?? process.cwd()));
-
-  if (command === 'help' || command === '--help' || command === '-h') {
-    print(HELP, false);
-    return;
-  }
-  if (command === 'list') {
-    const profiles = await listProfiles();
-    if (json) print(profiles, true);
-    else {
-      console.log('Available design profiles:\n');
-      for (const profile of profiles) console.log(`- ${profile.id}: ${profile.description}`);
-    }
-    return;
-  }
+  if (command === 'help' || command === '--help' || command === '-h') { console.log(HELP); return; }
+  if (command === 'list') { output(await listProfiles(), json); return; }
   if (command === 'init') {
-    const profiles = splitMany(options.profile, ['web-app']);
-    const requestedAdapters = splitMany(options.adapters, ['codex', 'claude', 'copilot']);
-    const adapters = requestedAdapters.includes('none') ? [] : requestedAdapters;
-    print(await installContract({ target, profiles, adapters, force: Boolean(options.force) }), json);
+    const profiles = many(options.profile, ['web-app']);
+    const requested = many(options.adapters, ['codex', 'claude', 'copilot']);
+    const adapters = requested.includes('none') ? [] : requested;
+    output(await installContract({ target, profiles, adapters, force: Boolean(options.force) }), json);
     return;
   }
-  if (command === 'sync') {
-    const result = await syncContract({ target, force: Boolean(options.force) });
-    print(result, json);
-    if (result.conflicts.length > 0) process.exitCode = 2;
-    return;
-  }
-  if (command === 'resolve') {
-    print(await resolveInstalledContract({ target }), json);
+  if (command === 'context' || command === 'resolve') {
+    const result = await resolveInstalledContract({ target, stdoutTarget: options.id ? String(options.id) : null });
+    if (options.stdout) {
+      if (!result.stdout) throw new Error('Use --id TARGET with --stdout.');
+      process.stdout.write(result.stdout);
+    } else output(result, json);
     return;
   }
   if (command === 'status') {
     const result = await statusContract({ target });
-    print(result, json);
+    output(result, json);
+    if (!result.healthy) process.exitCode = 2;
+    return;
+  }
+  if (command === 'doctor') {
+    const result = await doctorContract({ target, mode: String(options.mode ?? 'development') });
+    output(result, json);
     if (!result.healthy) process.exitCode = 2;
     return;
   }
   if (command === 'validate') {
-    const source = path.resolve(String(options.source ?? path.join(target, '.design')));
-    const google = options['no-google'] ? false : true;
+    const google = !options['no-google'];
     const requireGoogle = Boolean(options['require-google']);
-    const report = await validateContract({ source, google, requireGoogle });
-    print(report, json);
+    const report = options.package
+      ? await validatePackage({ google, requireGoogle })
+      : await validateProject({ target, google, requireGoogle, mode: String(options.mode ?? 'development') });
+    output(report, json);
     if (report.summary.errors > 0) process.exitCode = 1;
     return;
   }
+  if (command === 'sync') { output(await syncContract({ target }), json); return; }
+  if (command === 'explain') { output(await explainContract({ target, query: positionals[0] ?? options.query }), json); return; }
   throw new Error(`Unknown command: ${command}\n\n${HELP}`);
 }
