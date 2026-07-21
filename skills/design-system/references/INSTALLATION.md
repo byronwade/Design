@@ -6,25 +6,40 @@
 npx --yes github:byronwade/Design init --profile web-app
 ```
 
-The installer owns canonical contract files and records their hashes in `.design/.install.json`. Project context, terminology, component mappings, golden references, decisions, exceptions, configuration, and declared overrides become project-owned.
+The installer creates the project-owned façade:
 
-## Configure the project
-
-1. Edit `.design/project.json` target IDs, roots, descriptions, and default target.
-2. Complete `.design/project/CONTEXT.md` and `TERMINOLOGY.md`.
-3. Register durable routes, screens, windows, shells, layouts, and states in `SURFACES.md`.
-4. Map real component APIs, stories, and commands in `COMPONENTS.md`.
-5. Map themes and production assets in `THEMES.md` and `ASSETS.md`.
-6. Add representative golden routes/fixtures in `REFERENCES.md`.
-7. Run `npx --yes github:byronwade/Design resolve` and `npx --yes github:byronwade/Design validate`.
-
-## Status and synchronization
-
-```bash
-npx --yes github:byronwade/Design status
-npx --yes github:byronwade/Design sync
+```text
+DESIGN.md
+AGENTS.md
+design/PROJECT.md
+design/COMPONENTS.md
+design/DECISIONS.md
 ```
 
-A managed file updates only when its current hash still matches the previously installed hash. Local changes to managed files become reported conflicts rather than being overwritten. Project-owned files are always preserved. `--force` deliberately replaces managed conflicts but still does not rewrite project-owned documents that already exist.
+Only configuration, lock state, cache, and compiled context live under `.design/`. The full engine remains in the package.
 
-Never edit `.design/generated/` directly. `status` reports stale generated context, changed managed files, missing files, installed version, and available package version.
+## Context
+
+```bash
+design-contract context
+```
+
+Run after changing `DESIGN.md`, `design/`, target configuration, or overrides. Do not edit `.design/generated/`.
+
+## Synchronization
+
+```bash
+design-contract sync
+```
+
+Synchronization updates the engine version and managed adapters, recompiles context, and preserves project-owned visual identity, mappings, and decisions. Legacy copied-engine installations are migrated into the façade layout.
+
+## Health
+
+```bash
+design-contract status
+design-contract doctor
+design-contract validate
+```
+
+Use `--mode release` to treat incomplete project context and mapping gaps as errors.
