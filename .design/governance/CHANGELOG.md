@@ -7,6 +7,18 @@ status: normative
 
 # Changelog
 
+## 1.1.0 — 2026-07-21
+
+- replaced copied consuming-project engine trees with a minimal `DESIGN.md`, `AGENTS.md`, and `design/` façade
+- compiled shared engine layers, one selected profile, and project-owned customization into focused Markdown and JSON target contracts
+- added `context`, `doctor`, and `explain`, with `resolve` retained as an alias
+- added generated-output hashes and stale or tampered context detection
+- added development and release readiness modes plus Ajv-backed façade schemas
+- generated an actual `@AGENTS.md` Claude import and thin Codex, Claude, and Copilot adapters
+- added a safe migration from previous copied-engine installations while preserving project identity, mappings, decisions, and exceptions
+- added deterministic build metadata, clean package installation tests, and exact-GitHub-commit production smoke tests on Ubuntu and Windows
+- rewrote the README around the simple visible surface and package/compiler mental model
+
 ## 1.0.0-alpha.2 — 2026-07-21
 
 - separated persistent shells from task-body layout archetypes
