@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "name": "Calm Paper Workbench",
+    "version": "1.0.0",
+    "status": "Living specification",
+    "derivedFrom": [
+      "Recurring UI/UX preferences from prior conversations",
+      "Warm Paper Workbench specification",
+      "Calm Workbench design specification",
+      "Velocity workbench and agent-first design research"
+    ],
+    "principle": "Calm by default; full depth on demand."
+  },
+  "color": {
+    "canvas": "#F3EEE5",
+    "paper": "#FFFDF8",
+    "paperSubtle": "#FAF5EC",
+    "paperHover": "#F5EEE3",
+    "paperSelected": "#EDE3D5",
+    "ink": "#2B2723",
+    "inkSecondary": "#675F57",
+    "inkMuted": "#766E65",
+    "borderSoft": "rgba(67,52,38,0.10)",
+    "border": "rgba(67,52,38,0.15)",
+    "borderEdge": "rgba(67,52,38,0.22)",
+    "accent": "#9B4F32",
+    "accentHover": "#7A3F2A",
+    "accentSoft": "#F4E5DB",
+    "focus": "#7D4936",
+    "success": "#356548",
+    "successSoft": "#E8F2E7",
+    "warning": "#7A5417",
+    "warningSoft": "#FFF1D6",
+    "danger": "#9C3C32",
+    "dangerSoft": "#F9E4E0",
+    "info": "#3E6670",
+    "infoSoft": "#E5F0F1"
+  },
+  "compatibilityTheme": {
+    "primary": "#18181A",
+    "secondary": "#5F6066",
+    "muted": "#707176",
+    "canvas": "#F3F3F2",
+    "surface": "#FFFFFF",
+    "surfaceSubtle": "#F8F8F7",
+    "surfaceHover": "#F1F1F0",
+    "surfaceSelected": "#E8E8E6",
+    "border": "#E6E6E4",
+    "borderStrong": "#D6D6D3",
+    "accent": "#4C57C9",
+    "accentSoft": "#EFF0FF"
+  },
+  "space": {
+    "1": 4,
+    "2": 8,
+    "3": 12,
+    "4": 16,
+    "6": 24,
+    "8": 32,
+    "12": 48,
+    "16": 64
+  },
+  "radius": {
+    "xs": 4,
+    "sm": 6,
+    "md": 8,
+    "paper": 10,
+    "shell": 12,
+    "full": 9999
+  },
+  "size": {
+    "sidebar": 240,
+    "utilityStrip": 36,
+    "locationBar": 44,
+    "viewBar": 44,
+    "navRow": 28,
+    "controlCompact": 28,
+    "controlNormal": 32,
+    "controlEmphasis": 36,
+    "chip": 24,
+    "listRow": 44,
+    "groupHeader": 36,
+    "readingColumn": 760,
+    "settingsColumn": 640,
+    "focusedColumn": 712,
+    "authColumn": 320,
+    "richRail": 384,
+    "inspector": 320,
+    "utilityRail": 208,
+    "boardColumn": 320,
+    "timelineSemanticPane": 304
+  },
+  "type": {
+    "metadata": {
+      "size": 12,
+      "lineHeight": 16,
+      "weight": 500
+    },
+    "control": {
+      "size": 13,
+      "lineHeight": 18,
+      "weight": 500
+    },
+    "body": {
+      "size": 14,
+      "lineHeight": 20,
+      "weight": 400
+    },
+    "narrative": {
+      "size": 16,
+      "lineHeight": 24,
+      "weight": 400
+    },
+    "section": {
+      "size": 20,
+      "lineHeight": 26,
+      "weight": 600
+    },
+    "pageTitle": {
+      "size": 26,
+      "lineHeight": 32,
+      "weight": 600
+    }
+  },
+  "motion": {
+    "fast": "120ms",
+    "normal": "160ms",
+    "slow": "220ms",
+    "easing": "cubic-bezier(0.2,0,0,1)",
+    "maxHoverLift": "1px"
+  },
+  "breakpoint": {
+    "wide": 1280,
+    "medium": 1024,
+    "tablet": 768
+  }
+}
