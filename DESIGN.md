@@ -164,13 +164,15 @@ components:
 
 Warm Paper Workbench is calm, warm, tactile, precise, compact, capable, legible, deliberate, and trustworthy. It supports professional depth without presenting every capability at once. The product should feel like one precision-made sheet of warm paper rather than a stack of unrelated cards.
 
-The visual identity is global. Layout, navigation, windowing, input, and system chrome adapt through the selected platform profile in `.design/manifest.json`.
+In a consuming project, this root file is the single editable visual contract. Read `AGENTS.md` before UI work. Product-specific context, production mappings, and decisions live in `design/`. The selected platform profile is compiled from the versioned engine through `.design/config.json` into `.design/generated/<target>.md`.
+
+The package repository keeps `.design/DESIGN.md` only as a verified internal mirror. Installed projects must not create a second editable `DESIGN.md`.
 
 ## Colors
 
 Warm cream canvas and warm-white paper replace cool blue-gray application backgrounds. Deep brown-black ink carries hierarchy. The clay accent is scarce and semantic: principal action, current focus, or meaningful selection—not decoration.
 
-Status color is paired with text, iconography, and clear language. Large saturated status regions are prohibited. Platform overlays may map these semantic roles to native dynamic colors while preserving contrast and intent.
+Status color is paired with text, iconography, and clear language. Large saturated status regions are prohibited. Platform profiles may map these semantic roles to native dynamic colors while preserving contrast and intent.
 
 ## Typography
 
@@ -200,10 +202,10 @@ Integrated toolbar, body, and footer regions share one outer clipping, border, r
 
 Primary buttons commit or advance the principal task of one region. A region has at most one primary action. Repeated rows and cards do not each receive a primary button. Secondary, tertiary, ghost, icon, danger, and link variants are selected by intent, scope, risk, and frequency—not visual preference.
 
-Rows, boards, timelines, inspectors, forms, menus, previews, and overlays use the detailed intent contracts under `.design/components/` and `.design/patterns/`. Native profiles may replace a visual primitive with the platform-standard control while preserving semantic role and product identity.
+Rows, boards, timelines, inspectors, forms, menus, previews, and overlays follow the component and pattern contracts compiled into the selected target. `design/COMPONENTS.md` maps those intents to actual production APIs, variants, stories, tests, and approved design references. Native profiles may replace a visual primitive with the platform-standard control while preserving semantic role and product identity.
 
 ## Do's and Don'ts
 
-**Do:** preserve context; use progressive disclosure; keep one dominant action per region; make state and consequence explicit; align repeated information; provide keyboard and assistive-technology access; transform representations at constrained widths; test realistic content and failure states.
+**Do:** preserve context; use progressive disclosure; keep one dominant action per region; make state and consequence explicit; align repeated information; provide keyboard and assistive-technology access; transform representations at constrained widths; test realistic content and failure states; recompile context after authored design changes.
 
-**Don't:** use gradients decoratively; create a card for every section; combine every control scope into one toolbar; invent one-off spacing or radius values; center operational forms; use accent color as decoration; imitate native chrome in a browser; shrink desktop layouts until they technically fit; hide destructive consequence; animate high-frequency keyboard actions merely for flourish.
+**Don't:** use gradients decoratively; create a card for every section; combine every control scope into one toolbar; invent one-off spacing or radius values; center operational forms; use accent color as decoration; imitate native chrome in a browser; shrink desktop layouts until they technically fit; hide destructive consequence; animate high-frequency keyboard actions merely for flourish; edit `.design/generated/` directly.

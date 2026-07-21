@@ -1,23 +1,28 @@
-## Design-contract change
+## Design-engine change
 
 ### Need and scope
 
-- Person/product need:
-- Affected profiles and surfaces:
-- Owning contract and rule IDs:
-- Decision or exception:
+- Person or product need:
+- Affected profiles, targets, and surfaces:
+- Owning contract and stable rule IDs:
+- Decision, exception, gap, or migration:
 
-### Synchronization
+### Contract and façade synchronization
 
-- [ ] `DESIGN.md`, manifest, contracts, project templates, and quality rules agree.
-- [ ] Source coverage and changelog are updated when applicable.
-- [ ] Generated contexts were inspected for representative profiles.
-- [ ] No project-owned file is overwritten by synchronization.
+- [ ] Root and engine `DESIGN.md` agree in the package repository.
+- [ ] Owning contracts, manifest, schemas, templates, compiler behavior, and Skills agree.
+- [ ] The installed façade remains limited to `DESIGN.md`, `AGENTS.md`, `design/`, and generated `.design/` state.
+- [ ] Project-owned identity, mappings, and decisions survive synchronization and migration.
+- [ ] Source coverage and changelog are updated where applicable.
+- [ ] Representative native, web, and composite target contracts were inspected.
 
 ### Evidence
 
-- [ ] `npm run check`
-- [ ] Google DESIGN.md lint
-- [ ] installer/sync/resolver tests
-- [ ] accessibility/platform implications reviewed
+- [ ] `npm run validate:strict`
+- [ ] `npm test`
+- [ ] `npm run build`
+- [ ] `npm run smoke`
+- [ ] Google `DESIGN.md` lint
+- [ ] Ubuntu and Windows workflow results
+- [ ] accessibility, platform, migration, and compatibility implications reviewed
 - [ ] intentional baseline or behavior changes documented

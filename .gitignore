@@ -1,8 +1,7 @@
 node_modules/
-*.log
+dist/
 *.tgz
-coverage/
+*.log
 .DS_Store
-.design/generated/
-.design/.install.json
-.design/project.json
+.design/cache/*
+!.design/cache/.gitkeep

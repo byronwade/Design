@@ -1,10 +1,15 @@
 import path from 'node:path';
-import { readJson, templateRoot } from './utils.mjs';
+import { contractRoot, packageRoot, readJson } from './utils.mjs';
 
-export async function loadManifest(designDir = templateRoot) {
+export async function loadManifest(designDir = contractRoot) {
   const manifest = await readJson(path.join(designDir, 'manifest.json'));
   if (manifest.schemaVersion !== 1) throw new Error(`Unsupported manifest schemaVersion: ${manifest.schemaVersion}`);
-  return manifest;
+  const packageMetadata = await readJson(path.join(packageRoot, 'package.json'));
+  return {
+    ...manifest,
+    declaredPackageVersion: manifest.packageVersion,
+    packageVersion: packageMetadata.version,
+  };
 }
 
 function resolveLayer(manifest, id, visiting, ordered, seen) {

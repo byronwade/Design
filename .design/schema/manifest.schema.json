@@ -1,9 +1,21 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/byronwade/Design/.design/schema/manifest.schema.json",
-  "title": "Design Contract Manifest",
+  "title": "Design Engine Manifest",
   "type": "object",
-  "required": ["schemaVersion", "packageVersion", "googleDesignMd", "authority", "requiredInEveryProfile", "layers", "bundles", "profiles", "projectDocumentDefaults", "projectOwnedFiles", "qualityRules"],
+  "required": [
+    "schemaVersion",
+    "packageVersion",
+    "googleDesignMd",
+    "authority",
+    "requiredInEveryProfile",
+    "layers",
+    "bundles",
+    "profiles",
+    "qualityRules",
+    "sourceDocuments",
+    "sourceArchives"
+  ],
   "properties": {
     "$schema": {"type": "string"},
     "schemaVersion": {"const": 1},
@@ -29,14 +41,18 @@
         "type": "object",
         "required": ["file", "role", "extends"],
         "properties": {
-          "file": {"type": "string"},
-          "role": {"type": "string"},
+          "file": {"type": "string", "minLength": 1},
+          "role": {"type": "string", "minLength": 1},
           "extends": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
         },
         "additionalProperties": false
       }
     },
-    "bundles": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}},
+    "bundles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true}
+    },
     "profiles": {
       "type": "object",
       "minProperties": 1,
@@ -44,25 +60,24 @@
         "type": "object",
         "required": ["description", "bundles", "roots"],
         "properties": {
-          "description": {"type": "string"},
-          "bundles": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-          "roots": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "description": {"type": "string", "minLength": 1},
+          "bundles": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+          "roots": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
           "composite": {"type": "boolean"}
         },
         "additionalProperties": false
       }
     },
-    "projectDocumentDefaults": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "projectOwnedFiles": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "qualityRules": {"type": "string"},
+    "qualityRules": {"type": "string", "minLength": 1},
     "sourceDocuments": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "required": ["file", "authority", "sha256"],
         "properties": {
-          "file": {"type": "string"},
-          "authority": {"type": "string"},
+          "file": {"type": "string", "minLength": 1},
+          "authority": {"type": "string", "minLength": 1},
           "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
         },
         "additionalProperties": false
@@ -70,19 +85,19 @@
     },
     "sourceArchives": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "required": ["id", "index", "parts", "originalSha256"],
         "properties": {
-          "id": {"type": "string"},
-          "index": {"type": "string"},
-          "parts": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "id": {"type": "string", "minLength": 1},
+          "index": {"type": "string", "minLength": 1},
+          "parts": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
           "originalSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
         },
         "additionalProperties": false
       }
-    },
-    "generatedDirectory": {"type": "string"}
+    }
   },
   "additionalProperties": false
 }

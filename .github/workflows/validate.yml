@@ -21,9 +21,18 @@ jobs:
         with:
           node-version: 22
       - run: npm install --ignore-scripts
-      - name: Validate contract and Google DESIGN.md
-        run: npm run validate:strict
-      - name: Run resolver, installer, synchronization, and safety tests
+      - name: Strict contract and Google DESIGN.md validation
+        run: node ./bin/design-contract.mjs validate --package --require-google --json > validation-report.json
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-${{ matrix.os }}
+          path: validation-report.json
+          if-no-files-found: error
+      - name: Compiler, migration, adapter, and safety tests
         run: npm test
-      - name: Pack, install, and execute the published package shape
+      - name: Build package index
+        run: npm run build
+      - name: Pack, install, and execute the public package shape
         run: npm run smoke

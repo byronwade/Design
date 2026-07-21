@@ -1,7 +1,7 @@
 {
   "name": "@byronwade/design-contract",
-  "version": "1.0.0-alpha.2",
-  "description": "Installable, inheritance-aware design contracts for AI agents, extending Google DESIGN.md.",
+  "version": "1.1.0",
+  "description": "A simple design facade and profile-aware compiler for AI-assisted product design.",
   "type": "module",
   "bin": {
     "design-contract": "./bin/design-contract.mjs"
@@ -11,6 +11,8 @@
   },
   "files": [
     ".design",
+    "templates",
+    "schemas",
     "bin",
     "src",
     "scripts",
@@ -22,15 +24,18 @@
     "CLAUDE.md"
   ],
   "scripts": {
+    "build": "node ./scripts/build.mjs",
     "test": "node --test",
-    "validate": "node ./bin/design-contract.mjs validate --source .design --no-google",
-    "validate:strict": "node ./bin/design-contract.mjs validate --source .design --require-google",
-    "design:lint": "designmd lint .design/DESIGN.md",
-    "check": "npm run validate:strict && npm test && npm run smoke",
-    "smoke": "node ./scripts/package-smoke.mjs"
+    "validate": "node ./bin/design-contract.mjs validate --package --no-google",
+    "validate:strict": "node ./bin/design-contract.mjs validate --package --require-google",
+    "design:lint": "designmd lint DESIGN.md",
+    "smoke": "node ./scripts/package-smoke.mjs",
+    "production:smoke": "node ./scripts/production-smoke.mjs",
+    "check": "npm run validate:strict && npm test && npm run build && npm run smoke"
   },
   "dependencies": {
-    "@google/design.md": "0.3.0"
+    "@google/design.md": "0.3.0",
+    "ajv": "^8.17.1"
   },
   "engines": {
     "node": ">=20"

@@ -1,13 +1,15 @@
 ---
 id: governance.exceptions
 kind: governance
-version: 1.1.0
-status: project-owned
+version: 1.2.0
+status: normative
 ---
 
-# Active design exceptions
+# Package-engine exceptions
 
-An exception is intentional, bounded debt. Unrecorded drift is not an exception. Remove expired exceptions or convert durable improvements into accepted decisions and shared system changes.
+An exception is intentional, bounded debt. Unrecorded drift is not an exception. Remove expired exceptions or convert durable improvements into accepted engine decisions.
+
+Installed projects record their own exceptions in `design/DECISIONS.md`; this file is only for exceptions to the shared package engine.
 
 ## Template
 
@@ -16,7 +18,7 @@ An exception is intentional, bounded debt. Unrecorded drift is not an exception.
 - **Status:** proposed | active | expired | resolved
 - **Rule or contract overridden:**
 - **Reason and user need:**
-- **Scope:** routes, components, profiles, breakpoints, theme, or environment
+- **Scope:** engine contracts, profiles, package behavior, or validation
 - **Owner:**
 - **Approved by / date:**
 - **Accessibility, trust, performance, and security impact:**
@@ -24,4 +26,4 @@ An exception is intentional, bounded debt. Unrecorded drift is not an exception.
 - **Expiration or migration date:**
 - **Replacement plan:**
 
-There are no active exceptions in the canonical package.
+There are no active exceptions in the canonical package engine.

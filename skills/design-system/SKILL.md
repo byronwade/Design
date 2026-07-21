@@ -1,31 +1,31 @@
 ---
 name: design-system
-description: Select and apply the installed target-aware .design contract for UI design, implementation, content states, interaction, motion, or design-system governance.
+description: Apply the selected compiled design contract before changing UI, interaction, content states, motion, or design-system behavior.
 ---
 
 # Design System
 
-Use progressive disclosure. Do not load the whole design repository.
+Use progressive disclosure. Do not load the entire engine or sibling platform profiles.
+
+Use `npx --yes github:byronwade/Design` as the command prefix when the package is not installed locally.
 
 ## Workflow
 
-1. Run `npx --yes github:byronwade/Design status` when generated context may be missing or stale.
-2. Locate `.design/project.json`. Select the target explicitly named by the task, whose configured root contains the affected product, or the single default target.
-3. Read only that target’s generated `CONTRACT.md`. Do not load sibling target or platform contracts unless comparison is the task.
-4. Follow `.design/AGENT.md` and complete its design brief and component map before materially changing structure.
-5. Inspect existing production shell, routes, commands, component mappings, variants, stories, tokens, fixtures, tests, terminology, golden references, decisions, and exceptions.
-6. Reuse approved production components. A missing capability is a design-system gap, not permission for a page-local visual primitive.
-7. Verify applicable states, input modes, widths/windows, localization, accessibility, performance, trust, evidence, recovery, and platform conventions.
-8. Run `npx --yes github:byronwade/Design validate` and the product’s rendered, runtime, accessibility, and visual tests.
-9. Return target, resolved layers, shell/layout/page or flow, component mappings, gaps, exceptions, and validation evidence.
+1. Run `npx --yes github:byronwade/Design status`; run `npx --yes github:byronwade/Design sync` when an engine update is required, then run `npx --yes github:byronwade/Design context` when context is missing or stale.
+2. Select the target named by the task, the target whose root contains the product, or the single default target.
+3. Read root `DESIGN.md`, `.design/generated/<target>.md`, and the three project-owned files under `design/`.
+4. Inspect actual production shells, routes, commands, components, variants, stories, fixtures, tests, terminology, and approved references.
+5. Produce the design brief and component map required by the compiled contract before structural changes.
+6. Reuse mapped production components and semantic tokens. A missing capability requires a design-system gap.
+7. Verify realistic states, input modes, widths/windows, localization, accessibility, performance, trust, recovery, and platform behavior.
+8. Run `npx --yes github:byronwade/Design validate` plus product runtime, rendered, accessibility, and visual checks.
+9. Return the target, shell/layout/page or flow, mappings, gaps, decisions, and evidence.
 
 ## Hard boundaries
 
-- Never silently combine sibling platform verticals.
-- Never let a platform overlay weaken global accessibility, safety, legal, privacy, security, or explicit product requirements.
-- Never edit generated contracts directly.
-- Never treat raw source snapshots as ordinary implementation instructions.
-- Never introduce raw design values where semantic tokens or approved component APIs exist.
-- Never claim synchronization, publication, deployment, collaboration, verification, or completion without matching evidence.
+- Never mix sibling profiles silently.
+- Never edit `.design/generated/`.
+- Never introduce raw design values where mapped tokens or APIs exist.
+- Never claim completion without current evidence.
 
-See [Profile selection](references/PROFILE-SELECTION.md) and [Installation and synchronization](references/INSTALLATION.md).
+See [Profile selection](references/PROFILE-SELECTION.md) and [Installation](references/INSTALLATION.md).

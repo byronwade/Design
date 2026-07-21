@@ -1,6 +1,6 @@
 # Source coverage and traceability
 
-This map confirms that durable requirements from the governing sources have an operational home. Source archives preserve provenance; the files below are the contracts agents and humans use in ordinary work.
+This map confirms that durable requirements from the governing sources have an operational home. Source archives preserve provenance; the owners below are the contracts agents and humans use in ordinary work.
 
 | Source concern | Operational owner |
 | --- | --- |
@@ -24,7 +24,9 @@ This map confirms that durable requirements from the governing sources have an o
 | accessibility and responsive release gates | `global/ACCESSIBILITY.md`, verticals, `quality/REVIEW.md`, `quality/RULES.json` |
 | performance, resilience, fresh evidence | `global/PERFORMANCE.md`, `quality/EVIDENCE.md` |
 | design lint rules and review scorecard | `quality/RULES.json`, `quality/REVIEW.md` |
-| product-specific surfaces, components, themes, assets, terminology, golden screens | `project/SURFACES.md`, `project/COMPONENTS.md`, `project/THEMES.md`, `project/ASSETS.md`, `project/TERMINOLOGY.md`, `project/REFERENCES.md` |
-| exception and living-system governance | `governance/DECISIONS.md`, `governance/EXCEPTIONS.md`, `governance/CHANGELOG.md` |
+| project-specific product, surfaces, themes, assets, terminology, trust states | consuming `design/PROJECT.md` |
+| production components, patterns, stories, tests, design mappings, golden screens | consuming `design/COMPONENTS.md` |
+| project decisions, exceptions, gaps, migrations, and baseline approvals | consuming `design/DECISIONS.md` |
+| package-engine governance and change history | `governance/DECISIONS.md`, `governance/CHANGELOG.md` |
 
 When a governing source introduces a durable requirement with no operational owner, add the owner and update this map in the same change.
