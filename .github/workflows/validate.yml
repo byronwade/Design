@@ -21,4 +21,9 @@ jobs:
         with:
           node-version: 22
       - run: npm install --ignore-scripts
-      - run: npm run check
+      - name: Validate contract and Google DESIGN.md
+        run: npm run validate:strict
+      - name: Run resolver, installer, synchronization, and safety tests
+        run: npm test
+      - name: Pack, install, and execute the published package shape
+        run: npm run smoke

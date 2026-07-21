@@ -7,14 +7,22 @@ import { fileURLToPath } from 'node:url';
 
 const exec = promisify(execFile);
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const npmCli = process.env.npm_execpath;
+if (!npmCli) throw new Error('npm_execpath is unavailable. Run this smoke test through npm.');
+
+async function runNpm(args, options) {
+  return exec(process.execPath, [npmCli, ...args], options);
+}
+
 const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'design-contract-package-'));
 let tarball;
 
 try {
-  const packed = await exec(npm, ['pack', '--silent'], { cwd: packageRoot });
-  tarball = path.join(packageRoot, packed.stdout.trim().split(/\r?\n/).at(-1));
-  await exec(npm, ['install', '--ignore-scripts', '--no-save', tarball], { cwd: workspace });
+  const packed = await runNpm(['pack', '--silent'], { cwd: packageRoot });
+  const filename = packed.stdout.trim().split(/\r?\n/).filter(Boolean).at(-1);
+  if (!filename) throw new Error('npm pack did not return a tarball name.');
+  tarball = path.join(packageRoot, filename);
+  await runNpm(['install', '--ignore-scripts', '--no-save', tarball], { cwd: workspace });
   const installed = path.join(workspace, 'node_modules', '@byronwade', 'design-contract');
   const cli = path.join(installed, 'bin', 'design-contract.mjs');
   const project = path.join(workspace, 'project');
