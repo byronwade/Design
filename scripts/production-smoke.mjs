@@ -3,8 +3,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
+const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, { encoding: 'utf8', stdio: 'pipe', ...options });
+  if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')} failed\n${result.stdout}\n${result.stderr}`);
   return result.stdout;
 }
@@ -16,7 +19,7 @@ const consumer = path.join(root, 'consumer');
 const project = path.join(root, 'project');
 await fs.mkdir(consumer, { recursive: true });
 await fs.mkdir(project, { recursive: true });
-run('npm', ['install', '--prefix', consumer, '--ignore-scripts', `github:byronwade/Design#${sha}`]);
+run(npm, ['install', '--prefix', consumer, '--ignore-scripts', `github:byronwade/Design#${sha}`]);
 const bin = path.join(consumer, 'node_modules/@byronwade/design-contract/bin/design-contract.mjs');
 run(process.execPath, [bin, 'init', '--target', project, '--profile', 'web-app']);
 run(process.execPath, [bin, 'context', '--target', project]);
