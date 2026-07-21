@@ -1,21 +1,29 @@
 ---
 id: patterns.shells
 kind: patterns
-version: 1.0.0
+version: 1.1.0
 status: normative
 extends: []
 ---
 
 # Application shell patterns
 
-Choose a shell before composing page components. A shell owns global navigation, persistent utilities, major regions, and viewport behavior.
+Choose a shell before composing page components. A shell owns global navigation, window or browser chrome integration, persistent utilities, major regions, viewport behavior, and layout restoration. A layout archetype then defines the task body.
+
+## Selection algorithm
+
+1. Authenticated multi-destination product with recurring operational work → **standard application shell**.
+2. Editors, browsers, canvases, terminals, inspectors, dockable tools, or multiple simultaneous artifacts → **deep workbench shell**.
+3. One artifact temporarily dominates and secondary navigation would distract → enter **focus mode** within the current shell.
+4. Public marketing, authentication, onboarding, embedded tool, or genuinely narrow one-off workflow → **header-first or minimal shell**.
+5. When both a full header and sidebar would repeat the same destinations, choose one global navigation owner.
 
 ## Standard application shell
 
 ```text
 product environment
 ├── global navigation
-├── work surface
+├── inset work surface
 │   ├── optional object/location region
 │   ├── optional view-control region
 │   └── task body
@@ -24,26 +32,33 @@ product environment
 
 The Warm Paper desktop reference uses a 240px global navigation region, 8px work-surface inset, 12px outer radius, 44px location/view bars, and an optional 36px utility strip. Native overlays replace literal geometry when platform chrome or adaptive navigation requires it.
 
-## Centered canvas
+Use the location region for current-object identity and stable object actions. Use the view-control region only for representation, filters, grouping, display, and inspector controls. Omit either region when it has no semantic responsibility.
 
-Use for authentication, onboarding, focused setup, and agent welcome. Keep the action stack narrow and do not stretch it to fill the work surface.
+## Deep workbench shell
 
-## Document plus supporting pane
+```text
+window or browser frame
+├── activity rail or global command owner
+├── contextual navigator
+├── editor or artifact groups
+├── optional inspector
+├── optional bottom panel
+├── status region
+└── optional auxiliary windows
+```
 
-Use a centered 720–800px reading column with an optional 320–384px inspector or a compact utility pane. The supporting pane transforms before the reading column becomes unusable.
+The workbench is one application frame, not a collection of separately rounded tools. Regions dock, resize, collapse, restore, and maintain active ownership. Commands, shortcuts, open objects, layout state, and dirty state survive representation changes.
 
-## Operational canvas
+## Focus mode
 
-Use for dense lists, queues, boards, timelines, canvases, and monitoring. The task body owns the necessary scrolling and keeps identity, headers, and controls stable.
+Focus mode is a reversible state of another shell. Keep artifact identity, active work, critical status, and essential local actions. Hide, collapse, or overlay global navigation, inspector, bottom panel, secondary tabs, and low-priority status. Command access, keyboard shortcuts, edge reveal, explicit region toggles, and saved-layout restoration remain available. Exiting restores prior layout, selection, open tools, and scroll.
 
-## Feed or conversation
+## Header-first or minimal shell
 
-Use when chronological activity is primary. The composer lives where new content enters the sequence and drafts survive transient state changes.
+Use for public marketing, authentication, focused setup, embedded tools, or narrow workflows. A public header may own brand, product categories, resources, pricing, sign-in, and one primary conversion. Authentication and setup normally use minimal brand and help. An embedded tool does not duplicate navigation already owned by its host.
 
-## Settings
+Do not apply this shell to an authenticated multi-destination application when a persistent navigation owner would materially improve orientation.
 
-Use persistent category navigation and a centered 620–680px form column on desktop. Constrained layouts turn category selection into navigation rather than compressing the form.
+## Shell evidence
 
-## Shell selection evidence
-
-State the shell, persistent regions, viewport owner, scroll owners, global command location, object identity location, responsive transformation, and selected platform replacement.
+State the selected shell, global navigation owner, persistent regions, viewport owner, scroll owners, command location, object identity location, responsive transformation, platform replacement, focus-mode behavior, and restoration behavior.

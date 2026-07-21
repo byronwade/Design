@@ -1,30 +1,27 @@
 ---
 id: governance.exceptions
 kind: governance
-version: 1.0.0
+version: 1.1.0
 status: project-owned
 ---
 
-# Design exceptions
+# Active design exceptions
 
-The installer preserves this file. An exception is temporary, narrow, owned, and testable.
+An exception is intentional, bounded debt. Unrecorded drift is not an exception. Remove expired exceptions or convert durable improvements into accepted decisions and shared system changes.
 
-Use this template:
+## Template
 
-```markdown
-## EX-000 — Short title
+### EX-000 — Short title
 
-- Status: proposed | accepted | expired | removed
-- Owner:
-- Created:
-- Expires:
-- Profiles:
-- Paths or components:
-- Rule being departed from:
-- User or technical evidence:
-- Risk:
-- Replacement or removal plan:
-- Verification:
-```
+- **Status:** proposed | active | expired | resolved
+- **Rule or contract overridden:**
+- **Reason and user need:**
+- **Scope:** routes, components, profiles, breakpoints, theme, or environment
+- **Owner:**
+- **Approved by / date:**
+- **Accessibility, trust, performance, and security impact:**
+- **Evidence and monitoring:**
+- **Expiration or migration date:**
+- **Replacement plan:**
 
-An exception cannot waive accessibility, safety, legal, privacy, or platform-enforced requirements.
+There are no active exceptions in the canonical package.

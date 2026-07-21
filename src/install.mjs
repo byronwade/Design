@@ -5,17 +5,17 @@ import { loadManifest } from './manifest.mjs';
 import { resolveInstalledContract } from './resolve.mjs';
 import { validateContract } from './validate.mjs';
 import {
-  exists, hash, INSTALL_FILE, PROJECT_OWNED, readJson, safeId,
+  DEFAULT_PROJECT_OWNED, exists, hash, INSTALL_FILE, readJson, safeId,
   templateFiles, templateRoot, writeJson,
 } from './utils.mjs';
 
 function defaultTargets(profiles) {
   const counts = new Map();
-  return profiles.map((profile) => {
+  return profiles.map((profile, index) => {
     const base = safeId(profile);
     const count = (counts.get(base) ?? 0) + 1;
     counts.set(base, count);
-    return { id: count === 1 ? base : `${base}-${count}`, profile };
+    return { id: count === 1 ? base : `${base}-${count}`, profile, root: '.', default: index === 0 };
   });
 }
 
@@ -41,8 +41,11 @@ export async function installContract({ target, profiles, adapters, force = fals
   const managedFiles = {};
   for (const relative of await templateFiles()) managedFiles[relative] = await copyTemplateFile(relative, designDir);
   const config = {
-    $schema: 'schema/project.schema.json', schemaVersion: 1,
-    targets: defaultTargets(profiles), overrides: [], adapters,
+    $schema: 'schema/project.schema.json',
+    schemaVersion: 1,
+    targets: defaultTargets(profiles),
+    overrides: [],
+    adapters,
   };
   await writeJson(path.join(designDir, 'project.json'), config);
 
@@ -56,15 +59,17 @@ export async function installContract({ target, profiles, adapters, force = fals
 
   const installedAdapters = await applyAdapters(target, adapters, force);
   await writeJson(path.join(designDir, INSTALL_FILE), {
-    schemaVersion: 1, packageVersion: manifest.packageVersion,
-    installedAt: new Date().toISOString(), managedFiles,
+    schemaVersion: 1,
+    packageVersion: manifest.packageVersion,
+    installedAt: new Date().toISOString(),
+    managedFiles,
     rootMirror: mirrorManaged ? { path: 'DESIGN.md', hash: hash(await fs.readFile(mirror)) } : null,
     adapters: installedAdapters,
   });
 
   const resolution = await resolveInstalledContract({ target });
   const validation = await validateContract({ source: designDir, google: false });
-  return { action: 'installed', target, profiles, adapters: installedAdapters, generatedTargets: resolution.targets, validation: validation.summary };
+  return { action: 'installed', target, profiles, adapters: installedAdapters, generatedTargets: resolution.targets, fingerprint: resolution.fingerprint, validation: validation.summary };
 }
 
 export async function syncContract({ target, force = false }) {
@@ -72,6 +77,14 @@ export async function syncContract({ target, force = false }) {
   const installPath = path.join(designDir, INSTALL_FILE);
   if (!await exists(installPath)) throw new Error('No .design/.install.json found. Run init first.');
   const previous = await readJson(installPath);
+  const sourceManifest = await loadManifest();
+  let installedManifest = sourceManifest;
+  try { installedManifest = await loadManifest(designDir); } catch {}
+  const projectOwned = new Set([
+    ...DEFAULT_PROJECT_OWNED,
+    ...(sourceManifest.projectOwnedFiles ?? []),
+    ...(installedManifest.projectOwnedFiles ?? []),
+  ]);
   const nextManaged = {};
   const conflicts = [];
   const updated = [];
@@ -85,7 +98,7 @@ export async function syncContract({ target, force = false }) {
     const destinationExists = await exists(destination);
     const destinationHash = destinationExists ? hash(await fs.readFile(destination)) : null;
 
-    if (PROJECT_OWNED.has(relative) && destinationExists) {
+    if (projectOwned.has(relative) && destinationExists) {
       nextManaged[relative] = previousHash ?? destinationHash;
       continue;
     }
@@ -101,7 +114,7 @@ export async function syncContract({ target, force = false }) {
   }
 
   for (const [relative, previousHash] of Object.entries(previous.managedFiles ?? {})) {
-    if (currentTemplateFiles.has(relative) || PROJECT_OWNED.has(relative)) continue;
+    if (currentTemplateFiles.has(relative) || projectOwned.has(relative)) continue;
     const destination = path.join(designDir, relative);
     if (!await exists(destination)) continue;
     const destinationHash = hash(await fs.readFile(destination));
@@ -125,10 +138,12 @@ export async function syncContract({ target, force = false }) {
 
   const manifest = await loadManifest(designDir);
   await writeJson(installPath, {
-    ...previous, packageVersion: manifest.packageVersion,
-    synchronizedAt: new Date().toISOString(), managedFiles: nextManaged,
+    ...previous,
+    packageVersion: manifest.packageVersion,
+    synchronizedAt: new Date().toISOString(),
+    managedFiles: nextManaged,
   });
   const resolution = await resolveInstalledContract({ target });
   const validation = await validateContract({ source: designDir, google: false });
-  return { action: 'synchronized', target, updated, conflicts, generatedTargets: resolution.targets, validation: validation.summary };
+  return { action: 'synchronized', target, updated, conflicts, generatedTargets: resolution.targets, fingerprint: resolution.fingerprint, validation: validation.summary };
 }

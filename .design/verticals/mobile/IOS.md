@@ -1,42 +1,32 @@
 ---
 id: vertical.mobile.ios
 kind: vertical
-version: 1.0.0
+version: 1.1.0
 status: normative
 extends:
-  - vertical.mobile.base
+  - vertical.mobile.apple
 applies_to:
-  platforms: ["ios", "ipados"]
+  platforms: ["ios"]
 ---
 
-# iOS and iPadOS overlay
+# iPhone overlay
 
-This overlay applies Apple familiarity, agency, direct manipulation, and platform accessibility while preserving Warm Paper identity.
+## Navigation
 
-## Navigation and chrome
+Use a tab bar for a small set of stable top-level destinations, a navigation stack for hierarchy, and large titles for major destinations when content and scrolling support them. Keep the primary task focused in one view. Do not imitate a desktop sidebar or place creation/destructive commands in the tab bar.
 
-- Use a tab bar for a small set of top-level destinations; it contains navigation, not creation or destructive commands.
-- Use navigation bars for hierarchy, title, back, and a small number of contextual actions.
-- Large titles establish major destinations and collapse through standard scrolling behavior.
-- Toolbars group current-view actions and may move to the bottom where reach and platform convention support it.
-- On iPad, use split views, sidebars, inspectors, and adaptive columns rather than stretching an iPhone stack.
+## Reach and constrained space
 
-## Interaction
+Prioritize the current object and principal action. Move supporting content into drill-in routes, sheets, disclosures, or context menus. Bottom placement may improve reach for current-view actions when it follows system convention. Avoid custom controls near system-edge gestures and the home indicator.
 
-Use standard back and edge gestures, selection behavior, context menus, drag and drop, sheets, popovers, and keyboard shortcuts. User-driven motion tracks touch, remains interruptible, and carries velocity. Haptics reinforce meaningful state changes; they do not decorate every tap.
+## Sheets and alerts
 
-## Sheets and dialogs
+Use sheets for temporary focused work and progressive disclosure. Preserve unsaved input, provide explicit completion when needed, and do not rely only on swipe dismissal for consequential tasks. Alerts remain concise and reserved for decisions requiring interruption.
 
-Prefer sheets for temporary focused work and progressive disclosure. Preserve unsaved input, provide explicit completion when needed, and do not rely only on swipe dismissal for consequential tasks. Alerts remain concise and reserved for decisions requiring interruption.
+## Input and interruption
 
-## Typography and materials
-
-Use Dynamic Type text styles, optical sizing, and system materials where they improve hierarchy and adapt to appearance, contrast, transparency, and wallpaper. Product color remains semantic and restrained; custom blur must not reduce readability.
-
-## Accessibility
-
-Support VoiceOver, Full Keyboard Access, Switch Control, Dynamic Type, Increase Contrast, Reduce Motion, Reduce Transparency, and sufficient target size. Custom controls expose standard traits and actions.
+Choose appropriate keyboard and content types, keep focused controls visible, preserve drafts through backgrounding, and handle calls, permission flows, and connectivity changes without resetting the task.
 
 ## Prohibitions
 
-Do not imitate a web sidebar on iPhone, place arbitrary controls beside system window controls, override the back gesture, use a tab item as a button, or freeze text and controls to a single size class.
+Do not use iPad multi-column assumptions on iPhone, override the interactive back gesture, freeze text and controls to one size, imitate web hover, or require precision drag without an alternative.

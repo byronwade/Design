@@ -4,6 +4,7 @@ import {
   installContract,
   listProfiles,
   resolveInstalledContract,
+  statusContract,
   syncContract,
   validateContract,
 } from './core.mjs';
@@ -12,7 +13,6 @@ function parseArgs(argv) {
   const command = argv[0] && !argv[0].startsWith('-') ? argv[0] : 'help';
   const options = {};
   const values = command === 'help' ? argv : argv.slice(1);
-
   for (let index = 0; index < values.length; index += 1) {
     const value = values[index];
     if (!value.startsWith('--')) continue;
@@ -23,7 +23,6 @@ function parseArgs(argv) {
     else if (Array.isArray(options[rawKey])) options[rawKey].push(parsed);
     else options[rawKey] = [options[rawKey], parsed];
   }
-
   return { command, options };
 }
 
@@ -46,12 +45,14 @@ Usage:
   design-contract init [--target DIR] [--profile ID ...] [--adapters LIST] [--force]
   design-contract sync [--target DIR] [--force]
   design-contract resolve [--target DIR]
+  design-contract status [--target DIR] [--json]
   design-contract validate [--target DIR | --source DIR] [--require-google | --no-google] [--json]
 
 Examples:
   design-contract init --profile web-app
   design-contract init --profile ios-native --profile android-native
   design-contract resolve
+  design-contract status
   design-contract validate --require-google
 `;
 
@@ -64,7 +65,6 @@ export async function runCli(argv) {
     print(HELP, false);
     return;
   }
-
   if (command === 'list') {
     const profiles = await listProfiles();
     if (json) print(profiles, true);
@@ -74,7 +74,6 @@ export async function runCli(argv) {
     }
     return;
   }
-
   if (command === 'init') {
     const profiles = splitMany(options.profile, ['web-app']);
     const requestedAdapters = splitMany(options.adapters, ['codex', 'claude', 'copilot']);
@@ -82,17 +81,22 @@ export async function runCli(argv) {
     print(await installContract({ target, profiles, adapters, force: Boolean(options.force) }), json);
     return;
   }
-
   if (command === 'sync') {
-    print(await syncContract({ target, force: Boolean(options.force) }), json);
+    const result = await syncContract({ target, force: Boolean(options.force) });
+    print(result, json);
+    if (result.conflicts.length > 0) process.exitCode = 2;
     return;
   }
-
   if (command === 'resolve') {
     print(await resolveInstalledContract({ target }), json);
     return;
   }
-
+  if (command === 'status') {
+    const result = await statusContract({ target });
+    print(result, json);
+    if (!result.healthy) process.exitCode = 2;
+    return;
+  }
   if (command === 'validate') {
     const source = path.resolve(String(options.source ?? path.join(target, '.design')));
     const google = options['no-google'] ? false : true;
@@ -102,6 +106,5 @@ export async function runCli(argv) {
     if (report.summary.errors > 0) process.exitCode = 1;
     return;
   }
-
   throw new Error(`Unknown command: ${command}\n\n${HELP}`);
 }

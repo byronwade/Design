@@ -1,12 +1,16 @@
 # Source provenance
 
-These files preserve the supplied source material. Ordinary product work should use the operational contracts and a resolved target, not load the raw sources.
+These files preserve the evidence used to derive the operational contract. Ordinary design and implementation follows generated target contracts, not the raw source archive.
 
-| File | Authority | Use |
-| --- | --- | --- |
-| `PRIMARY.md` | Primary archive index | Warm Paper visual foundation, application structure, components, interaction, content, and governance |
-| `APPLE-DESIGN.md` | Supplementary archive index globally; principal for Apple overlays | agency, direct manipulation, interruptibility, springs, materials, typography, accessibility, and Apple design principles |
-| `ANIMATION-AUDIT.md` | Specialized workflow | read-only motion reconnaissance, audit, prioritization, and executor-ready plans |
-| `RESEARCH.md` | Supporting research | current Google DESIGN.md format and official platform guidance |
+## Authority
 
-`manifest.json` records hashes for every protected part and aggregate SHA-256 hashes for the two split archives. Validation reconstructs each archive in memory and fails if any byte changes without an intentional manifest update and governance decision.
+1. `PRIMARY.md` and its ordered parts preserve the current Warm Paper Workbench visual/application source.
+2. `DESIGN-PRINCIPLES.md` preserves the Calm Capability judgment, trust, review, and agent-design source that was canonical in the repository before consolidation.
+3. `APPLE-DESIGN.md` and its ordered parts preserve compatible global interaction principles and principal Apple-specific guidance.
+4. `ANIMATION-AUDIT.md` preserves the specialized read-only animation-audit workflow.
+5. `RESEARCH.md` records supporting official specifications and their adopted implications.
+6. `COVERAGE.md` maps source concerns to the normative operational files that own them.
+
+The primary and Apple source archives are split into ordered plaintext parts to remain inspectable and installable. The manifest records part hashes and aggregate hashes so validation can reconstruct and verify the original byte streams.
+
+A raw source may explain a decision but does not silently override the authority order in `../INDEX.md`. Durable changes must be operationalized in the relevant global, component, pattern, vertical, project, quality, or governance contract.

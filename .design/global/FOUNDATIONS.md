@@ -1,7 +1,7 @@
 ---
 id: global.foundations
 kind: global
-version: 1.0.0
+version: 1.1.0
 status: normative
 extends: []
 ---
@@ -22,6 +22,10 @@ extends: []
 
 Native platforms may map these roles to dynamic system colors for appearance modes, contrast settings, and materials. The role and contrast remain normative.
 
+## Appearance modes and themes
+
+Warm Paper is the canonical light expression. Dark, high-contrast, reduced-transparency, branded, or compatibility themes are complete semantic mappings—not filters or automatic inversions. Every theme defines canvas, surfaces, ink, boundaries, focus, interactive, selected, disabled, and status roles and is verified with representative screens. Product identity must survive without overriding platform accessibility settings.
+
 ## Typography
 
 Preserve role and reading quality across type systems:
@@ -32,15 +36,22 @@ Preserve role and reading quality across type systems:
 - narrative body: 15–16px equivalent with 1.45–1.55 leading
 - metadata: 12–13px equivalent
 
-Use system text styles where native scaling requires them. Do not freeze native text to web pixel values. Long-form content stays within a readable measure.
+Use system text styles where native scaling requires them. Do not freeze native text to web pixel values. Long-form content stays within a readable measure. Use tabular numerals for aligned dates, counts, progress, and metrics.
 
-## Spacing
+## Spacing and control tiers
 
 The fine grid is 4px; the dominant rhythm is 8px. Prefer 4, 8, 12, 16, 24, 32, 48, and 64. Platform-specific safe areas, density metrics, touch targets, title bars, and system bars override literal spacing where required.
 
+- 24px: chips, compact status, micro actions
+- 28px: dense desktop navigation and toolbar controls
+- 32px: routine desktop actions and inputs
+- 36px: emphasis controls and standard comfortable inputs
+- 40–44px: prominent search or operational rows
+- 44px or platform minimum: effective touch target
+
 Spacing describes relationships:
 
-- 4–8: tightly coupled label/icon/state
+- 4–8: tightly coupled label, icon, or state
 - 12–16: component interior and related controls
 - 24–32: sections and local modules
 - 48–64: major narrative or marketing transitions
@@ -60,4 +71,4 @@ Do not stack elevation through nested containers. Native materials replace custo
 
 ## Iconography and assets
 
-Use one coherent icon family per product surface and the platform’s standard symbols when they carry established meaning. Icons supplement labels; unfamiliar or destructive actions require text. Asset treatment preserves natural aspect ratio, sharpness, contrast, and truthful content.
+Use one coherent icon family per product surface and the platform’s standard symbols when they carry established meaning. Icons supplement labels; unfamiliar or destructive actions require text. Asset treatment preserves natural aspect ratio, sharpness, contrast, truthful content, loading stability, and accessible alternatives.

@@ -1,3 +1,8 @@
 node_modules/
 *.log
+*.tgz
+coverage/
 .DS_Store
+.design/generated/
+.design/.install.json
+.design/project.json

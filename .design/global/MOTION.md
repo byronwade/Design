@@ -1,7 +1,7 @@
 ---
 id: global.motion
 kind: global
-version: 1.0.0
+version: 1.1.0
 status: normative
 extends: []
 ---
@@ -10,30 +10,37 @@ extends: []
 
 Motion explains response, continuity, spatial relationship, causality, or rare meaningful acknowledgement. It is not a decorative tax on frequent work.
 
-## Principles
-
-1. Feedback begins immediately.
-2. Direct manipulation tracks input continuously.
-3. User-driven transitions remain interruptible.
-4. Velocity carries across the seam between gesture and animation when appropriate.
-5. Entry and exit preserve spatial origin and use symmetric paths unless a changed relationship requires otherwise.
-6. High-frequency keyboard actions favor immediate state change over flourish.
-7. Animate compositor-friendly properties and keep layout work bounded.
-8. One motion language is shared through semantic duration, easing, and spring roles.
-
 ## Motion roles
 
-- **instant:** state acknowledgment and high-frequency commands
-- **fast:** hover, press, compact disclosure, selection
-- **standard:** menus, popovers, route-local transitions
-- **spatial:** sheets, panes, navigation hierarchy, direct manipulation completion
-- **celebratory:** rare, optional, and never blocks task completion
+| Role | Default | Use |
+| --- | --- | --- |
+| `instant` | 0–80ms | direct state acknowledgement and high-frequency keyboard commands |
+| `fast` | 100–160ms | hover, press, selection, compact disclosure |
+| `standard` | 120–180ms | menus, popovers, tooltips, and route-local transitions |
+| `spatial` | 150–240ms or an interruptible spring | sheets, panes, navigation hierarchy, direct-manipulation completion |
+| `celebratory` | exceptional and optional | rare acknowledgement that never blocks work |
 
-Native platforms should use their standard motion systems and springs when those preserve familiarity and accessibility. Web motion should not imitate physical behavior it cannot make interruptible.
+Durations are ranges, not a reason to create one-off values. Products bind these roles to executable tokens or native system motion. Native platforms should use their standard motion systems when those preserve familiarity and accessibility.
+
+## Direct manipulation
+
+Dragged or scrubbed content tracks input continuously, preserves the original grab offset, and can be redirected at any moment. Gesture completion starts from the presented value and inherits release velocity when physical continuity matters. Do not lock input while a user-driven transition finishes.
+
+## Easing and springs
+
+Use decelerating curves for entry and accelerating curves for exit only when the relationship remains clear. Mirror reversible paths. Use critically damped or near-critically damped springs for directly manipulated UI; reserve visible bounce for momentum-driven physical interactions. A spring is selected for interruptibility and velocity continuity, not novelty.
+
+## Frequency
+
+High-frequency actions favor immediate change. Menus, command palettes, list selection, keyboard navigation, drag targets, and routine state changes must not become slower through ornamental sequencing. Marketing may use more expressive motion only when reading and conversion remain immediate.
+
+## Performance
+
+Animate compositor-friendly properties where possible, bound layout work, avoid `transition: all`, and test with realistic content and low-powered devices. Motion must not create layout shift, delay input, hide incomplete work, or consume sustained resources after it is no longer visible.
 
 ## Reduced motion
 
-When reduced motion is requested, preserve state and hierarchy with direct change or short cross-fade. Remove parallax, large translation, zoom, spring overshoot, and decorative sequencing. Never disable essential feedback.
+When reduced motion is requested, preserve feedback and hierarchy with direct change or a short cross-fade. Remove parallax, large translation, zoom, spring overshoot, auto-play spatial movement, and decorative sequencing. Reduced transparency and high-contrast settings may also require replacing materials or blur.
 
 ## Audit workflow
 

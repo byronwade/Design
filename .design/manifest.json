@@ -1,7 +1,7 @@
 {
   "$schema": "schema/manifest.schema.json",
   "schemaVersion": 1,
-  "packageVersion": "1.0.0-alpha.1",
+  "packageVersion": "1.0.0-alpha.2",
   "googleDesignMd": {
     "status": "alpha",
     "cliPackage": "@google/design.md",
@@ -10,9 +10,9 @@
     "schemaExtensionPolicy": "No custom top-level YAML keys. Extensions live in this manifest and contract files."
   },
   "authority": [
-    "accessibility-safety-legal-platform-enforcement",
-    "explicit-person-task-domain-project-requirements",
-    "project-decisions-and-active-exceptions",
+    "accessibility-safety-legal-privacy-security-platform-enforcement",
+    "explicit-person-task-domain-risk-project-requirements",
+    "project-context-decisions-and-active-exceptions",
     "global-contract",
     "resolved-family-platform-surface-overlays",
     "compliant-production-components-and-mappings",
@@ -23,10 +23,15 @@
     "global.principles",
     "global.foundations",
     "global.layout",
+    "global.information-architecture",
     "global.interaction",
+    "global.trust",
     "global.accessibility",
     "global.content",
-    "global.motion"
+    "global.performance",
+    "global.motion",
+    "quality.review",
+    "quality.evidence"
   ],
   "layers": {
     "global.principles": {
@@ -36,17 +41,27 @@
     },
     "global.foundations": {
       "file": "global/FOUNDATIONS.md",
-      "role": "visual-role application",
+      "role": "visual-role and theme application",
       "extends": []
     },
     "global.layout": {
       "file": "global/LAYOUT.md",
-      "role": "region, density, and scroll rules",
+      "role": "region, density, responsive, and scroll rules",
+      "extends": []
+    },
+    "global.information-architecture": {
+      "file": "global/INFORMATION-ARCHITECTURE.md",
+      "role": "object model, location, discovery, and saved state",
       "extends": []
     },
     "global.interaction": {
       "file": "global/INTERACTION.md",
       "role": "cross-input interaction rules",
+      "extends": []
+    },
+    "global.trust": {
+      "file": "global/TRUST.md",
+      "role": "consequence, evidence, privacy, authority, and automation",
       "extends": []
     },
     "global.accessibility": {
@@ -56,79 +71,167 @@
     },
     "global.content": {
       "file": "global/CONTENT.md",
-      "role": "content and terminology rules",
+      "role": "content, terminology, and localization rules",
+      "extends": []
+    },
+    "global.performance": {
+      "file": "global/PERFORMANCE.md",
+      "role": "performance, large-data, stability, and resilience rules",
       "extends": []
     },
     "global.motion": {
       "file": "global/MOTION.md",
-      "role": "motion and reduced-motion rules",
+      "role": "motion roles, physical behavior, and reduced motion",
       "extends": []
     },
     "components.registry": {
       "file": "components/INDEX.md",
-      "role": "component selection algorithm",
+      "role": "component selection algorithm and registry routing",
       "extends": []
     },
     "components.actions": {
       "file": "components/ACTIONS.md",
-      "role": "action hierarchy and variants",
+      "role": "action hierarchy, semantics, variants, and sizing",
       "extends": [
         "components.registry"
       ]
     },
     "components.forms": {
       "file": "components/FORMS.md",
-      "role": "form and composer behavior",
+      "role": "form, field, choice, and composer behavior",
       "extends": [
         "components.registry"
       ]
     },
     "components.navigation": {
       "file": "components/NAVIGATION.md",
-      "role": "navigation intent and hierarchy",
+      "role": "navigation intent, ownership, and hierarchy",
+      "extends": [
+        "components.registry"
+      ]
+    },
+    "components.commands-search": {
+      "file": "components/COMMANDS-SEARCH.md",
+      "role": "command graph, search, filters, saved views, and bulk work",
       "extends": [
         "components.registry"
       ]
     },
     "components.data-display": {
       "file": "components/DATA-DISPLAY.md",
-      "role": "operational data structures",
+      "role": "operational lists, tables, boards, timelines, and inspectors",
+      "extends": [
+        "components.registry"
+      ]
+    },
+    "components.visualization": {
+      "file": "components/VISUALIZATION.md",
+      "role": "metrics, charts, integrity, interaction, and alternatives",
       "extends": [
         "components.registry"
       ]
     },
     "components.feedback-overlays": {
       "file": "components/FEEDBACK-OVERLAYS.md",
-      "role": "feedback and temporary layers",
+      "role": "status, progress, alerts, dialogs, sheets, and previews",
+      "extends": [
+        "components.registry"
+      ]
+    },
+    "components.collaboration": {
+      "file": "components/COLLABORATION.md",
+      "role": "comments, mentions, presence, concurrency, and activity",
+      "extends": [
+        "components.registry"
+      ]
+    },
+    "components.agentic": {
+      "file": "components/AGENTIC.md",
+      "role": "AI intent, plans, scope, status, evidence, review, and takeover",
+      "extends": [
+        "components.registry"
+      ]
+    },
+    "components.workbench": {
+      "file": "components/WORKBENCH.md",
+      "role": "editor groups, panels, inspectors, docking, and focus mode",
       "extends": [
         "components.registry"
       ]
     },
     "patterns.shells": {
       "file": "patterns/SHELLS.md",
-      "role": "application shell grammar",
+      "role": "persistent application shell grammar",
       "extends": []
     },
-    "patterns.pages-states": {
-      "file": "patterns/PAGES-STATES.md",
-      "role": "page and state grammar",
+    "patterns.layouts": {
+      "file": "patterns/LAYOUTS.md",
+      "role": "task-body layout archetypes",
       "extends": []
+    },
+    "patterns.pages": {
+      "file": "patterns/PAGES.md",
+      "role": "application, detail, form, dashboard, activity, marketing, and onboarding pages",
+      "extends": []
+    },
+    "patterns.states": {
+      "file": "patterns/STATES.md",
+      "role": "data, access, mutation, interaction, content, AI, and collaboration states",
+      "extends": []
+    },
+    "patterns.flows": {
+      "file": "patterns/FLOWS.md",
+      "role": "progressive disclosure and consequential cross-screen flows",
+      "extends": []
+    },
+    "quality.index": {
+      "file": "quality/INDEX.md",
+      "role": "quality-system routing",
+      "extends": []
+    },
+    "quality.review": {
+      "file": "quality/REVIEW.md",
+      "role": "severity, scorecard, and definition of done",
+      "extends": [
+        "quality.index"
+      ]
+    },
+    "quality.evidence": {
+      "file": "quality/EVIDENCE.md",
+      "role": "claim-to-evidence requirements and freshness",
+      "extends": [
+        "quality.index"
+      ]
     },
     "vertical.mobile.base": {
       "file": "verticals/mobile/BASE.md",
       "role": "mobile family behavior",
       "extends": []
     },
-    "vertical.mobile.ios": {
-      "file": "verticals/mobile/IOS.md",
-      "role": "iOS and iPadOS conventions",
+    "vertical.mobile.apple": {
+      "file": "verticals/mobile/APPLE.md",
+      "role": "shared Apple mobile/tablet behavior",
       "extends": [
         "vertical.mobile.base"
       ]
     },
+    "vertical.mobile.ios": {
+      "file": "verticals/mobile/IOS.md",
+      "role": "iPhone conventions",
+      "extends": [
+        "vertical.mobile.apple"
+      ]
+    },
+    "vertical.mobile.ipados": {
+      "file": "verticals/mobile/IPADOS.md",
+      "role": "iPadOS adaptive and multi-input conventions",
+      "extends": [
+        "vertical.mobile.apple"
+      ]
+    },
     "vertical.mobile.android": {
       "file": "verticals/mobile/ANDROID.md",
-      "role": "Android conventions",
+      "role": "Android adaptive conventions",
       "extends": [
         "vertical.mobile.base"
       ]
@@ -191,6 +294,13 @@
       "extends": [
         "vertical.web.base"
       ]
+    },
+    "vertical.hybrid.desktop-webview": {
+      "file": "verticals/hybrid/DESKTOP-WEBVIEW.md",
+      "role": "Electron, Tauri, and desktop-webview behavior",
+      "extends": [
+        "vertical.web.app"
+      ]
     }
   },
   "bundles": {
@@ -198,37 +308,65 @@
       "global.principles",
       "global.foundations",
       "global.layout",
+      "global.information-architecture",
       "global.interaction",
+      "global.trust",
       "global.accessibility",
       "global.content",
+      "global.performance",
       "global.motion"
     ],
     "product-ui": [
       "components.actions",
       "components.forms",
       "components.navigation",
+      "components.commands-search",
       "components.data-display",
+      "components.visualization",
       "components.feedback-overlays",
+      "components.collaboration",
+      "components.agentic",
+      "components.workbench",
       "patterns.shells",
-      "patterns.pages-states"
+      "patterns.layouts",
+      "patterns.pages",
+      "patterns.states",
+      "patterns.flows"
+    ],
+    "quality": [
+      "quality.review",
+      "quality.evidence"
     ]
   },
   "profiles": {
     "ios-native": {
-      "description": "Native iPhone and iPad product.",
+      "description": "Native iPhone product.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.mobile.ios"
       ]
     },
-    "android-native": {
-      "description": "Native Android product across adaptive window sizes.",
+    "ipados-native": {
+      "description": "Native iPadOS product across resizable windows and multiple input modes.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
+      ],
+      "roots": [
+        "vertical.mobile.ipados"
+      ]
+    },
+    "android-native": {
+      "description": "Native Android product across adaptive window sizes and postures.",
+      "bundles": [
+        "core",
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.mobile.android"
@@ -238,7 +376,8 @@
       "description": "Native macOS desktop product.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.desktop.macos"
@@ -248,7 +387,8 @@
       "description": "Native Windows desktop product.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.desktop.windows"
@@ -258,7 +398,8 @@
       "description": "Linux desktop product targeting GNOME/libadwaita.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.desktop.linux.gnome"
@@ -268,7 +409,8 @@
       "description": "Linux desktop product targeting KDE Plasma/Qt/Kirigami.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.desktop.linux.kde"
@@ -278,71 +420,101 @@
       "description": "Browser-based operational application.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.web.app"
       ]
     },
     "web-marketing": {
-      "description": "Browser-based marketing, acquisition, or editorial surface.",
+      "description": "Browser-based marketing, acquisition, documentation, or editorial surface.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
         "vertical.web.marketing"
       ]
     },
     "electron-macos": {
-      "description": "Web application rendered in a macOS native window.",
+      "description": "Electron, Tauri, or comparable webview application in a macOS native window.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
-        "vertical.web.app",
+        "vertical.hybrid.desktop-webview",
         "vertical.desktop.macos"
       ],
       "composite": true
     },
     "electron-windows": {
-      "description": "Web application rendered in a Windows native window.",
+      "description": "Electron, Tauri, or comparable webview application in a Windows native window.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
-        "vertical.web.app",
+        "vertical.hybrid.desktop-webview",
         "vertical.desktop.windows"
       ],
       "composite": true
     },
     "electron-linux-gnome": {
-      "description": "Web application rendered in a GNOME-targeted Linux window.",
+      "description": "Electron, Tauri, or comparable webview application in a GNOME-targeted Linux window.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
-        "vertical.web.app",
+        "vertical.hybrid.desktop-webview",
         "vertical.desktop.linux.gnome"
       ],
       "composite": true
     },
     "electron-linux-kde": {
-      "description": "Web application rendered in a KDE Plasma-targeted Linux window.",
+      "description": "Electron, Tauri, or comparable webview application in a KDE Plasma-targeted Linux window.",
       "bundles": [
         "core",
-        "product-ui"
+        "product-ui",
+        "quality"
       ],
       "roots": [
-        "vertical.web.app",
+        "vertical.hybrid.desktop-webview",
         "vertical.desktop.linux.kde"
       ],
       "composite": true
     }
   },
+  "projectDocumentDefaults": [
+    "project/CONTEXT.md",
+    "project/TERMINOLOGY.md",
+    "project/SURFACES.md",
+    "project/COMPONENTS.md",
+    "project/THEMES.md",
+    "project/ASSETS.md",
+    "project/REFERENCES.md",
+    "governance/DECISIONS.md",
+    "governance/EXCEPTIONS.md"
+  ],
+  "projectOwnedFiles": [
+    "project/CONTEXT.md",
+    "project/TERMINOLOGY.md",
+    "project/SURFACES.md",
+    "project/COMPONENTS.md",
+    "project/THEMES.md",
+    "project/ASSETS.md",
+    "project/REFERENCES.md",
+    "governance/DECISIONS.md",
+    "governance/EXCEPTIONS.md",
+    "project.json"
+  ],
+  "qualityRules": "quality/RULES.json",
   "sourceDocuments": [
     {
       "file": "sources/primary/01.md",
@@ -384,11 +556,6 @@
       "authority": "specialized-workflow",
       "sha256": "68f17bbc4671593d2f43dba26a679243e2153ba5f26965fb7d59df52842534ff"
     }
-  ],
-  "projectOwnedFiles": [
-    "governance/DECISIONS.md",
-    "governance/EXCEPTIONS.md",
-    "project.json"
   ],
   "generatedDirectory": "generated",
   "sourceArchives": [
