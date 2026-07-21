@@ -1,5 +1,6 @@
 export { installContract, syncContract } from './install.mjs';
+export { explainContract } from './explain.mjs';
 export { expandProfile, listProfiles } from './manifest.mjs';
-export { buildResolutionPlan, getResolutionStatus, resolveInstalledContract } from './resolve.mjs';
-export { statusContract } from './status.mjs';
-export { validateContract } from './validate.mjs';
+export { resolveInstalledContract, getResolutionStatus } from './resolve.mjs';
+export { doctorContract, statusContract } from './status.mjs';
+export { validateContract, validatePackage, validateProject } from './validate.mjs';
