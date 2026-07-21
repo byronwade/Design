@@ -1,1 +1,1 @@
-Follow `AGENTS.md`, `CONTRIBUTING.md`, and `.design/INDEX.md`. This repository owns an installable design contract; update contracts, inheritance, validation, tests, source coverage, decisions, and changelog together. Do not edit generated output or create a competing source of truth.
+Follow `AGENTS.md`, `README.md`, and the owning design contract. This repository builds the design engine; do not replace the project façade with copied internal contracts.
