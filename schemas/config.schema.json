@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schemaVersion", "targets", "adapters"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schemaVersion": {"const": 1},
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "profile", "root"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+          "profile": {"type": "string"},
+          "root": {"type": "string"},
+          "default": {"type": "boolean"},
+          "description": {"type": "string"},
+          "overrides": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "overrides": {"type": "array", "items": {"type": "string"}},
+    "adapters": {"type": "array", "uniqueItems": true, "items": {"enum": ["codex", "claude", "copilot"]}}
+  },
+  "additionalProperties": false
+}
