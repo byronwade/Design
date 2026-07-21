@@ -5,8 +5,11 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { packageRoot } from '../src/utils.mjs';
 
+const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, { encoding: 'utf8', stdio: 'pipe', ...options });
+  if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')} failed\n${result.stdout}\n${result.stderr}`);
   return result.stdout;
 }
@@ -18,9 +21,9 @@ const project = path.join(root, 'project');
 await fs.mkdir(packDir, { recursive: true });
 await fs.mkdir(consumer, { recursive: true });
 await fs.mkdir(project, { recursive: true });
-const packed = JSON.parse(run('npm', ['pack', '--json', '--pack-destination', packDir], { cwd: packageRoot }));
+const packed = JSON.parse(run(npm, ['pack', '--json', '--pack-destination', packDir], { cwd: packageRoot }));
 const tarball = path.join(packDir, packed[0].filename);
-run('npm', ['install', '--prefix', consumer, '--ignore-scripts', tarball]);
+run(npm, ['install', '--prefix', consumer, '--ignore-scripts', tarball]);
 const bin = path.join(consumer, 'node_modules/@byronwade/design-contract/bin/design-contract.mjs');
 for (const args of [
   ['init', '--target', project, '--profile', 'web-app'],
