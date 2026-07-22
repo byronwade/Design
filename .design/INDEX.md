@@ -31,7 +31,7 @@ Do not read sibling platform contracts unless cross-platform comparison is expli
 | Engine schemas | `schema/` |
 | Source provenance and external research | `sources/` |
 
-Installed product context is not stored here. It lives in root `DESIGN.md`, `design/PROJECT.md`, `design/COMPONENTS.md`, and `design/DECISIONS.md` in the consuming repository.
+Installed product context is not stored here. It lives in root `DESIGN.md`, `design/PROJECT.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json` in the consuming repository.
 
 ## Authority
 
@@ -69,7 +69,7 @@ person, situation, and task
 - Engine inheritance and profiles: `.design/manifest.json`
 - Engine workflow: `.design/AGENT.md`
 - Project visual identity: consuming root `DESIGN.md`
-- Project context and implementation truth: consuming `design/`
+- Project context and implementation truth: consuming `design/PROJECT.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`
 - Target selection: consuming `.design/config.json`
 - Installed engine version: consuming `.design/lock.json`
 - Compiled target context: consuming `.design/generated/`

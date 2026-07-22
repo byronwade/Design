@@ -1,0 +1,23 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { skillCategories, skills } from '../../data/skills';
+---
+<SiteLayout title="Skills — Design / index" description="Browse the open design-contract skills for authoring, review, motion, and quality work." active="skills">
+  <section class="skills-hero page-frame"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Open skills for design work</p><h1>Give every design task<br /><em>a better first move.</em></h1><p>Small, composable workflows for people and agents. Each skill starts from the same contract, names its evidence, and keeps the implementation boundary visible.</p></div><div class="skills-hero-stat"><strong>{skills.length}</strong><span>local skills</span><small>source-linked / inspectable</small></div></section>
+  <section class="skills-shell page-frame"><aside class="skills-sidebar" aria-label="Skill filters"><div class="sidebar-heading"><span class="eyebrow">SKILLS</span><span class="sidebar-total">{skills.length} skills</span></div><nav class="sidebar-nav"><a class="sidebar-link is-selected" href="/skills/" data-category="All">All skills <span>{skills.length}</span></a>{skillCategories.map((category) => <a class="sidebar-link" href={`/skills/?category=${encodeURIComponent(category)}`} data-category={category}>{category} <span>{skills.filter((skill) => skill.category === category).length}</span></a>)}</nav><div class="sidebar-note"><span class="note-dot"></span><p>Skills are local Markdown instructions. Install or inspect them before you change the system.</p></div></aside><section class="skills-content"><div class="skills-toolbar"><label class="search-field"><Icon name="search" size={17} /><input id="skills-search" type="search" placeholder="Search skills, stages, or tags" autocomplete="off" /><kbd>/</kbd></label><span id="skills-result-count" class="result-count">{skills.length} skills</span></div><div class="skill-list" id="skill-list">{skills.map((skill, index) => <a class="skill-row" href={`/skills/${skill.slug}/`} data-category={skill.category} data-search={`${skill.name} ${skill.description} ${skill.category} ${skill.tags.join(' ')} ${skill.stages.join(' ')}`}><span class="skill-index">0{index + 1}</span><div class="skill-row-main"><div class="skill-row-heading"><h2>{skill.name}</h2><span class={`status status-${skill.status.toLowerCase()}`}>{skill.status}</span></div><p>{skill.description}</p><div class="skill-tags">{skill.tags.map((tag) => <span>{tag}</span>)}</div></div><div class="skill-row-side"><span>{skill.category}</span><Icon name="arrow" size={16} /></div></a>)}</div><p id="skills-empty" class="empty-results" hidden>No skills match that search. Try a broader term.</p></section></section>
+  <section class="skills-cta page-frame"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Build your own</p><h2>A skill is a contract<br />for a repeatable judgment.</h2><p>Keep instructions small, source-linked, evidence-aware, and composable. Add new skills under the repository’s `skills/` directory so the registry can grow with the engine.</p></div><a class="button button-secondary" href="/docs/#contribute">Read contribution docs <Icon name="arrow" size={15} /></a></section>
+  <script>
+    const search = document.querySelector('#skills-search');
+    const rows = [...document.querySelectorAll('.skill-row')];
+    const resultCount = document.querySelector('#skills-result-count');
+    const empty = document.querySelector('#skills-empty');
+    const links = [...document.querySelectorAll('.skills-sidebar [data-category]')];
+    const params = new URLSearchParams(window.location.search);
+    let activeCategory = params.get('category') || 'All';
+    const update = () => { const query = search.value.trim().toLowerCase(); let visible = 0; rows.forEach((row) => { const show = (!query || row.dataset.search.toLowerCase().includes(query)) && (activeCategory === 'All' || row.dataset.category === activeCategory); row.hidden = !show; if (show) visible += 1; }); resultCount.textContent = `${visible} ${visible === 1 ? 'skill' : 'skills'}`; empty.hidden = visible !== 0; links.forEach((link) => link.classList.toggle('is-selected', link.dataset.category === activeCategory)); };
+    links.forEach((link) => link.addEventListener('click', (event) => { event.preventDefault(); activeCategory = link.dataset.category; history.replaceState({}, '', activeCategory === 'All' ? '/skills/' : `/skills/?category=${encodeURIComponent(activeCategory)}`); update(); }));
+    search.addEventListener('input', update);
+    update();
+  </script>
+</SiteLayout>

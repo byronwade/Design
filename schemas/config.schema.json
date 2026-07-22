@@ -16,6 +16,7 @@
           "profile": {"type": "string"},
           "root": {"type": "string"},
           "default": {"type": "boolean"},
+          "appType": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
           "description": {"type": "string"},
           "overrides": {"type": "array", "items": {"type": "string"}}
         },

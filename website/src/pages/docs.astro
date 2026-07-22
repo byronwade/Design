@@ -1,0 +1,48 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+import { catalog } from '../data/catalog';
+import { reference } from '../data/reference';
+import { showcase } from '../data/showcase';
+import { skills } from '../data/skills';
+import { toolingProfiles } from '../data/profiles';
+
+const steps = [
+  ['01', 'Choose a profile', 'Select the target surface before writing a new rule.'],
+  ['02', 'Read the façade', 'Keep project identity in DESIGN.md and implementation truth in design/.'],
+  ['03', 'Choose an app type', 'Select a recipe so the AI composes the right block families.'],
+  ['04', 'Compile context', 'Resolve only the layers needed for the task at hand.'],
+  ['05', 'Verify the result', 'Map intent to production components and inspect the rendered surface.'],
+];
+const publicRoutes = [
+  { label: 'Components', href: '/catalog/', count: catalog.length, description: 'Intent-led primitives and rules' },
+  { label: 'Blocks', href: '/blocks/', count: 4, description: 'Reusable product compositions' },
+  { label: 'Reference', href: '/reference/', count: reference.length, description: 'Canonical engine files' },
+  { label: 'Skills', href: '/skills/', count: skills.length, description: 'Reusable agent workflows' },
+  { label: 'Showcase', href: '/showcase/', count: showcase.length, description: 'Systems in context' },
+];
+const bundleCount = toolingProfiles.reduce((total, profile) => total + profile.bundles.length, 0);
+---
+
+<SiteLayout title="Documentation — Design Contract" description="How to install, compose, compile, verify, and share the open design contract." active="docs">
+  <div class="docs-page-shell page-frame">
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="docs-sidebar-section"><span>Get started</span><a class="is-active" href="#start">Introduction</a><a href="#install">Installation</a><a href="#model">Project model</a></div>
+      <div class="docs-sidebar-section"><span>Authoring</span><a href="#workflow">Workflow</a><a href="#commands">Commands</a><a href="/catalog/">Components</a><a href="/blocks/">Blocks</a></div>
+      <div class="docs-sidebar-section"><span>Quality</span><a href="#verify">Verification</a><a href="#surface">Public surface</a><a href="#contribute">Contribute</a></div>
+    </aside>
+    <main class="docs-page-content">
+      <header class="docs-page-header"><p class="eyebrow"><span class="eyebrow-rule"></span> Documentation</p><h1>Install and compose the contract.</h1><p>Design Contract gives people and agents a readable, target-aware system for building consistent interfaces with shadcn/ui components and reusable blocks.</p><div class="docs-header-actions"><a class="button button-primary" href="#install">Get started <Icon name="arrow" size={15} /></a><a class="text-link" href="https://github.com/byronwade/Design#quick-start" target="_blank" rel="noreferrer">Open the README <Icon name="external" size={14} /></a></div></header>
+      <div class="docs-body">
+        <section id="start"><p class="eyebrow"><span class="eyebrow-rule"></span> Introduction</p><h2>A design system with an executable point of view.</h2><p>This repository is both an installable package and its own reference surface. The engine holds shared reasoning; the façade keeps each consuming project focused on identity, target, and implementation truth.</p><div class="docs-stat-grid"><div><strong>{toolingProfiles.length}</strong><span>target profiles</span></div><div><strong>{bundleCount}</strong><span>compiled bundles</span></div><div><strong>{catalog.length}</strong><span>public topics</span></div></div></section>
+        <section id="install" class="docs-install-section"><p class="eyebrow"><span class="eyebrow-rule"></span> Setup</p><h2>Install the façade in a project.</h2><p>Initialization creates the small project-owned surface; it does not copy the entire engine into the product.</p><div class="command-list"><code>$ npx --yes github:byronwade/Design init --profile web-app --app-type saas-workbench</code><code>$ npx --yes github:byronwade/Design context</code></div><div class="docs-callout"><span class="note-dot"></span><p>Start with one profile and one app type. Add another only when the product really ships across that surface.</p></div></section>
+        <section id="model"><p class="eyebrow"><span class="eyebrow-rule"></span> Project model</p><h2>One façade, many targets.</h2><div class="code-line"><code>DESIGN.md</code><span>+</span><code>selected profile</code><span>+</span><code>composition recipe</code><span>=</span><strong>compiled contract</strong></div><p>The project owns identity, mappings, decisions, and composition. The package owns shared reasoning and platform behavior.</p></section>
+        <section id="workflow" class="workflow-section"><p class="eyebrow"><span class="eyebrow-rule"></span> Authoring workflow</p><div class="workflow-list">{steps.map(([number, title, copy]) => <article><span>{number}</span><div><h3>{title}</h3><p>{copy}</p></div></article>)}</div></section>
+        <section id="commands" class="commands-section"><p class="eyebrow"><span class="eyebrow-rule"></span> CLI</p><h2>Useful verbs, predictable output.</h2><div class="command-list"><code>$ design-contract init --profile web-app</code><code>$ design-contract context</code><code>$ design-contract doctor</code><code>$ design-contract validate --mode release</code><code>$ design-contract sync</code></div><div class="hero-actions"><a class="text-link" href="/tools/">Open the Toolbox <Icon name="arrow" size={15} /></a><a class="text-link" href="/reference/">Read engine contracts <Icon name="arrow" size={15} /></a></div></section>
+        <section id="verify" class="docs-verify-section"><p class="eyebrow"><span class="eyebrow-rule"></span> Evidence</p><h2>Proof is part of the product.</h2><div class="docs-proof-grid"><article><span>PACKAGE</span><strong>Validate the contract</strong><p>Run strict validation, tests, build, and smoke checks before sharing a change.</p><code>npm run check</code></article><article><span>BROWSER</span><strong>Inspect the rendered surface</strong><p>Use the Lab and Evaluation routes to check geometry, states, accessibility, and responsive behavior.</p><a href="/evaluate/">Open Evaluation <Icon name="arrow" size={14} /></a></article><article><span>REPOSITORY</span><strong>Keep sources authoritative</strong><p>Update the owning engine file, manifest, schema, docs, and tests together.</p><a href="/reference/governance/manifest/">Read the manifest <Icon name="arrow" size={14} /></a></article></div></section>
+        <section id="surface" class="docs-surface-section"><p class="eyebrow"><span class="eyebrow-rule"></span> Explore</p><h2>Everything has a place to be read.</h2><div class="docs-route-list">{publicRoutes.map((route) => <a href={route.href}><span><strong>{route.label}</strong><small>{route.description}</small></span><span class="docs-route-count">{route.count}<Icon name="arrow" size={14} /></span></a>)}</div></section>
+        <section id="contribute" class="contribute-docs"><p class="eyebrow"><span class="eyebrow-rule"></span> Showcase</p><h2>Share the decisions behind a real surface.</h2><p>The Showcase is local-data-first today. A future backend can accept accounts, submissions, moderation, images, and search without changing the public record shape or the stable route.</p><a class="text-link" href="/showcase/submit/">Open the submission kit <Icon name="arrow" size={15} /></a></section>
+      </div>
+    </main>
+  </div>
+</SiteLayout>

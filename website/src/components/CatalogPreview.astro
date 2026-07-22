@@ -1,0 +1,13 @@
+---
+const { type } = Astro.props;
+---
+<div class={`catalog-preview preview-${type}`} aria-hidden="true">
+  {type === 'palette' && <div class="palette-preview"><span></span><span></span><span></span><span></span><span></span><small>#9B4F32</small></div>}
+  {type === 'type' && <div class="type-preview"><strong>Type that<br />carries weight.</strong><span>body-md · 14px / 1.45</span><i></i></div>}
+  {type === 'spacing' && <div class="spacing-preview"><span class="space-line"></span><span class="space-line"></span><span class="space-line"></span><div><b>4</b><b>8</b><b>16</b><b>32</b></div></div>}
+  {type === 'layout' && <div class="layout-preview"><span class="layout-rail"></span><span class="layout-main"></span><span class="layout-inspector"></span></div>}
+  {type === 'navigation' && <div class="nav-preview"><span class="nav-active">Overview</span><span>Patterns</span><span>Tokens</span><span>Quality</span><i></i></div>}
+  {type === 'states' && <div class="states-preview"><span class="preview-button">Primary action</span><span>Selected</span><span class="state-muted">Secondary</span></div>}
+  {type === 'performance' && <div class="performance-preview"><strong>0</strong><span>client dependencies</span><i><b></b></i><small>static by default</small></div>}
+  {type === 'motion' && <div class="motion-preview"><i></i><i></i><i></i><span>continuity, not decoration</span></div>}
+</div>

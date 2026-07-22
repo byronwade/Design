@@ -14,6 +14,7 @@ AGENTS.md
 design/PROJECT.md
 design/COMPONENTS.md
 design/DECISIONS.md
+design/COMPOSITION.json
 ```
 
 Only configuration, lock state, cache, and compiled context live under `.design/`. The full engine remains in the package.

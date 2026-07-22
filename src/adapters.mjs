@@ -9,11 +9,12 @@ const BODY = `For UI/UX design, implementation, component changes, content state
 2. When status reports an engine update, run \`${CLI} sync\` before compiling context.
 3. Select the target named by the task, the target whose configured root contains the work, or the single default target.
 4. Read \`DESIGN.md\`, \`.design/generated/<target>.md\`, and the project files under \`design/\`.
-5. Inspect production components, stories, tests, fixtures, routes, and approved references before changing structure.
-6. Produce the design brief and component map required by the resolved contract.
-7. Reuse mapped components and semantic tokens. A missing capability requires a design-system gap, not a page-local primitive.
-8. Do not mix sibling platform profiles or edit \`.design/generated/\`.
-9. Run \`${CLI} validate\` plus the product's rendered, runtime, accessibility, and visual checks before claiming completion.`;
+5. Select the target \`appType\` when present and read its recipe in \`design/COMPOSITION.json\` before choosing shadcn/ui blocks.
+6. Inspect production components, stories, tests, fixtures, routes, and approved references before changing structure.
+7. Produce the design brief and component map required by the resolved contract.
+8. Reuse mapped components, shadcn/ui primitives, approved blocks, and semantic tokens. A missing capability requires a design-system gap, not a page-local primitive.
+9. Do not mix sibling platform profiles or edit \`.design/generated/\`.
+10. Run \`${CLI} validate\` plus the product's rendered, runtime, accessibility, and visual checks before claiming completion.`;
 
 async function managedBlock(file, heading, body) {
   const current = await exists(file) ? await fs.readFile(file, 'utf8') : '';

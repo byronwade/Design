@@ -1,11 +1,18 @@
 ---
 id: governance.changelog
 kind: governance
-version: 1.1.0
+version: 1.2.0
 status: normative
 ---
 
 # Changelog
+
+## 1.2.0 — 2026-07-22
+
+- added the project-owned `design/COMPOSITION.json` contract for shadcn/ui adapters, reusable blocks, app-type recipes, and AI reuse policies
+- added optional `--app-type` target metadata so generated context identifies the product recipe without mixing platform profiles
+- reshaped the public Astro surface around compact shadcn/ui-style docs, component catalog, reusable blocks, and source-linked app recipes
+- moved the shared theme controller to one static public script and refreshed the site output caps for the expanded 119-route reference surface
 
 ## 1.1.0 — 2026-07-21
 

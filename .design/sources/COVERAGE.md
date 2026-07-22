@@ -27,6 +27,7 @@ This map confirms that durable requirements from the governing sources have an o
 | project-specific product, surfaces, themes, assets, terminology, trust states | consuming `design/PROJECT.md` |
 | production components, patterns, stories, tests, design mappings, golden screens | consuming `design/COMPONENTS.md` |
 | project decisions, exceptions, gaps, migrations, and baseline approvals | consuming `design/DECISIONS.md` |
+| component adapter, reusable blocks, app types, and AI composition policy | consuming `design/COMPOSITION.json` |
 | package-engine governance and change history | `governance/DECISIONS.md`, `governance/CHANGELOG.md` |
 
 When a governing source introduces a durable requirement with no operational owner, add the owner and update this map in the same change.

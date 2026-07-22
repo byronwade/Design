@@ -13,8 +13,9 @@ This workflow is compiled with one selected profile and the consuming project’
 
 1. Run `design-contract status`; refresh stale or missing output with `design-contract context`.
 2. Identify the actual person, preceding moment, primary outcome, next moment, domain risk, permissions, data volume, connectivity, collaboration needs, target, input modes, and desired feeling.
-3. Read root `DESIGN.md`, the selected `.design/generated/<target>.md`, and `design/PROJECT.md`, `design/COMPONENTS.md`, and `design/DECISIONS.md`.
-4. Inspect the existing shell, routes, state model, component library, tokens, stories, fixtures, tests, telemetry, content terminology, and design-to-code mappings.
+3. Read root `DESIGN.md`, the selected `.design/generated/<target>.md`, and `design/PROJECT.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`.
+4. Select the target `appType` when present. Use its composition recipe to choose approved shadcn/ui primitives and blocks.
+5. Inspect the existing shell, routes, state model, component library, tokens, stories, fixtures, tests, telemetry, content terminology, and design-to-code mappings.
 5. Choose one shell, one layout archetype, and one page or flow pattern. State viewport ownership and every nested scroll owner.
 6. Map each control to its scope: global, object, view, local, metadata, or temporary.
 7. Inventory every applicable system state, responsive transformation, input mode, trust boundary, performance risk, and recovery path.

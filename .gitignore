@@ -5,3 +5,5 @@ dist/
 .DS_Store
 .design/cache/*
 !.design/cache/.gitkeep
+.playwright-mcp/
+website/.astro/

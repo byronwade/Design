@@ -8,7 +8,7 @@ description: Review rendered UI and implementation against the selected compiled
 This is a reviewer workflow. It confirms evidence and reports findings; it does not excuse violations because a surface looks polished.
 
 1. Select the same compiled target used by implementation.
-2. Read `DESIGN.md`, `.design/generated/<target>.md`, `design/COMPONENTS.md`, and `design/DECISIONS.md`.
+2. Read `DESIGN.md`, `.design/generated/<target>.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`.
 3. Inspect the rendered surface and relevant code, states, fixtures, tests, mappings, and evidence.
 4. Review situation, structure, capability, craft, momentum, trust, identity, coherence, performance, and implementation integrity.
 5. Reproduce every blocker and issue. Do not present speculation as a confirmed finding.

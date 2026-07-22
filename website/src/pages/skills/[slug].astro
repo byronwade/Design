@@ -1,0 +1,20 @@
+---
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { skills } from '../../data/skills';
+import { markdownToHtml } from '../../lib/markdown';
+
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../../..');
+export function getStaticPaths() { return skills.map((skill) => ({ params: { slug: skill.slug }, props: { skill } })); }
+const { skill } = Astro.props;
+const index = skills.findIndex((entry) => entry.slug === skill.slug);
+const previous = skills[index - 1];
+const next = skills[index + 1];
+const sourceHtml = markdownToHtml(readFileSync(resolve(repoRoot, skill.source), 'utf8'));
+---
+<SiteLayout title={`${skill.name} — Skills / Design index`} description={skill.description} active="skills">
+  <div class="skill-detail page-frame"><a class="back-link" href="/skills/"><Icon name="arrow" size={15} /> Back to skills</a><div class="skill-detail-breadcrumb"><span>{skill.category}</span><span>/</span><span>{skill.status}</span></div><header class="skill-detail-header"><p class="eyebrow"><span class="eyebrow-rule"></span> {skill.category}</p><h1>{skill.name}</h1><p>{skill.description}</p><div class="skill-tags">{skill.tags.map((tag) => <span>{tag}</span>)}</div></header><div class="skill-detail-grid"><section><div class="skill-command"><span class="eyebrow">COMMAND</span><code>{skill.command}</code></div><div class="skill-stages"><div class="detail-section-label"><span>WORKFLOW</span><span>{skill.stages.length} stages</span></div><div class="skill-stage-list">{skill.stages.map((stage, stageIndex) => <div><span>0{stageIndex + 1}</span><strong>{stage}</strong></div>)}</div></div><div class="detail-rule"></div><article class="reference-prose skill-prose" set:html={sourceHtml}></article></section><aside class="skill-source-aside"><span class="eyebrow">SOURCE</span><p>Rendered from the local skill file. The Markdown remains authoritative.</p><code>{skill.source}</code><a class="text-link" href={`https://github.com/byronwade/Design/blob/main/${skill.source}`} target="_blank" rel="noreferrer">Open on GitHub <Icon name="external" size={14} /></a></aside></div><nav class="detail-pagination" aria-label="Adjacent skills">{previous ? <a href={`/skills/${previous.slug}/`}><small>Previous</small><strong><Icon name="arrow" size={15} /> {previous.name}</strong></a> : <span></span>}{next ? <a class="next-topic" href={`/skills/${next.slug}/`}><small>Next</small><strong>{next.name} <Icon name="arrow" size={15} /></strong></a> : <span></span>}</nav></div>
+</SiteLayout>

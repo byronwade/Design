@@ -1,0 +1,15 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import Icon from '../components/Icon.astro';
+import { designColors } from '../data/system';
+import { siteTokenCss } from '../data/site-tokens';
+import '../styles/global.css';
+const { title = 'Design / index', description = 'An open, inspectable library of design systems, patterns, and rules.', active = '' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://design.byronwade.com');
+const isHomepage = Astro.url.pathname === '/';
+---
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><meta name="generator" content={Astro.generator} /><meta name="theme-color" content={designColors.canvas} /><title>{title}</title><meta name="description" content={description} /><meta name="robots" content="index,follow" /><link rel="canonical" href={canonical} /><link rel="sitemap" type="application/xml" href="/sitemap.xml" /><meta property="og:type" content="website" /><meta property="og:site_name" content="Design / index" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta name="twitter:card" content="summary" />{isHomepage ? <style set:html={siteTokenCss}></style> : <link rel="stylesheet" href="/design-tokens.css" />}<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%239B4F32'/%3E%3Cpath d='M7 7h10v3H7zm0 5h7v3H7z' fill='white'/%3E%3C/svg%3E" /></head>
+  <body><a class="skip-link" href="#main-content">Skip to content</a><SiteHeader active={active} /><main id="main-content"><slot /></main><footer class="site-footer"><div><a class="wordmark footer-wordmark" href="/"><span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Design <em>/</em> index</span></a><p>An open contract for better interfaces.</p></div><div class="footer-links"><a href="/search/">Search</a><a href="/catalog/">Catalog</a><a href="/skills/">Skills</a><a href="/reference/">Reference</a><a href="/showcase/">Showcase</a><a href="/lab/">Lab</a><a href="/docs/">Documentation</a><a href="https://github.com/byronwade/Design" target="_blank" rel="noreferrer">Source <Icon name="external" size={13} /></a></div><div class="footer-note">Built as the reference surface for <code>@byronwade/design-contract</code>.</div></footer></body>
+</html>

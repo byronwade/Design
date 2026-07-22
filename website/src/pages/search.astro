@@ -1,0 +1,87 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+import { searchIndex } from '../data/search';
+
+const filters = ['All', 'Catalog', 'Reference', 'Skills', 'Showcase', 'Guide'];
+---
+<SiteLayout title="Search — Design / index" description="Search the local catalog, reference library, skills, showcase, and guides that make up Design / index.">
+  <section class="search-hero page-frame">
+    <p class="eyebrow"><span class="eyebrow-rule"></span> Find the contract</p>
+    <h1>Search the whole<br /><em>system.</em></h1>
+    <p>One local index for the decisions, references, workflows, and examples behind the interface. Search by what you are trying to make clear.</p>
+  </section>
+  <section class="search-shell page-frame">
+    <div class="search-toolbar">
+      <form id="site-search-form" class="site-search-form" role="search">
+        <label class="search-field" for="site-search-input"><Icon name="search" size={18} /><input id="site-search-input" type="search" placeholder="Try “spacing”, “mobile”, or “recovery”" autocomplete="off" /><kbd>/</kbd></label>
+      </form>
+      <span id="site-search-count" class="search-count" aria-live="polite">{searchIndex.length} entries</span>
+    </div>
+    <div class="search-filters" aria-label="Filter search results">
+      {filters.map((filter) => <button type="button" class:list={{ 'list-active': filter === 'All' }} data-search-filter={filter}>{filter}</button>)}
+    </div>
+    <div id="site-search-results" class="search-results">
+      {searchIndex.slice(0, 8).map((item, index) => <a class="search-result" data-search-result data-kind={item.kind} data-search={`${item.title} ${item.description} ${item.label} ${item.tags.join(' ')}`.toLowerCase()} href={item.href}>
+        <span class="search-result-index">{String(index + 1).padStart(2, '0')}</span>
+        <span class="search-result-main"><span class="search-result-meta"><span>{item.kind}</span><span>{item.label}</span></span><strong>{item.title}</strong><span>{item.description}</span></span>
+        <span class="search-result-arrow"><Icon name="arrow" size={15} /></span>
+      </a>)}
+    </div>
+    <p id="site-search-empty" class="search-empty" hidden>No entries match that search. Try a broader term or clear the filter.</p>
+    <noscript><div class="search-noscript-results">{searchIndex.map((item, index) => <a class="search-noscript-result" href={item.href}><span>{String(index + 1).padStart(3, '0')}</span><strong>{item.title}</strong><small>{item.kind} · {item.label}</small></a>)}</div><p class="search-noscript">JavaScript is only used for filtering and richer result loading. Every local result remains a normal link.</p></noscript>
+  </section>
+  <script>
+    const input = document.querySelector('#site-search-input');
+    const form = document.querySelector('#site-search-form');
+    const resultCount = document.querySelector('#site-search-count');
+    const empty = document.querySelector('#site-search-empty');
+    const initialResults = [...document.querySelectorAll('[data-search-result]')];
+    const resultsContainer = document.querySelector('#site-search-results');
+    const filters = [...document.querySelectorAll('[data-search-filter]')];
+    const params = new URLSearchParams(window.location.search);
+    let activeFilter = params.get('type') || 'All';
+    let entries = null;
+    input.value = params.get('q') || '';
+    filters.forEach((filter) => filter.classList.toggle('list-active', filter.dataset.searchFilter === activeFilter));
+    const matches = (item) => {
+      const query = input.value.trim().toLowerCase();
+      return (!query || `${item.title} ${item.description} ${item.label} ${item.tags.join(' ')}`.toLowerCase().includes(query)) && (activeFilter === 'All' || item.kind === activeFilter);
+    };
+    const createResult = (item, index) => {
+      const result = document.createElement('a');
+      result.className = 'search-result';
+      result.dataset.searchResult = '';
+      result.dataset.kind = item.kind;
+      result.dataset.search = `${item.title} ${item.description} ${item.label} ${item.tags.join(' ')}`.toLowerCase();
+      result.href = item.href;
+      result.innerHTML = `<span class="search-result-index">${String(index + 1).padStart(2, '0')}</span><span class="search-result-main"><span class="search-result-meta"><span>${item.kind}</span><span>${item.label}</span></span><strong>${item.title}</strong><span>${item.description}</span></span><span class="search-result-arrow">→</span>`;
+      return result;
+    };
+    const update = () => {
+      if (!entries) {
+        let visible = 0;
+        initialResults.forEach((result) => { const show = (!input.value.trim() || result.dataset.search.includes(input.value.trim().toLowerCase())) && (activeFilter === 'All' || result.dataset.kind === activeFilter); result.hidden = !show; if (show) visible += 1; });
+        resultCount.textContent = `${visible} preview ${visible === 1 ? 'entry' : 'entries'}`;
+        empty.hidden = visible !== 0;
+        return;
+      }
+      const visibleEntries = entries.filter(matches);
+      resultsContainer.replaceChildren(...visibleEntries.map(createResult));
+      resultCount.textContent = `${visibleEntries.length} ${visibleEntries.length === 1 ? 'entry' : 'entries'}`;
+      empty.hidden = visibleEntries.length !== 0;
+    };
+    const syncUrl = () => {
+      const next = new URLSearchParams();
+      if (input.value.trim()) next.set('q', input.value.trim());
+      if (activeFilter !== 'All') next.set('type', activeFilter);
+      history.replaceState({}, '', next.toString() ? `/search/?${next}` : '/search/');
+    };
+    input.addEventListener('input', () => { update(); syncUrl(); });
+    form.addEventListener('submit', (event) => { event.preventDefault(); input.focus(); });
+    filters.forEach((filter) => filter.addEventListener('click', () => { activeFilter = filter.dataset.searchFilter; filters.forEach((item) => item.classList.toggle('list-active', item === filter)); update(); syncUrl(); }));
+    document.addEventListener('keydown', (event) => { if (event.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) { event.preventDefault(); input.focus(); } });
+    update();
+    fetch('/search-index.json').then((response) => response.json()).then((data) => { entries = data; update(); });
+  </script>
+</SiteLayout>

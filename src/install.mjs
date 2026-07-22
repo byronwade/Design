@@ -148,11 +148,12 @@ async function writeLock(target, manifest, adapters, migration = null, previous 
   return lock;
 }
 
-export async function installContract({ target, profiles, adapters, force = false }) {
+export async function installContract({ target, profiles, adapters, appType = null, force = false }) {
   const allowed = new Set(['codex', 'claude', 'copilot']);
   for (const adapter of adapters) if (!allowed.has(adapter)) throw new Error(`Unknown adapter: ${adapter}`);
   const manifest = await loadManifest();
   for (const profile of profiles) if (!manifest.profiles[profile]) throw new Error(`Unknown profile: ${profile}`);
+  if (appType && safeId(appType) !== appType) throw new Error(`Target appType must be a safe lowercase identifier: ${appType}`);
   if (await exists(path.join(target, '.design/project.json'))) throw new Error('A legacy installation exists. Run design-contract sync to migrate it.');
   if (await exists(path.join(target, CONFIG_FILE)) && !force) throw new Error(`${CONFIG_FILE} already exists. Use sync, or pass --force to replace generated configuration.`);
 
@@ -162,7 +163,7 @@ export async function installContract({ target, profiles, adapters, force = fals
   const config = {
     $schema: 'https://raw.githubusercontent.com/byronwade/Design/main/schemas/config.schema.json',
     schemaVersion: 1,
-    targets: defaultTargets(profiles),
+    targets: defaultTargets(profiles, { appType }),
     overrides: [],
     adapters,
   };

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schemaVersion", "adapter", "registry", "style", "paths", "appTypes", "policies"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schemaVersion": {"const": 1},
+    "adapter": {"enum": ["shadcn", "custom", "none"]},
+    "registry": {"type": "string", "minLength": 1},
+    "style": {"type": "string", "minLength": 1},
+    "paths": {
+      "type": "object",
+      "required": ["ui", "blocks", "recipes"],
+      "properties": {
+        "ui": {"type": "string", "minLength": 1},
+        "blocks": {"type": "string", "minLength": 1},
+        "recipes": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "appTypes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label", "targetProfile", "shell", "layout", "blocks", "intents"],
+        "properties": {
+          "label": {"type": "string", "minLength": 1},
+          "targetProfile": {"type": "string", "minLength": 1},
+          "shell": {"type": "string", "minLength": 1},
+          "layout": {"type": "string", "minLength": 1},
+          "blocks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "intents": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "policies": {
+      "type": "object",
+      "required": ["reuseBeforeCreate", "tokenAuthority", "mappingAuthority", "newPrimitiveRequiresDecision", "verifyRenderedStates"],
+      "properties": {
+        "reuseBeforeCreate": {"type": "boolean"},
+        "tokenAuthority": {"type": "string", "minLength": 1},
+        "mappingAuthority": {"type": "string", "minLength": 1},
+        "newPrimitiveRequiresDecision": {"type": "boolean"},
+        "verifyRenderedStates": {"type": "boolean"},
+        "blockReuse": {"enum": ["prefer", "required", "optional"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

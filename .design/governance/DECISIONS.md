@@ -60,7 +60,7 @@ This file records canonical engine decisions. Installed projects record their ow
 ## D-009 — Simple project façade, versioned package engine
 
 - **Status:** accepted
-- **Decision:** consuming projects expose root `DESIGN.md`, root `AGENTS.md`, and `design/PROJECT.md`, `design/COMPONENTS.md`, and `design/DECISIONS.md`. The detailed global, component, pattern, quality, platform, and source contracts remain in the versioned package engine.
+- **Decision:** consuming projects expose root `DESIGN.md`, root `AGENTS.md`, and project-owned `design/PROJECT.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`. The detailed global, component, pattern, quality, platform, and source contracts remain in the versioned package engine.
 - **Reason:** daily adoption should be obvious and standard-aligned without sacrificing inheritance, selective context, governance, or enforcement.
 
 ## D-010 — Root DESIGN.md is canonical in a consuming project
@@ -80,3 +80,9 @@ This file records canonical engine decisions. Installed projects record their ow
 - **Status:** accepted
 - **Decision:** `DESIGN.md` and `design/` are never silently replaced by package synchronization. Legacy copied-engine installations migrate their project content into the façade before obsolete engine copies are removed.
 - **Reason:** package upgrades must not erase product identity, implementation mappings, accepted decisions, or bounded exceptions.
+
+## D-013 — Component sources are adapters, app types are project recipes
+
+- **Status:** accepted
+- **Decision:** consuming projects may declare a component source adapter such as shadcn/ui in `design/COMPOSITION.json`. The project owns registry/style choices, local primitive and block paths, app-type recipes, and AI reuse policies. Platform profiles continue to own platform behavior; app types select product shape on top of a platform profile.
+- **Reason:** teams should be able to compose a coherent SaaS workbench, admin console, content studio, or marketing surface from shared blocks without turning a framework’s defaults or another product’s identity into the package-wide source of truth.

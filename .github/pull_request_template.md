@@ -22,6 +22,7 @@
 - [ ] `npm test`
 - [ ] `npm run build`
 - [ ] `npm run smoke`
+- [ ] `npm run site:check`
 - [ ] Google `DESIGN.md` lint
 - [ ] Ubuntu and Windows workflow results
 - [ ] accessibility, platform, migration, and compatibility implications reviewed

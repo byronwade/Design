@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+import { catalog } from '../data/catalog';
+import { reference } from '../data/reference';
+import { skills } from '../data/skills';
+import { toolingProfiles } from '../data/profiles';
+const { active = '' } = Astro.props;
+---
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label="Design Contract home"><span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Design <em>/</em> contract</span></a>
+  <nav class="main-nav" aria-label="Primary navigation">
+    <a class:list={{ 'list-active': active === 'home' }} href="/">Home</a>
+    <a class:list={{ 'list-active': active === 'docs' }} href="/docs/">Docs</a>
+    <a class:list={{ 'list-active': active === 'catalog' }} href="/catalog/">Components <span>{catalog.length}</span></a>
+    <a class:list={{ 'list-active': active === 'blocks' }} href="/blocks/">Blocks</a>
+    <a class:list={{ 'list-active': active === 'showcase' }} href="/showcase/">Showcase</a>
+    <a class:list={{ 'list-active': active === 'lab' }} href="/lab/">Create</a>
+  </nav>
+  <div class="header-actions">
+    <a class="header-search" href="/search/" aria-label="Search the system"><Icon name="search" size={14} /><span>Search</span><kbd>/</kbd></a>
+    <a class="github-link" href="https://github.com/byronwade/Design" target="_blank" rel="noreferrer">GitHub <Icon name="external" size={14} /></a>
+    <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme"><Icon name="sun" size={15} /><span class="theme-toggle-label">Theme</span></button>
+    <details class="header-more"><summary aria-label="More navigation">More <span aria-hidden="true">+</span></summary><div class="header-more-menu"><a href="/reference/">Reference <span>{reference.length}</span></a><a href="/skills/">Skills <span>{skills.length}</span></a><a href="/tools/">Tools <span>{toolingProfiles.length}</span></a><a href="/docs/">Documentation</a></div></details>
+  </div>
+</header>
+<script src="/scripts/site-header.js" defer></script>

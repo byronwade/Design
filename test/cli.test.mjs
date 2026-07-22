@@ -13,13 +13,22 @@ const temp = () => fs.mkdtemp(path.join(os.tmpdir(), 'design-facade-'));
 async function ready(target) {
   await fs.writeFile(path.join(target, 'design/PROJECT.md'), '# Project\n\n- **Name:** Acme\n\n| Situation | Person | Outcome | Next | Frequency | Risk |\n| --- | --- | --- | --- | --- | --- |\n| Review | Admin | Update | Continue | daily | low |\n');
   await fs.writeFile(path.join(target, 'design/COMPONENTS.md'), '# Components\n\n| Intent | Code | Status |\n| --- | --- | --- |\n| action.button | Button | approved |\n');
+  await fs.writeFile(path.join(target, 'design/COMPOSITION.json'), `${JSON.stringify({
+    schemaVersion: 1,
+    adapter: 'shadcn',
+    registry: 'https://ui.shadcn.com',
+    style: 'new-york',
+    paths: { ui: 'src/components/ui', blocks: 'src/components/blocks', recipes: 'design/recipes' },
+    appTypes: { 'saas-workbench': { label: 'SaaS workbench', targetProfile: 'web-app', shell: 'deep workbench', layout: 'operational canvas', blocks: ['sidebar'], intents: ['navigation.global'] } },
+    policies: { reuseBeforeCreate: true, tokenAuthority: 'DESIGN.md', mappingAuthority: 'design/COMPONENTS.md', newPrimitiveRequiresDecision: true, verifyRenderedStates: true, blockReuse: 'prefer' },
+  }, null, 2)}\n`);
 }
 
 test('installs a minimal façade instead of copying the engine', async () => {
   const target = await temp();
   const result = await installContract({ target, profiles: ['web-app'], adapters: ['codex','claude','copilot'] });
   assert.deepEqual(result.generatedTargets, ['web-app']);
-  for (const file of ['DESIGN.md','AGENTS.md','CLAUDE.md','design/PROJECT.md','design/COMPONENTS.md','design/DECISIONS.md','.design/config.json','.design/lock.json','.design/generated/web-app.md','.design/generated/web-app.json']) await fs.access(path.join(target, file));
+  for (const file of ['DESIGN.md','AGENTS.md','CLAUDE.md','design/PROJECT.md','design/COMPONENTS.md','design/DECISIONS.md','design/COMPOSITION.json','.design/config.json','.design/lock.json','.design/generated/web-app.md','.design/generated/web-app.json']) await fs.access(path.join(target, file));
   await assert.rejects(() => fs.access(path.join(target, '.design/global/PRINCIPLES.md')));
   assert.match(await fs.readFile(path.join(target, 'CLAUDE.md'), 'utf8'), /^@AGENTS\.md/m);
   assert.match(await fs.readFile(path.join(target, 'AGENTS.md'), 'utf8'), /npx --yes github:byronwade\/Design status/);
@@ -40,6 +49,34 @@ test('compiles several targets without mixing sibling profiles', async () => {
   assert.doesNotMatch(marketing, /iPhone conventions/);
   assert.match(ios, /iPhone conventions/);
   assert.doesNotMatch(ios, /Android overlay/);
+});
+
+test('selects an app type and compiles the shadcn composition contract', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [], appType: 'saas-workbench' });
+  const config = JSON.parse(await fs.readFile(path.join(target, '.design/config.json'), 'utf8'));
+  assert.equal(config.targets[0].appType, 'saas-workbench');
+  await ready(target);
+  await resolveInstalledContract({ target });
+  const contract = await fs.readFile(path.join(target, '.design/generated/web-app.md'), 'utf8');
+  assert.match(contract, /app type: `saas-workbench`/);
+  assert.match(contract, /Adapter: \*\*shadcn\*\* · style: \*\*new-york\*\* · recipe: \*\*saas-workbench\*\*/);
+  assert.match(contract, /project:design\/COMPOSITION\.json/);
+  assert.match(contract, /https:\/\/ui\.shadcn\.com/);
+});
+
+test('rejects an invalid composition adapter before release', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  await ready(target);
+  await resolveInstalledContract({ target });
+  const compositionPath = path.join(target, 'design/COMPOSITION.json');
+  const composition = JSON.parse(await fs.readFile(compositionPath, 'utf8'));
+  composition.adapter = 'invented';
+  await fs.writeFile(compositionPath, `${JSON.stringify(composition, null, 2)}\n`);
+  const report = await validateProject({ target, google: false, mode: 'release' });
+  assert.ok(report.summary.errors > 0);
+  assert.ok(report.findings.some((finding) => finding.path === 'design/COMPOSITION.json'));
 });
 
 test('detects stale and hand-edited generated context', async () => {

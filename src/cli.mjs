@@ -38,7 +38,7 @@ const HELP = `Design Contract CLI
 
 Usage:
   design-contract list [--json]
-  design-contract init [--target DIR] [--profile ID ...] [--adapters LIST] [--force]
+  design-contract init [--target DIR] [--profile ID ...] [--app-type ID] [--adapters LIST] [--force]
   design-contract context [--target DIR] [--id TARGET] [--stdout]
   design-contract resolve [--target DIR]                 # compatibility alias
   design-contract status [--target DIR] [--json]
@@ -62,7 +62,7 @@ export async function runCli(argv) {
     const profiles = many(options.profile, ['web-app']);
     const requested = many(options.adapters, ['codex', 'claude', 'copilot']);
     const adapters = requested.includes('none') ? [] : requested;
-    output(await installContract({ target, profiles, adapters, force: Boolean(options.force) }), json);
+    output(await installContract({ target, profiles, adapters, appType: options['app-type'] ? String(options['app-type']) : null, force: Boolean(options.force) }), json);
     return;
   }
   if (command === 'context' || command === 'resolve') {

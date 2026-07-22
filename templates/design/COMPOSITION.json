@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/byronwade/Design/main/schemas/composition.schema.json",
+  "schemaVersion": 1,
+  "adapter": "shadcn",
+  "registry": "https://ui.shadcn.com",
+  "style": "new-york",
+  "paths": {
+    "ui": "src/components/ui",
+    "blocks": "src/components/blocks",
+    "recipes": "design/recipes"
+  },
+  "appTypes": {
+    "saas-workbench": {
+      "label": "SaaS workbench",
+      "targetProfile": "web-app",
+      "shell": "deep workbench",
+      "layout": "operational canvas",
+      "blocks": ["sidebar", "command-menu", "data-table", "detail-panel"],
+      "intents": ["navigation.global", "commands.search", "data-display.table", "feedback.dialog"],
+      "notes": "Dense repeated work with persistent context, filtering, selection, and object detail."
+    },
+    "admin-console": {
+      "label": "Admin console",
+      "targetProfile": "web-app",
+      "shell": "standard application shell",
+      "layout": "operational canvas",
+      "blocks": ["sidebar", "data-table", "filter-bar", "confirmation-dialog"],
+      "intents": ["navigation.global", "data-display.table", "forms.search", "feedback.dialog"],
+      "notes": "Permission-sensitive management of records, configuration, and bulk actions."
+    },
+    "content-studio": {
+      "label": "Content studio",
+      "targetProfile": "web-app",
+      "shell": "deep workbench",
+      "layout": "document/rail",
+      "blocks": ["editor-shell", "command-menu", "asset-picker", "activity-feed"],
+      "intents": ["navigation.global", "commands.search", "forms.editor", "collaboration.activity"],
+      "notes": "Create, review, publish, and recover content while preserving draft context."
+    },
+    "marketing-site": {
+      "label": "Marketing site",
+      "targetProfile": "web-marketing",
+      "shell": "header-first shell",
+      "layout": "centered action",
+      "blocks": ["hero", "feature-grid", "testimonial", "call-to-action"],
+      "intents": ["navigation.global", "content.hero", "data-display.card", "action.button"],
+      "notes": "Explain value, establish trust, and guide one dominant conversion path."
+    }
+  },
+  "policies": {
+    "reuseBeforeCreate": true,
+    "tokenAuthority": "DESIGN.md",
+    "mappingAuthority": "design/COMPONENTS.md",
+    "newPrimitiveRequiresDecision": true,
+    "verifyRenderedStates": true,
+    "blockReuse": "prefer"
+  }
+}

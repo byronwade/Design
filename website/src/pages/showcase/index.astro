@@ -1,0 +1,24 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ShowcaseCard from '../../components/ShowcaseCard.astro';
+import { showcase } from '../../data/showcase';
+const screenCount = showcase.reduce((total, item) => total + item.screens.length, 0);
+---
+<SiteLayout title="Showcase — Design / index" description="A gallery of design systems shown in context, authored locally and ready for future community submissions." active="showcase">
+  <section class="showcase-hero page-frame"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Systems in context</p><h1>See how other<br /><em>systems think.</em></h1><p>A curated gallery of design systems, surfaces, and decisions. Today it is built from local records; tomorrow it can accept submissions without changing the reading experience.</p></div><div class="showcase-count"><strong>{showcase.length}</strong><span>seeded systems</span><small>{screenCount} surface studies<br />community submissions are next</small></div></section>
+  <section class="showcase-toolbar page-frame"><div class="showcase-filters" aria-label="Showcase filters"><a class="showcase-filter is-selected" href="/showcase/" data-surface="All">All systems</a><a class="showcase-filter" href="/showcase/?surface=web%20app" data-surface="web app">Web app</a><a class="showcase-filter" href="/showcase/?surface=web%20marketing" data-surface="web marketing">Marketing</a><a class="showcase-filter" href="/showcase/?surface=mobile" data-surface="mobile">Mobile</a><a class="showcase-filter" href="/showcase/?surface=desktop" data-surface="desktop">Desktop</a></div><label class="search-field showcase-search"><Icon name="search" size={17} /><input id="showcase-search" type="search" placeholder="Search the showcase" autocomplete="off" /><kbd>/</kbd></label></section>
+  <section class="showcase-grid page-frame" id="showcase-grid">{showcase.map((item) => <ShowcaseCard item={item} />)}</section><p id="showcase-empty" class="empty-results page-frame" hidden>No showcased systems match that search.</p>
+  <section class="showcase-contribute page-frame"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Have a system to share?</p><h2>Bring the decisions,<br />not just the screenshots.</h2><p>We will accept user submissions through a backend later. For now, the content contract and local seed shape are documented in the repository.</p></div><a class="button button-secondary" href="/showcase/submit/">Open the submission kit <Icon name="arrow" size={15} /></a></section>
+  <script>
+    const search = document.querySelector('#showcase-search');
+    const cards = [...document.querySelectorAll('[data-showcase-search]')];
+    const empty = document.querySelector('#showcase-empty');
+    const filters = [...document.querySelectorAll('[data-surface]')];
+    const params = new URLSearchParams(window.location.search);
+    let activeSurface = params.get('surface') || 'All';
+    const update = () => { const query = search.value.trim().toLowerCase(); let visible = 0; cards.forEach((card) => { const matchesText = !query || card.dataset.showcaseSearch.toLowerCase().includes(query); const matchesSurface = activeSurface === 'All' || card.dataset.showcaseSearch.includes(activeSurface); const show = matchesText && matchesSurface; card.hidden = !show; if (show) visible += 1; }); empty.hidden = visible !== 0; filters.forEach((filter) => filter.classList.toggle('is-selected', filter.dataset.surface === activeSurface)); };
+    filters.forEach((filter) => filter.addEventListener('click', (event) => { event.preventDefault(); activeSurface = filter.dataset.surface; history.replaceState({}, '', activeSurface === 'All' ? '/showcase/' : `/showcase/?surface=${encodeURIComponent(activeSurface)}`); update(); }));
+    search.addEventListener('input', update); update();
+  </script>
+</SiteLayout>

@@ -5,13 +5,13 @@ import {
   resolveWithin, safeId,
 } from './utils.mjs';
 
-export function defaultTargets(profiles) {
+export function defaultTargets(profiles, { appType } = {}) {
   const counts = new Map();
   return profiles.map((profile, index) => {
     const base = safeId(profile);
     const count = (counts.get(base) ?? 0) + 1;
     counts.set(base, count);
-    return { id: count === 1 ? base : `${base}-${count}`, profile, root: '.', default: index === 0, overrides: [] };
+    return { id: count === 1 ? base : `${base}-${count}`, profile, root: '.', default: index === 0, ...(appType ? { appType } : {}), overrides: [] };
   });
 }
 
@@ -28,8 +28,18 @@ export async function loadProjectConfig(target) {
     if (ids.has(item.id)) throw new Error(`Duplicate target id: ${item.id}`);
     ids.add(item.id);
     resolveWithin(target, item.root ?? '.', `Target root ${item.id}`);
+    if (item.appType && safeId(item.appType) !== item.appType) throw new Error(`Target appType must be a safe lowercase identifier: ${item.appType}`);
     for (const override of item.overrides ?? []) resolveWithin(target, override, `Target override ${item.id}`);
     if (item.default) defaults += 1;
+  }
+  if (config.targets.some((item) => item.appType)) {
+    const composition = await readJson(path.join(target, 'design/COMPOSITION.json'));
+    for (const item of config.targets) {
+      if (!item.appType) continue;
+      const recipe = composition.appTypes?.[item.appType];
+      if (!recipe) throw new Error(`Target ${item.id} selects unknown appType ${item.appType}. Add that recipe to design/COMPOSITION.json.`);
+      if (recipe.targetProfile && recipe.targetProfile !== item.profile) throw new Error(`Target ${item.id} profile ${item.profile} does not match appType ${item.appType} profile ${recipe.targetProfile}.`);
+    }
   }
   for (const override of config.overrides ?? []) resolveWithin(target, override, 'Project override');
   if (defaults > 1) throw new Error('At most one target may be default.');
@@ -47,6 +57,7 @@ export function projectDocuments() {
     { id: 'project.context', file: 'design/PROJECT.md', role: 'project context, surfaces, terminology, themes, and constraints' },
     { id: 'project.components', file: 'design/COMPONENTS.md', role: 'production component, pattern, story, test, and design mappings' },
     { id: 'project.decisions', file: 'design/DECISIONS.md', role: 'accepted decisions, exceptions, gaps, migrations, and baseline approvals' },
+    { id: 'project.composition', file: 'design/COMPOSITION.json', role: 'component source adapter, app-type recipes, block composition, and AI reuse policies' },
   ];
 }
 
@@ -85,6 +96,12 @@ export async function inspectProjectReadiness(target) {
     const value = await fs.readFile(decisionsPath, 'utf8');
     const expired = [...value.matchAll(/status:\s*expired/gi)].length;
     add('decisions', expired > 0 ? 'error' : 'pass', 'design/DECISIONS.md', expired > 0 ? `${expired} expired exception${expired === 1 ? '' : 's'} remain.` : 'No expired exceptions are declared.', expired > 0 ? 'Remove, renew, or migrate every expired exception.' : undefined);
+  }
+  const compositionPath = path.join(target, 'design/COMPOSITION.json');
+  if (await exists(compositionPath)) {
+    const value = await fs.readFile(compositionPath, 'utf8');
+    const incomplete = /replace-me/i.test(value);
+    add('composition', incomplete ? 'warning' : 'pass', 'design/COMPOSITION.json', incomplete ? 'Composition contract still contains its starter recipe.' : 'Composition adapter and app-type recipes are populated.', incomplete ? 'Choose the component source, define app-type recipes, and replace starter intent/block values.' : undefined);
   }
   return checks;
 }

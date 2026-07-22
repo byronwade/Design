@@ -16,3 +16,18 @@ Select the narrowest profile that describes the shipped experience, not the tech
 | Electron, Tauri, or desktop webview | matching `electron-*` profile |
 
 A responsive web app viewed on a phone remains `web-app`; it does not inherit native mobile behavior. Configure multiple targets in `.design/config.json`, give each a stable ID and product root, and name the target explicitly in design tasks.
+
+## App type is a second choice
+
+`profile` selects platform behavior. `appType` selects the product recipe layered on top of that platform. When the project uses shadcn/ui, the recipe is defined in `design/COMPOSITION.json` and names the approved shell, layout, block families, and component intent IDs.
+
+Examples:
+
+| App type | Profile | Composition emphasis |
+| --- | --- | --- |
+| `saas-workbench` | `web-app` | persistent context, commands, tables, detail panels |
+| `admin-console` | `web-app` | permissions, filters, bulk actions, confirmation |
+| `content-studio` | `web-app` | editor, assets, activity, draft recovery |
+| `marketing-site` | `web-marketing` | explanation, trust, proof, one dominant conversion |
+
+Do not use an app type to smuggle platform behavior into a target. The compiler rejects a recipe whose declared target profile does not match the selected profile.

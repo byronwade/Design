@@ -1,0 +1,4 @@
+---
+const { type, detail = false, gallery = false } = Astro.props;
+---
+<div class:list={["showcase-preview", `showcase-${type}`, { "showcase-preview-detail": detail, "showcase-preview-gallery": gallery }]} aria-hidden="true"><div class="showcase-browser"><span></span><span></span><span></span><i></i></div><div class="showcase-art"><span class="showcase-art-rail"></span><div class="showcase-art-main"><small>DESIGN SYSTEM / 01</small><strong>{type === 'warm' ? 'Make the structure visible.' : type === 'ink' ? 'Live signal.' : type === 'green' ? 'Notice more.' : type === 'blue' ? 'Work in common.' : type === 'rose' ? 'Less, but better.' : 'A little more light.'}</strong><i></i><b></b><b></b></div><span class="showcase-art-pane"></span></div></div>

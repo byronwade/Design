@@ -8,7 +8,7 @@ The daily mental model is intentionally small:
 DESIGN.md + selected profile + design/ project customizations = compiled target contract
 ```
 
-Humans and agents work primarily with root `DESIGN.md`, root `AGENTS.md`, and three project-owned files under `design/`. The full cross-platform engine remains versioned in this package and is compiled into focused context for each target.
+Humans and agents work primarily with root `DESIGN.md`, root `AGENTS.md`, and four project-owned files under `design/`. The full cross-platform engine remains versioned in this package and is compiled into focused context for each target.
 
 ## Why this architecture
 
@@ -35,7 +35,8 @@ CLAUDE.md                  imports @AGENTS.md when Claude support is enabled
 design/
 ├── PROJECT.md              product, situations, surfaces, terms, themes, constraints
 ├── COMPONENTS.md           intent → code/story/test/design mappings
-└── DECISIONS.md            decisions, exceptions, gaps, migrations, baselines
+├── DECISIONS.md            decisions, exceptions, gaps, migrations, baselines
+└── COMPOSITION.json        component adapter, blocks, app types, and AI reuse policy
 
 .design/
 ├── config.json             targets, profiles, roots, adapters, overrides
@@ -169,6 +170,7 @@ shared workflow
 → design/PROJECT.md
 → design/COMPONENTS.md
 → design/DECISIONS.md
+→ design/COMPOSITION.json
 → explicit overrides
 ```
 
@@ -194,6 +196,8 @@ Every source and generated output is hashed. `CONTEXT.json` records target finge
 8. verify realistic states, accessibility, platform behavior, and rendered output
 9. report the exact revision, environment, limitations, and evidence
 
+For projects using shadcn/ui, `design/COMPOSITION.json` is the composition seam. It records the registry/style adapter, local component and block paths, app-type recipes, and the policies that keep an AI reusing mapped shadcn primitives instead of inventing page-local variants.
+
 The installer creates thin adapters:
 
 - Codex: a managed `AGENTS.md` block, Skills, and target-root overrides
@@ -211,11 +215,24 @@ DESIGN.md
 design/PROJECT.md
 design/COMPONENTS.md
 design/DECISIONS.md
+design/COMPOSITION.json
 ```
 
 Legacy installations that copied the full engine into `.design/` are migrated by `sync`. Existing context, mappings, decisions, exceptions, custom overrides, and the previous visual contract are preserved before obsolete engine copies are removed.
 
 When both the old and new authored file contain different content, the current façade file wins and the legacy content is written under `design/migrations/` with a content-derived filename. The migration result lists every backup.
+
+## Official website
+
+The repository includes a separate Astro reference site under `website/`. It is a real public documentation and showcase surface: a fast, local-data catalog of 27 design contracts, a cross-site Search index, a Skills registry for the repository’s reusable workflows, a 69-document Reference library rendered from the canonical engine, a Toolbox exposing all 13 manifest-backed target profiles, a Showcase for systems in context with a local submission kit, a Lab for rendered specimens read from the canonical root `DESIGN.md`, and an Evaluation route for reproducible gates. The current content transport is local; the documented showcase record shape is ready for a future backend without turning the public site into a dashboard.
+
+```bash
+npm install
+npm run site:dev
+npm run site:build
+```
+
+See [`docs/site/README.md`](docs/site/README.md) for the content model, product direction, and performance boundary.
 
 ## Development and release readiness
 
@@ -255,6 +272,25 @@ The engine describes intent; `design/COMPONENTS.md` identifies the shipped imple
 - status and owner
 
 An unmapped critical intent is a visible system gap, not permission for arbitrary local CSS. A visual reference without a production mapping is evidence of appearance, not implementation authority.
+
+## shadcn/ui composition and app types
+
+The package can build on shadcn/ui without making shadcn’s defaults the product identity. The consuming project owns `design/COMPOSITION.json`, which is compiled into every target alongside its tokens and production mappings.
+
+The composition contract has four responsibilities:
+
+- identify the component adapter, registry, style, and local `ui`/`blocks`/`recipes` paths;
+- define app types such as `saas-workbench`, `admin-console`, `content-studio`, or `marketing-site`;
+- map each app type to an engine profile, shell, layout, reusable block families, and intent IDs;
+- require reuse of mapped components and semantic tokens before a new primitive or block is introduced.
+
+Select an app type on initialization:
+
+```bash
+design-contract init --profile web-app --app-type saas-workbench
+```
+
+The target’s `appType` is routing metadata, not a new platform profile. `web-app` still owns browser behavior; the project composition contract chooses the product shape and shadcn block vocabulary layered on top of it. An app-specific Linear-inspired workbench is therefore a recipe in the consuming project, not a copied Linear identity in the shared engine.
 
 ## Verification and production
 
@@ -302,3 +338,7 @@ Product repositories then add their own rendered, interaction, accessibility, vi
 ## Repository development
 
 Changes to behavior should update the owning contract, manifest, schemas, templates, compiler, migration path, adapters, tests, README, and changelog together. See `CONTRIBUTING.md` and `AGENTS.md`.
+
+## License
+
+Design Contract is released under the [MIT License](LICENSE).

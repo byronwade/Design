@@ -39,6 +39,7 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
   for (const targetConfig of config.targets) {
     const profile = manifest.profiles[targetConfig.profile];
     if (!profile) throw new Error(`Unknown profile in .design/config.json: ${targetConfig.profile}`);
+    const composition = await readJson(path.join(target, 'design/COMPOSITION.json'));
     const id = safeId(targetConfig.id);
     const layers = expandProfile(manifest, targetConfig.profile);
     const overrides = [...(config.overrides ?? []), ...(targetConfig.overrides ?? [])];
@@ -62,6 +63,8 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
       profile,
       root: targetConfig.root ?? '.',
       default: Boolean(targetConfig.default),
+      appType: targetConfig.appType ?? null,
+      composition: targetConfig.appType ? { adapter: composition.adapter, style: composition.style, recipe: composition.appTypes[targetConfig.appType] } : null,
       description: targetConfig.description ?? profile.description,
       documents,
       fingerprint,
@@ -71,7 +74,7 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
   const fingerprint = hash(JSON.stringify({
     packageVersion: manifest.packageVersion,
     config,
-    targets: plans.map(({ id, profileId, root, default: isDefault, fingerprint: value }) => ({ id, profileId, root, default: isDefault, fingerprint: value })),
+    targets: plans.map(({ id, profileId, root, default: isDefault, appType, composition, fingerprint: value }) => ({ id, profileId, root, default: isDefault, appType, composition, fingerprint: value })),
   }));
   return { target, manifest, lock, config, targets: plans, fingerprint };
 }
@@ -89,10 +92,12 @@ function markdownForTarget(targetPlan, generatedAt) {
     '---', '',
     `# Compiled design contract: ${targetPlan.id}`, '',
     `Profile: **${targetPlan.profileId}** — ${targetPlan.description}`, '',
-    `Product root: \`${targetPlan.root}\`${targetPlan.default ? ' · default target' : ''}`, '',
+    `Product root: \`${targetPlan.root}\`${targetPlan.default ? ' · default target' : ''}${targetPlan.appType ? ` · app type: \`${targetPlan.appType}\`` : ''}`, '',
     '> This is generated context. Project-authored truth lives in DESIGN.md and design/. Engine rules come from the pinned Design package. Later project documents specialize engine defaults without weakening accessibility, safety, legal, privacy, security, or explicit product requirements.', '',
     '## Contract model', '',
     '`global engine + selected profile + project visual identity + project mappings and decisions = this target contract`', '',
+    '## Selected composition', '',
+    targetPlan.composition ? `Adapter: **${targetPlan.composition.adapter}** · style: **${targetPlan.composition.style}** · recipe: **${targetPlan.appType}**` : 'No app-type composition recipe selected for this target.', '',
     '## Source order', '',
     ...targetPlan.documents.map((document, index) => `${index + 1}. \`${document.source}:${document.file}\` — ${document.role} — \`${document.hash.slice(0, 12)}\``), '',
   ];
@@ -117,7 +122,7 @@ export async function resolveInstalledContract({ target, stdoutTarget = null }) 
       schemaVersion: 1,
       packageVersion: plan.manifest.packageVersion,
       generatedAt,
-      target: { id: targetPlan.id, profile: targetPlan.profileId, root: targetPlan.root, default: targetPlan.default, description: targetPlan.description },
+      target: { id: targetPlan.id, profile: targetPlan.profileId, root: targetPlan.root, default: targetPlan.default, appType: targetPlan.appType, composition: targetPlan.composition, description: targetPlan.description },
       fingerprint: targetPlan.fingerprint,
       documents: targetPlan.documents.map(({ id, source, file, role, hash: fileHash, content }) => ({ id, source, file, role, hash: fileHash, content })),
     };
@@ -127,7 +132,7 @@ export async function resolveInstalledContract({ target, stdoutTarget = null }) 
     await writeJson(path.join(generated, jsonRelative), json);
     context.outputHashes[markdownRelative] = hash(markdown);
     context.outputHashes[jsonRelative] = await hashFile(path.join(generated, jsonRelative));
-    context.targets.push({ id: targetPlan.id, profile: targetPlan.profileId, root: targetPlan.root, default: targetPlan.default, fingerprint: targetPlan.fingerprint, markdown: markdownRelative, json: jsonRelative });
+    context.targets.push({ id: targetPlan.id, profile: targetPlan.profileId, root: targetPlan.root, default: targetPlan.default, appType: targetPlan.appType, composition: targetPlan.composition, fingerprint: targetPlan.fingerprint, markdown: markdownRelative, json: jsonRelative });
     index.push(`- [${targetPlan.id}](${markdownRelative}) — \`${targetPlan.profileId}\`${targetPlan.default ? ' · default' : ''}: ${targetPlan.description}`);
     if (stdoutTarget === targetPlan.id) stdout = markdown;
   }
