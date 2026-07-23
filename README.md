@@ -284,6 +284,10 @@ The Mobbin-style model is useful because it organizes real product inspiration b
 
 Agents must inspect applicable approved references before designing or visually modifying a surface and list the references used in the task packet or receipt. If no approved reference applies, they should say so and continue from `DESIGN.md`, production code, and the real rendered surface.
 
+## External drift adapters
+
+ContextDS is optional and observation-only. The package exports `recordContextDsDriftEvidence()` for future extraction workflows that want to normalize external observations into `.design/receipts/contextds-drift.json`. Those observations can supply drift evidence and suggested actions, but they are marked `canReplaceDesignTruth: false` and never edit or supersede `DESIGN.md`.
+
 ## Component-source composition and app types
 
 The package can build on shadcn/ui without making shadcn’s defaults the product identity or a required dependency. The consuming project records component-source policy, app types, Skill expectations, reference policy, and production mappings in `DESIGN.md`.

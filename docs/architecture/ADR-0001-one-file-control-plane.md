@@ -37,6 +37,8 @@ truth and generated enforcement artifacts.
   never a required package or authority.
 - Project-owned visual references under `design/references/`; no bundled screenshot
   or photo sets.
+- Optional observation-only drift adapters such as ContextDS. External observations
+  can produce receipts, but they cannot edit or replace `DESIGN.md`.
 - Mobbin-style website lessons: fast browsing, dense filters, visual metadata,
   source-linked docs, and no copied screenshots.
 

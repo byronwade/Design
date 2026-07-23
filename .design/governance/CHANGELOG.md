@@ -11,6 +11,7 @@ status: normative
 
 - strengthened `design verify --mode release` so receipts include a generated evidence manifest, rendered HTML inspection, optional browser screenshots, deterministic static captures, release evidence category gates, resolved state-matrix gates, and approved baseline comparison
 - added explicit `design check` findings for invalid component variants and unmapped route or surface files
+- added an optional ContextDS drift-evidence adapter that records external observations without replacing `DESIGN.md`
 - changed smoke and CI validation to exercise release-mode verification and the 99% component-fidelity release benchmark gate
 
 ## 1.3.0 — 2026-07-23

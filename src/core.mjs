@@ -4,6 +4,7 @@ export { expandProfile, listProfiles } from './manifest.mjs';
 export { resolveInstalledContract, getResolutionStatus } from './resolve.mjs';
 export { resolveTaskContext } from './task.mjs';
 export { checkDesign } from './check.mjs';
+export { normalizeContextDsObservation, recordContextDsDriftEvidence } from './contextds.mjs';
 export { verifyDesign } from './verify.mjs';
 export { doctorContract, statusContract } from './status.mjs';
 export { validateContract, validatePackage, validateProject } from './validate.mjs';

@@ -5,6 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import {
   checkDesign, doctorContract, explainContract, installContract, resolveInstalledContract,
+  recordContextDsDriftEvidence,
   resolveTaskContext, statusContract, syncContract, validatePackage, validateProject,
   verifyDesign,
 } from '../src/core.mjs';
@@ -260,6 +261,20 @@ test('check detects invalid variants and unmapped surfaces', async () => {
   const report = await checkDesign({ target });
   assert.ok(report.findings.some((finding) => finding.ruleId === 'DS-COMPONENT-003'), JSON.stringify(report.findings));
   assert.ok(report.findings.some((finding) => finding.ruleId === 'DS-PROJECT-004' && finding.evidence === '/settings'), JSON.stringify(report.findings));
+});
+
+test('ContextDS adapter records drift evidence without replacing design truth', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  const before = await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8');
+  const receipt = await recordContextDsDriftEvidence({
+    target,
+    observations: [{ surface: '/settings', kind: 'spacing-drift', summary: 'Observed dense spacing differs from approved reference.' }],
+  });
+  assert.equal(receipt.adapter.required, false);
+  assert.equal(receipt.observations[0].canReplaceDesignTruth, false);
+  assert.equal(await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8'), before);
+  await fs.access(path.join(target, receipt.receipt));
 });
 
 test('explains profiles and stable quality rules', async () => {
