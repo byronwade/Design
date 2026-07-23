@@ -87,7 +87,7 @@ verification: []
 
 ## Readiness gate
 
-If product context, terminology, surface inventory, production component mappings, theme or asset rules, Skills, or golden references are still placeholders, the project design system is incomplete. Visual references are not required for initial adoption, but approved files under `design/references/` must be inspected when they apply to the surface being designed. You may perform the missing registry work, but you may not claim full system compliance until the relevant production truth exists. `design check --mode release` and `design verify --mode release` enforce this boundary.
+If product context, terminology, surface inventory, production component mappings, theme or asset rules, Skills, or golden references are still placeholders, the project design system is incomplete. Visual references are not required for initial adoption, but approved files under `design/references/` must be inspected when they apply to the surface being designed. You may perform the missing registry work, but you may not claim full system compliance until the relevant production truth exists. `design check --mode release` and `design verify --mode release` enforce this boundary with source checks plus rendered surface, accessibility, keyboard/focus, responsive, overflow, state, browser screenshot or static-capture, and approved-baseline evidence.
 
 ## Implementation rules
 

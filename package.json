@@ -1,6 +1,6 @@
 {
   "name": "@byronwade/design-contract",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A simple design facade and profile-aware compiler for AI-assisted product design.",
   "type": "module",
   "workspaces": [
@@ -45,7 +45,7 @@
     "design:verify": "node ./bin/design.mjs verify --target . --surface website --evidence website/dist/index.html --json",
     "smoke": "node ./scripts/package-smoke.mjs",
     "production:smoke": "node ./scripts/production-smoke.mjs",
-    "check": "npm run validate:strict && npm test && npm run build && npm run smoke && npm run benchmark && npm run site:check"
+    "check": "npm run validate:strict && npm test && npm run build && npm run smoke && npm run benchmark:release && npm run site:check"
   },
   "dependencies": {
     "@google/design.md": "0.3.0",

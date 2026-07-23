@@ -27,6 +27,27 @@ const packed = JSON.parse(runNpm(['pack', '--json', '--pack-destination', packDi
 const tarball = path.join(packDir, packed[0].filename);
 runNpm(['install', '--prefix', consumer, '--ignore-scripts', tarball]);
 const bin = path.join(consumer, 'node_modules/@byronwade/design-contract/bin/design.mjs');
+const renderedHome = `<!doctype html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    main { max-width: 720px; overflow-wrap: anywhere; }
+    button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    @media (max-width: 520px) { main { display: block; } }
+  </style>
+</head>
+<body>
+  <main data-state="empty">
+    <h1>Workbench approval</h1>
+    <p role="status">Ready for review.</p>
+    <button aria-label="Approve request" data-state="default">Approve</button>
+    <button disabled data-state="disabled">Queued</button>
+    <p role="alert" hidden>Unable to load approvals.</p>
+  </main>
+</body>
+</html>
+`;
 for (const args of [
   ['init', '--target', project, '--profile', 'web-app'],
   ['status', '--target', project],
@@ -35,8 +56,8 @@ for (const args of [
   ['check', '--target', project],
   ['validate', '--target', project, '--no-google'],
 ]) run(process.execPath, [bin, ...args]);
-await fs.writeFile(path.join(project, 'rendered-home.html'), '<main><button>Approve</button></main>\n');
-run(process.execPath, [bin, 'verify', '--target', project, '--surface', 'home', '--evidence', 'rendered-home.html']);
+await fs.writeFile(path.join(project, 'rendered-home.html'), renderedHome);
+run(process.execPath, [bin, 'verify', '--target', project, '--mode', 'release', '--surface', 'home', '--evidence', 'rendered-home.html']);
 await fs.access(path.join(project, 'DESIGN.md'));
 await fs.access(path.join(project, 'design/references'));
 await fs.access(path.join(project, '.agents/skills/design/SKILL.md'));

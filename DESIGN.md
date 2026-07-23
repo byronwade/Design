@@ -190,7 +190,7 @@ Define the product by durable nouns, verbs, roles, surfaces, and consequences ra
 - Component packages are optional adapters. shadcn/ui may be referenced for behavior and vocabulary, but it is not required and never owns product identity.
 - Visual references are optional and project-owned. Do not bundle bulk screenshot or photo sets with the package.
 - Completion, verification, publication, synchronization, collaboration, and deployment claims require revision-bound evidence.
-- Expired exceptions, stale context, missing evidence, and failed error rules block acceptance.
+- Expired exceptions, stale context, missing release evidence categories, unapproved baseline changes, and failed error rules block acceptance.
 
 ## Preferred Guidance
 
@@ -245,7 +245,7 @@ Use sentence case, specific nouns, and verb-first action labels. Avoid vague com
 
 ## Trust and Acceptance
 
-Acceptance requires a design receipt with source revision, contract fingerprint, task model, checked rules, rendered surfaces, results, warnings, exceptions, and visual changes. CI must block stale context, failed error rules, missing evidence, unapproved baseline changes, and expired exceptions.
+Acceptance requires a design receipt with source revision, contract fingerprint, task model, checked rules, rendered surfaces, results, warnings, exceptions, and visual changes. `design verify --mode release` must collect or inspect rendered evidence for accessibility, responsiveness, keyboard/focus behavior, overflow, state coverage, browser screenshot or static capture evidence, and approved baseline comparison when baselines exist. CI must block stale context, failed error rules, missing evidence categories, unapproved baseline changes, and expired exceptions.
 
 ## References
 

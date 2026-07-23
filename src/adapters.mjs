@@ -12,7 +12,7 @@ const BODY = `For UI/UX design, implementation, component changes, content state
 5. Inspect production components, stories, tests, fixtures, routes, and applicable approved references under \`design/references/\` before changing structure.
 6. Reuse mapped components, approved component-source primitives, approved blocks, and semantic tokens. A missing capability requires a design-system gap, not a page-local primitive.
 7. Do not mix sibling platform profiles or edit \`.design/generated/\`.
-8. Run \`${CLI} check\`, then \`${CLI} verify\` with affected surfaces and evidence files before claiming completion.`;
+8. Run \`${CLI} check\`, then \`${CLI} verify --mode release\` with affected surfaces and evidence files covering rendered structure, accessibility, keyboard/focus behavior, responsiveness, overflow, realistic states, browser screenshot or static capture output, and approved baseline comparison before claiming completion.`;
 
 async function managedBlock(file, heading, body) {
   const current = await exists(file) ? await fs.readFile(file, 'utf8') : '';

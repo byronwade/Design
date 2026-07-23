@@ -103,7 +103,11 @@ and exception policy.
 - The checker and verifier can reject drift even when the AI claims compliance.
 - The website can explain the model in under a minute because the project surface is
   one authored file plus optional references.
-- Full rendering, accessibility, keyboard, responsiveness, screenshot, and baseline
-  verification still requires project-specific commands; the package records missing
-  evidence as a blocking verification result instead of pretending to render unknown
-  products.
+- Release verification now has a local evidence contract: rendered HTML evidence is
+  inspected for accessibility semantics, keyboard and focus risks, responsive
+  signals, overflow risks, and state coverage; local Chrome, Edge, or Chromium is
+  used for a browser screenshot when available; deterministic static captures are
+  generated as the portable fallback; approved baseline manifests are compared
+  when present. Browser-native interaction beyond the captured surface and
+  platform-specific assistive-technology checks remain project-specific evidence
+  that can be attached to the same receipt.

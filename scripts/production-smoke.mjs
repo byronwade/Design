@@ -21,6 +21,27 @@ const consumer = path.join(root, 'consumer');
 const project = path.join(root, 'project');
 await fs.mkdir(consumer, { recursive: true });
 await fs.mkdir(project, { recursive: true });
+const renderedEmptyState = `<!doctype html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    main { max-width: 720px; overflow-wrap: anywhere; }
+    button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    @media (max-width: 520px) { main { display: block; } }
+  </style>
+</head>
+<body>
+  <main data-state="empty">
+    <h1>Empty work queue</h1>
+    <p role="status">No work yet.</p>
+    <button aria-label="Create first item" data-state="default">Create item</button>
+    <button disabled data-state="disabled">Waiting</button>
+    <p role="alert" hidden>Unable to load the queue.</p>
+  </main>
+</body>
+</html>
+`;
 runNpm(['install', '--prefix', consumer, '--ignore-scripts', `github:byronwade/Design#${sha}`]);
 const bin = path.join(consumer, 'node_modules/@byronwade/design-contract/bin/design.mjs');
 run(process.execPath, [bin, 'init', '--target', project, '--profile', 'web-app']);
@@ -28,7 +49,7 @@ run(process.execPath, [bin, 'context', '--target', project]);
 run(process.execPath, [bin, 'resolve', '--target', project, '--request', 'Add a verified empty state']);
 run(process.execPath, [bin, 'status', '--target', project]);
 run(process.execPath, [bin, 'check', '--target', project]);
-await fs.writeFile(path.join(project, 'rendered-empty-state.html'), '<main><p>No work yet.</p></main>\n');
-run(process.execPath, [bin, 'verify', '--target', project, '--surface', 'empty-state', '--evidence', 'rendered-empty-state.html']);
+await fs.writeFile(path.join(project, 'rendered-empty-state.html'), renderedEmptyState);
+run(process.execPath, [bin, 'verify', '--target', project, '--mode', 'release', '--surface', 'empty-state', '--evidence', 'rendered-empty-state.html']);
 run(process.execPath, [bin, 'validate', '--target', project, '--no-google']);
 console.log(`Production install smoke passed for ${sha}.`);

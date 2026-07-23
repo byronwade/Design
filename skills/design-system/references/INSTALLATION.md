@@ -25,7 +25,7 @@ Only configuration, lock state, cache, generated packets, and receipts live unde
 ```bash
 design resolve --request "Add an approval workflow"
 design check
-design verify --surface approval --evidence artifacts/approval.html
+design verify --mode release --surface approval --evidence artifacts/approval.html
 ```
 
 Run `resolve` after changing `DESIGN.md`, target configuration, or overrides. Do
@@ -46,7 +46,9 @@ registry files under `design/` are backed up, folded into `DESIGN.md`, and remov
 ```bash
 design status
 design check
-design verify
+design verify --mode release --surface SURFACE --evidence PATH
 ```
 
-Use `--mode release` to treat warnings and missing evidence as blocking.
+Release verification requires rendered structure, accessibility, keyboard/focus,
+responsive, overflow, state, browser screenshot or static-capture, and approved-baseline
+evidence when a baseline exists.

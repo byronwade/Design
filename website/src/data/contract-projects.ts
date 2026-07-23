@@ -40,7 +40,7 @@ export const contractProjects: ContractProject[] = [
       'The canonical project contract: one DESIGN.md grammar, generated adapters, optional reference memory, bounded task packets, checks, receipts, and shadcn-derived components rewritten into a warm operating surface.',
     command: 'design init --profile web-app --app-type saas-workbench',
     prompt:
-      'Use the Warm Paper Workbench contract. First run the universal design Skill, then run design resolve --request for this task. Read DESIGN.md and only the returned task packet, production code, and applicable approved files under design/references/. Treat shadcn components as optional source primitives, not required dependencies. Redesign every used component so the result feels warm, calm, capable, tactile, and consistent with the approved references. Before reporting done, run design check and design verify, then provide the receipt path, rendered evidence, and references used.',
+      'Use the Warm Paper Workbench contract. First run the universal design Skill, then run design resolve --request for this task. Read DESIGN.md and only the returned task packet, production code, and applicable approved files under design/references/. Treat shadcn components as optional source primitives, not required dependencies. Redesign every used component so the result feels warm, calm, capable, tactile, and consistent with the approved references. Before reporting done, run design check and design verify --mode release, then provide the receipt path, rendered evidence, and references used.',
     files: [
       'DESIGN.md',
       '.agents/skills/design/SKILL.md',
@@ -83,7 +83,7 @@ export const contractProjects: ContractProject[] = [
       'A contract pack for dashboards and admin tools where tables, filters, permissions, and repeated actions matter more than brand expression.',
     command: 'design resolve --request "Apply graphite operations console constraints"',
     prompt:
-      'Use the Graphite SaaS Console contract. Run the universal design Skill first, then design resolve --request. Keep the interface dense and neutral. Start from shadcn primitives only when they help behavior, then restyle each component for compact operations, strong keyboard use, and clear hierarchy. Use design/references/ only for approved screenshots and state evidence. Finish with design check and design verify.',
+      'Use the Graphite SaaS Console contract. Run the universal design Skill first, then design resolve --request. Keep the interface dense and neutral. Start from shadcn primitives only when they help behavior, then restyle each component for compact operations, strong keyboard use, and clear hierarchy. Use design/references/ only for approved screenshots and state evidence. Finish with design check and design verify --mode release.',
     files: ['DESIGN.md', '.agents/skills/design/SKILL.md', '.design/generated/TASK.json', '.design/receipts/latest.json', 'design/references/graphite/'],
     roles: ['Product engineer', 'AI agent', 'Design reviewer'],
     skills: [

@@ -20,8 +20,11 @@ or design-system changes. It is the universal adapter across agents.
 5. Build with semantic tokens and mapped production components. A missing
    capability is a design-system gap, not permission for page-local styling.
 6. Run `npx --yes github:byronwade/Design check`.
-7. Run `npx --yes github:byronwade/Design verify` with the affected surfaces and
-   evidence files.
+7. Run `npx --yes github:byronwade/Design verify --mode release` with the
+   affected surfaces and evidence files. Evidence must cover rendered structure,
+   accessibility, keyboard/focus behavior, responsiveness, overflow, realistic
+   states, browser screenshot or static capture output, and approved baseline comparison
+   when a baseline exists.
 8. Report the receipt path, source revision, warnings, exceptions, and remaining
    uncertainty.
 

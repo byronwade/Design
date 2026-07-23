@@ -1018,7 +1018,7 @@
         "receipt"
       ],
       "checker": "design-verify:receipt",
-      "requirement": "CI must block stale context, failed error rules, missing evidence, unapproved baselines, and expired exceptions.",
+      "requirement": "CI must block stale context, failed error rules, missing release evidence categories, unapproved baseline changes, and expired exceptions.",
       "evidence": [
         "source location",
         "machine-readable check or verification receipt"

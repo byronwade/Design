@@ -54,6 +54,8 @@ jobs:
         run: npm run build
       - name: Pack, install, and execute the public package shape
         run: npm run smoke
+      - name: Run release component-fidelity benchmark
+        run: npm run benchmark:release
       - name: Build and audit the official Astro reference site
         run: npm run site:check
       - name: Report validation success

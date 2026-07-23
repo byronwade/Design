@@ -22,7 +22,7 @@ The package therefore uses one authored file and a generated enforcement engine:
 - the package owns shared design reasoning and platform behavior
 - `design resolve` turns a request into one narrow task packet
 - `design check` inspects code independently of the AI
-- `design verify` records revision-bound evidence and a receipt
+- `design verify` inspects revision-bound rendered evidence and writes a receipt
 
 Consumers do not need to navigate the engine to use it correctly.
 
@@ -100,7 +100,7 @@ Then:
 ```bash
 npx --yes github:byronwade/Design resolve --request "Add an approval workflow"
 npx --yes github:byronwade/Design check
-npx --yes github:byronwade/Design verify --surface approval --evidence path/to/evidence.html
+npx --yes github:byronwade/Design verify --mode release --surface approval --evidence path/to/evidence.html
 ```
 
 The examples below use `design` as shorthand. `design-contract` remains as a compatibility binary during migration.
@@ -118,7 +118,7 @@ design resolve --request "Add an approval workflow"
 design check
 
 # Verify rendered surfaces and write a design receipt
-design verify --surface approval --evidence artifacts/approval.html
+design verify --mode release --surface approval --evidence artifacts/approval.html
 
 # Compatibility and maintenance commands
 design-contract list
@@ -128,7 +128,7 @@ design-contract sync
 design-contract explain DS-ACTION-001
 ```
 
-`resolve` writes `.design/generated/TASK.json`. `check` writes `.design/receipts/check-report.json`. `verify` writes `.design/receipts/latest.json` and a timestamped receipt. CI should block stale context, failed error rules, missing evidence, unapproved baseline changes, and expired exceptions.
+`resolve` writes `.design/generated/TASK.json`. `check` writes `.design/receipts/check-report.json`. `verify` writes `.design/receipts/latest.json`, a timestamped receipt, and an evidence manifest under `.design/receipts/evidence/`. In release mode the verifier requires rendered surface evidence, accessibility semantics, keyboard/focus coverage, responsive coverage, overflow coverage, state coverage, browser screenshot or static-capture evidence, and approved baseline comparison when a baseline manifest exists. CI should block stale context, failed error rules, missing evidence categories, unapproved baseline changes, and expired exceptions.
 
 ## Public Workflow
 
@@ -197,7 +197,7 @@ Every authored source and generated output is hashed. `CONTEXT.json` records tar
 6. reuse mapped components and semantic tokens
 7. treat missing capability as a design-system gap
 8. run `design check`
-9. run `design verify` with affected surfaces and evidence files
+9. run `design verify --mode release` with affected surfaces and evidence files before acceptance
 10. report the exact revision, receipt path, limitations, and evidence
 
 shadcn/ui is supported as an optional reference adapter because its primitive and block vocabulary fits this system well. It is not required by the package, does not need to be installed beside the contract, and is never platform authority. A project can use shadcn/ui, another component source, or no component library at all.
@@ -313,11 +313,11 @@ npm run validate:strict
 npm test
 npm run build
 npm run smoke
-npm run benchmark
+npm run benchmark:release
 npm run check
 ```
 
-`npm run validate:strict` executes package structure checks and Google’s `DESIGN.md` linter. `npm test` covers one-file façade installation, target isolation, bounded task resolution, source checking, verification receipts, stale/tampered output, engine pinning, sync preservation, legacy migration, conflict backups, readiness modes, explanation, and path safety. `npm run build` produces deterministic package metadata. `npm run smoke` packs the exact package shape, installs it into a clean consumer, initializes a project, compiles compatibility context, runs `design resolve`, `design check`, `design verify`, and validation, and confirms that the engine was not copied into the consumer. `npm run benchmark` measures component fidelity against local clean-room-ready fixtures; `npm run benchmark:release` is reserved for clean AI-generated candidates with prompt hashes, allowed-input hashes, no-target-access attestation, and scores that meet the 99% target.
+`npm run validate:strict` executes package structure checks and Google’s `DESIGN.md` linter. `npm test` covers one-file façade installation, target isolation, bounded task resolution, source checking, release verification receipts, stale/tampered output, engine pinning, sync preservation, legacy migration, conflict backups, readiness modes, explanation, and path safety. `npm run build` produces deterministic package metadata. `npm run smoke` packs the exact package shape, installs it into a clean consumer, initializes a project, compiles compatibility context, runs `design resolve`, `design check`, `design verify --mode release`, and validation, and confirms that the engine was not copied into the consumer. `npm run benchmark:release` measures release-eligible component fidelity against local clean-room-ready fixtures and fails below the 99% target.
 
 ## Component fidelity benchmarks
 

@@ -11,6 +11,28 @@ import {
 
 const temp = () => fs.mkdtemp(path.join(os.tmpdir(), 'design-facade-'));
 
+const verifiedHtml = (body = 'No results.') => `<!doctype html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    main { max-width: 720px; overflow-wrap: anywhere; }
+    button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    @media (max-width: 520px) { main { display: block; } }
+  </style>
+</head>
+<body>
+  <main data-state="empty">
+    <h1>Review queue</h1>
+    <p role="status">${body}</p>
+    <button aria-label="Approve request" data-state="default">Approve</button>
+    <button disabled data-state="disabled">Queued</button>
+    <p role="alert" hidden>Unable to load queue.</p>
+  </main>
+</body>
+</html>
+`;
+
 async function ready(target) {
   await fs.writeFile(path.join(target, 'design/PROJECT.md'), '# Project\n\n- **Name:** Acme\n\n| Situation | Person | Outcome | Next | Frequency | Risk |\n| --- | --- | --- | --- | --- | --- |\n| Review | Admin | Update | Continue | daily | low |\n');
   await fs.writeFile(path.join(target, 'design/COMPONENTS.md'), '# Components\n\n| Intent | Code | Status |\n| --- | --- | --- |\n| action.button | Button | approved |\n');
@@ -189,11 +211,43 @@ test('check and verify produce machine-readable receipts', async () => {
   await resolveTaskContext({ target, request: 'Add an approved empty state' });
   const check = await checkDesign({ target });
   assert.equal(check.summary.errors, 0, JSON.stringify(check.findings));
-  await fs.writeFile(path.join(target, 'empty-state.html'), '<main><p>No results.</p></main>\n');
-  const receipt = await verifyDesign({ target, request: 'Add an approved empty state', surfaces: ['empty-state'], evidence: ['empty-state.html'] });
+  await fs.writeFile(path.join(target, 'empty-state.html'), verifiedHtml());
+  const receipt = await verifyDesign({ target, request: 'Add an approved empty state', mode: 'release', surfaces: ['empty-state'], evidence: ['empty-state.html'] });
   assert.equal(receipt.healthy, true, JSON.stringify(receipt.blocking));
   assert.match(receipt.receipt, /\.design\/receipts\/design-receipt-/);
+  assert.equal(receipt.results.evidence.coverage.rendered.present, true);
+  assert.equal(receipt.results.evidence.coverage.screenshot.present, true);
+  assert.equal(receipt.results.evidence.coverage.accessibility.present, true);
+  assert.equal(receipt.results.evidence.coverage.responsiveness.present, true);
+  assert.equal(receipt.results.evidence.coverage.keyboard.present, true);
+  assert.equal(receipt.results.evidence.coverage.overflow.present, true);
+  assert.equal(receipt.results.evidence.coverage.states.present, true);
+  assert.ok(receipt.visualChanges.some((artifact) => artifact.staticCapture));
+  await fs.access(path.join(target, receipt.results.evidence.directory, 'manifest.json'));
   await fs.access(path.join(target, '.design/receipts/latest.json'));
+});
+
+test('release verify blocks weak evidence and unapproved baseline changes', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  await resolveTaskContext({ target, request: 'Add an approved empty state' });
+  await fs.writeFile(path.join(target, 'weak.html'), '<main><button></button></main>\n');
+  const weak = await verifyDesign({ target, mode: 'release', surfaces: ['weak'], evidence: ['weak.html'] });
+  assert.equal(weak.healthy, false);
+  assert.ok(weak.blocking.some((item) => item.type === 'evidence-error' && item.ruleId === 'DS-A11Y-001'));
+  assert.ok(weak.blocking.some((item) => item.type === 'missing-evidence-category' && item.category === 'states'));
+
+  await fs.writeFile(path.join(target, 'strong.html'), verifiedHtml('Ready for review.'));
+  await fs.mkdir(path.join(target, 'design/references/baselines'), { recursive: true });
+  await fs.writeFile(path.join(target, 'design/references/baselines/strong.json'), `${JSON.stringify({
+    schemaVersion: 1,
+    surface: 'strong',
+    compare: 'rendered',
+    sha256: 'not-the-current-rendered-hash',
+  }, null, 2)}\n`);
+  const changed = await verifyDesign({ target, mode: 'release', surfaces: ['strong'], evidence: ['strong.html'] });
+  assert.equal(changed.healthy, false);
+  assert.ok(changed.blocking.some((item) => item.type === 'unapproved-baseline-change'));
 });
 
 test('explains profiles and stable quality rules', async () => {

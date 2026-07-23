@@ -30,6 +30,8 @@ Evidence must match the claim, target the exact candidate, and be fresh enough t
 
 Record source revision, target profile, route/surface, environment, fixture or input, viewport/window and input mode, appearance/accessibility settings, time, check/tool version, result, and known limitations.
 
+`design verify --mode release` must produce a receipt and evidence manifest that covers rendered surface structure, accessibility semantics, keyboard and focus behavior, responsive coverage, overflow coverage, state coverage, browser screenshot or deterministic static-capture output, and baseline comparison when an approved baseline manifest exists. Missing categories, failed error-level source checks, stale context, expired exceptions, and unapproved baseline changes block release verification.
+
 ## Visual evidence matrix
 
 Capture only representative but meaningful combinations:

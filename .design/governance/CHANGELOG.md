@@ -7,6 +7,11 @@ status: normative
 
 # Changelog
 
+## 1.3.1 — 2026-07-23
+
+- strengthened `design verify --mode release` so receipts include a generated evidence manifest, rendered HTML inspection, deterministic static captures, release evidence category gates, and approved baseline comparison
+- changed smoke and CI validation to exercise release-mode verification and the 99% component-fidelity release benchmark gate
+
 ## 1.3.0 — 2026-07-23
 
 - accepted the one-file control-plane ADR: consuming projects author `DESIGN.md` and optionally store approved media under `design/references/`

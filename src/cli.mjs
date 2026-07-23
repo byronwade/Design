@@ -45,7 +45,7 @@ Usage:
   design init [--target DIR] [--profile ID ...] [--app-type ID] [--adapters LIST] [--force]
   design resolve --request TEXT [--target DIR] [--id TARGET] [--json]
   design check [--target DIR] [--mode development|release] [--json]
-  design verify [--target DIR] [--mode development|release] [--request TEXT] [--surface LIST] [--evidence LIST] [--json]
+  design verify [--target DIR] [--mode development|release] [--request TEXT] [--surface LIST] [--evidence LIST] [--baseline LIST] [--json]
 
 Compatibility:
   design-contract list [--json]
@@ -109,6 +109,7 @@ export async function runCli(argv, { binary = 'design-contract' } = {}) {
       mode: String(options.mode ?? 'development'),
       surfaces: commaList(options.surface),
       evidence: commaList(options.evidence),
+      baselines: commaList(options.baseline),
     });
     output(receipt, json);
     if (!receipt.healthy) process.exitCode = 2;

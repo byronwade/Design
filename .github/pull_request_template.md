@@ -22,6 +22,7 @@
 - [ ] `npm test`
 - [ ] `npm run build`
 - [ ] `npm run smoke`
+- [ ] `npm run benchmark:release`
 - [ ] `npm run site:check`
 - [ ] Google `DESIGN.md` lint
 - [ ] Ubuntu and Windows workflow results
