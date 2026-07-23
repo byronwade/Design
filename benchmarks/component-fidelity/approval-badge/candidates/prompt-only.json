@@ -1,0 +1,51 @@
+{
+  "candidate": "prompt-only",
+  "track": "plain-prompt",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/approval-badge/clean-room/prompt.md",
+    "benchmarks/component-fidelity/approval-badge/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/approval-badge/clean-room/candidate.schema.json"
+  ],
+  "anatomy": [
+    "badge.root",
+    "badge.status-dot",
+    "badge.label",
+    "badge.focus-ring"
+  ],
+  "tokens": {
+    "height": 24,
+    "paddingInline": 8,
+    "gap": 4,
+    "radius": 999,
+    "background": "#E8F2E7",
+    "foreground": "#356548",
+    "border": "1px solid rgba(67, 52, 38, 0.15)",
+    "dotColor": "#356548",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 12,
+    "dotSize": 6
+  },
+  "states": {
+    "hover": {
+      "background": "#E8F2E7",
+      "border": "1px solid rgba(67, 52, 38, 0.22)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#7D4936",
+      "outlineOffset": 2
+    },
+    "disabled": {
+      "background": "#FAF5EC",
+      "foreground": "#766E65",
+      "opacity": 0.56
+    }
+  },
+  "content": {
+    "label": "Approved",
+    "ariaLabel": "Approved"
+  }
+}

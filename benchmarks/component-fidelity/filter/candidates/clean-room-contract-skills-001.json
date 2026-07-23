@@ -1,0 +1,132 @@
+{
+  "candidate": "clean-room-contract-skills-001",
+  "track": "contract-plus-skills",
+  "generatedBy": "GPT-5 Codex",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/filter/clean-room/prompt.md",
+    "benchmarks/component-fidelity/filter/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/filter/clean-room/candidate.schema.json",
+    "README.md",
+    "AGENTS.md",
+    "DESIGN.md",
+    ".design/AGENT.md",
+    ".design/INDEX.md",
+    ".design/components/ACTIONS.md",
+    ".design/components/COMMANDS-SEARCH.md",
+    ".design/components/FORMS.md",
+    ".design/components/DATA-DISPLAY.md",
+    ".design/patterns/PAGES.md",
+    ".design/patterns/SHELLS.md",
+    ".design/verticals/web/BASE.md",
+    ".design/verticals/web/APP.md",
+    "templates/design/PROJECT.md",
+    "templates/design/COMPONENTS.md",
+    "templates/design/REFERENCES.md",
+    "templates/design/COMPOSITION.json",
+    "skills/design-system/SKILL.md",
+    "skills/design-review/SKILL.md"
+  ],
+  "provenance": {
+    "runId": "clean-room-contract-skills-001-2026-07-22",
+    "model": "GPT-5 Codex",
+    "operator": "Codex",
+    "generatedAt": "2026-07-22T20:13:44.2265955-04:00",
+    "targetAccess": false,
+    "promptSha256": "6181634453ee7594317547d32eed0444dc774070a69a0510e6f354effcb00657",
+    "allowedInputsSha256": "22a9c07f0f82f90cf62704c69df9127298253e18ce02db09b2cfa6e93dc16d7b",
+    "allowedInputFiles": [
+      "benchmarks/component-fidelity/filter/clean-room/prompt.md",
+      "benchmarks/component-fidelity/filter/clean-room/allowed-inputs.json",
+      "benchmarks/component-fidelity/filter/clean-room/candidate.schema.json",
+      "README.md",
+      "AGENTS.md",
+      "DESIGN.md",
+      ".design/AGENT.md",
+      ".design/INDEX.md",
+      ".design/components/ACTIONS.md",
+      ".design/components/COMMANDS-SEARCH.md",
+      ".design/components/FORMS.md",
+      ".design/components/DATA-DISPLAY.md",
+      ".design/patterns/PAGES.md",
+      ".design/patterns/SHELLS.md",
+      ".design/verticals/web/BASE.md",
+      ".design/verticals/web/APP.md",
+      "templates/design/PROJECT.md",
+      "templates/design/COMPONENTS.md",
+      "templates/design/REFERENCES.md",
+      "templates/design/COMPOSITION.json",
+      "skills/design-system/SKILL.md",
+      "skills/design-review/SKILL.md"
+    ],
+    "cleanRoomAttestation": "I did not read the hidden target, prior candidate files, scorer output, benchmark misses, or any input outside the contract-plus-skills allowed list."
+  },
+  "anatomy": [
+    "filter.root",
+    "filter.leading-icon",
+    "filter.value-label",
+    "filter.count-badge",
+    "filter.chevron",
+    "filter.focus-ring",
+    "filter.popover",
+    "filter.option-row",
+    "filter.option-check",
+    "filter.empty-state"
+  ],
+  "tokens": {
+    "height": 32,
+    "paddingInline": 10,
+    "gap": 8,
+    "radius": 6,
+    "background": "#18181b",
+    "foreground": "#f4f4f5",
+    "border": "#3f3f46",
+    "mutedForeground": "#a1a1aa",
+    "accent": "#9b4f32",
+    "badgeBackground": "#27272a",
+    "shadow": "0 12px 28px rgba(0, 0, 0, 0.32)",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 13,
+    "badgeSize": 11,
+    "popoverWidth": 240,
+    "optionHeight": 32
+  },
+  "states": {
+    "hover": {
+      "background": "#27272a",
+      "border": "#52525b"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#9b4f32",
+      "outlineOffset": 2
+    },
+    "open": {
+      "background": "#18181b",
+      "border": "#52525b",
+      "shadow": "0 16px 36px rgba(0, 0, 0, 0.38)"
+    },
+    "selected": {
+      "optionBackground": "#27272a",
+      "optionForeground": "#ffffff",
+      "checkColor": "#9b4f32"
+    },
+    "disabled": {
+      "background": "#111113",
+      "foreground": "#71717a",
+      "cursor": "not-allowed"
+    },
+    "empty": {
+      "label": "No matching filters",
+      "foreground": "#a1a1aa"
+    }
+  },
+  "content": {
+    "label": "Status",
+    "value": "Open",
+    "count": "12",
+    "placeholder": "Filter status",
+    "empty": "No matching filters"
+  }
+}

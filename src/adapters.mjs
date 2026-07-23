@@ -8,13 +8,14 @@ const BODY = `For UI/UX design, implementation, component changes, content state
 1. Run \`${CLI} status\`; refresh stale context with \`${CLI} context\`.
 2. When status reports an engine update, run \`${CLI} sync\` before compiling context.
 3. Select the target named by the task, the target whose configured root contains the work, or the single default target.
-4. Read \`DESIGN.md\`, \`.design/generated/<target>.md\`, and the project files under \`design/\`.
-5. Select the target \`appType\` when present and read its recipe in \`design/COMPOSITION.json\` before choosing shadcn/ui blocks.
-6. Inspect production components, stories, tests, fixtures, routes, and approved references before changing structure.
-7. Produce the design brief and component map required by the resolved contract.
-8. Reuse mapped components, shadcn/ui primitives, approved blocks, and semantic tokens. A missing capability requires a design-system gap, not a page-local primitive.
-9. Do not mix sibling platform profiles or edit \`.design/generated/\`.
-10. Run \`${CLI} validate\` plus the product's rendered, runtime, accessibility, and visual checks before claiming completion.`;
+4. Read \`DESIGN.md\`, \`.design/generated/<target>.md\`, \`design/COMPOSITION.json\`, and the applicable project files under \`design/\`.
+5. Select the target \`appType\` when present and read its recipe in \`design/COMPOSITION.json\` before choosing primitives, blocks, or templates.
+6. Select the smallest applicable design-system Skill from \`.agents/skills\`, \`.claude/skills\`, or the repository \`skills/\` folder. Skills are the executable contract layer; source contracts are compiled context.
+7. Inspect production components, stories, tests, fixtures, routes, and approved visual references under \`design/references/\`, including Mobbin-style pattern notes when present, before changing structure.
+8. Produce the design brief and component map required by the resolved contract.
+9. Reuse mapped components, approved component-source primitives, approved blocks, and semantic tokens. A missing capability requires a design-system gap, not a page-local primitive.
+10. Do not mix sibling platform profiles or edit \`.design/generated/\`.
+11. Run \`${CLI} validate\` plus the product's rendered, runtime, accessibility, and visual checks before claiming completion.`;
 
 async function managedBlock(file, heading, body) {
   const current = await exists(file) ? await fs.readFile(file, 'utf8') : '';

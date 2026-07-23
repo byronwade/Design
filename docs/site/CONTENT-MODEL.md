@@ -1,51 +1,60 @@
 # Public content model
 
-The website is a real documentation and showcase product today. It does not need a backend to establish its public information architecture or its content contract.
+The website is a compact documentation and contract-reading product. It does not expose standalone component, block, showcase, skills, lab, or toolbox pages.
 
-## Local-first record
+## Local-first records
 
-Showcase entries currently live in `website/src/data/showcase.ts` and use this shape:
+Contract packs live in `website/src/data/contract-projects.ts`. A pack is the public product record for AI design behavior:
 
 ```ts
-type ShowcaseRecord = {
+type ContractProject = {
   slug: string
   title: string
-  author: string
-  kind: 'Official reference' | 'Curated example'
-  surface: 'web app' | 'web marketing' | 'mobile' | 'desktop'
-  summary: string
-  tags: string[]
-  preview: 'warm' | 'blue' | 'green' | 'ink' | 'rose' | 'yellow'
-  screens: ShowcaseScreen[]
-  source: string
-  notes: string[]
-}
-
-type ShowcaseScreen = {
-  label: string
-  title: string
-  caption: string
-  preview: string
-  asset?: string
-  alt?: string
+  command: string
+  prompt: string
+  files: string[] // context anchors, not a manual source-reading queue
+  roles: string[]
+  skills: ContractSkill[]
+  photos: ReferencePhoto[]
+  components: ComponentRewrite[]
+  references: string[]
 }
 ```
 
-The current static site is the transport. Pages should read records, not know whether they came from a TypeScript module, an API route, or a database query.
+Canonical source entries still live in `website/src/data/reference.ts` and point back to repository files:
+
+```ts
+type ReferenceItem = {
+  slug: string
+  title: string
+  section: ReferenceSection
+  source: string
+  status: 'Normative' | 'Reference' | 'Context' | 'Schema'
+  description: string
+  format?: 'markdown' | 'json'
+}
+```
+
+Benchmark summaries for the public site live in `website/src/data/benchmarks.ts` and must be traceable to `benchmarks/component-fidelity/` plus `npm run benchmark` output. Public accuracy claims require release-eligible clean-room candidates with matching prompt and allowed-input hashes, a public-claim holdout suite, and no calibration fixtures. When a clean run is below target, show the measured score and misses as product evidence. When a trained suite reaches target after miss-derived contract updates, label it as training evidence instead of public accuracy.
+
+The current static site is the transport. Contract pages should render the AI handoff, Skill stack, context anchors, reference memory, and component showcase from the pack while still linking to canonical engine context. They should not know whether the record later came from a TypeScript module, API route, or database query.
 
 ## Current contribution workflow
 
-Open [`/showcase/submit/`](../../website/src/pages/showcase/submit.astro) in the local site for the contributor-facing record shape, example, review checklist, and backend boundary. Today a contribution is a pull request that adds a typed record to `website/src/data/showcase.ts`; it is not a fake browser submission.
+Today a contribution is a pull request that changes the owning contract pack, schema, template, skill, source contract, or documentation file directly. The website renders those sources through `/contracts/` and `/docs/`.
 
-## Future backend seam
+## Future backend boundary
 
-When the backend is introduced, preserve these public invariants:
+When a backend is introduced, preserve these public invariants:
 
-1. `slug` remains the stable public URL under `/showcase/<slug>/`.
-2. `title`, `author`, `surface`, `summary`, and `tags` remain available for cards, search, metadata, and sharing.
-3. `screens` remain structured context views; each can use a local CSS specimen today or an asset path later.
-4. `notes` remain structured content, not a single HTML blob.
-5. Submission state, moderation state, assets, and permissions remain separate from the public reading record.
-6. The public shell remains documentation/showcase-oriented; administrative workflows do not become the main navigation.
+1. Contract pack `slug` remains the stable public URL under `/contracts/<slug>/`.
+2. `title`, `status`, `description`, `command`, `prompt`, `files`, `roles`, `skills`, `photos`, `components`, and `references` remain available for cards, filters, metadata, and sharing.
+3. The source contract remains authoritative; rendered HTML is never the editable record.
+4. Skills remain the executable AI layer; source contracts remain compiled context.
+5. Visual references stay project-owned and must not become bundled default media.
+6. Component showcases remain examples of contract-applied primitives, not separate component documentation pages.
+7. Benchmark calibration fixtures remain labeled as calibration and do not count as public model-performance claims.
+8. Submission state, moderation state, assets, and permissions remain separate from the public reading record.
+9. Administrative workflows do not become the main navigation.
 
 The first backend should add persistence and contribution workflows, not force a redesign of the public surface.

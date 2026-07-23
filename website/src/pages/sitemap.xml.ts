@@ -1,15 +1,9 @@
-import { catalog } from '../data/catalog';
-import { reference } from '../data/reference';
-import { showcase } from '../data/showcase';
-import { skills } from '../data/skills';
+import { contractProjects } from '../data/contract-projects';
 
 const site = 'https://design.byronwade.com';
 const routes = [
-  '/', '/blocks/', '/catalog/', '/docs/', '/evaluate/', '/lab/', '/principles/', '/reference/', '/search/', '/showcase/', '/showcase/submit/', '/skills/', '/tools/',
-  ...catalog.map((item) => `/catalog/${item.slug}/`),
-  ...reference.map((item) => `/reference/${item.slug}/`),
-  ...showcase.map((item) => `/showcase/${item.slug}/`),
-  ...skills.map((item) => `/skills/${item.slug}/`),
+  '/', '/contracts/', '/docs/',
+  ...contractProjects.map((project) => `/contracts/${project.slug}/`),
 ];
 
 export const GET = () => {

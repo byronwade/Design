@@ -1,9 +1,0 @@
----
-import Icon from './Icon.astro';
-import CatalogPreview from './CatalogPreview.astro';
-const { item } = Astro.props;
----
-<a class="catalog-card" href={`/catalog/${item.slug}/`} data-search={`${item.title} ${item.group} ${item.description} ${item.tags.join(' ')}`}>
-  <CatalogPreview type={item.preview} />
-  <div class="catalog-card-body"><div class="card-meta"><span>{item.eyebrow}</span><span class={`status status-${item.status.toLowerCase()}`}>{item.status}</span></div><h3>{item.title}</h3><p>{item.description}</p><div class="card-footer"><span>{item.stats[0].value} {item.stats[0].label}</span><span class="card-arrow"><Icon name="arrow" size={15} /></span></div></div>
-</a>

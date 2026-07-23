@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "candidate": "clean-room-contract-skills-001",
+  "track": "contract-plus-skills",
+  "generatedBy": "GPT-5 Codex",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/button/clean-room/prompt.md",
+    "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/button/clean-room/candidate.schema.json",
+    "README.md",
+    "AGENTS.md",
+    "DESIGN.md",
+    ".design/AGENT.md",
+    ".design/INDEX.md",
+    ".design/components/ACTIONS.md",
+    ".design/components/FORMS.md",
+    ".design/components/DATA-DISPLAY.md",
+    ".design/patterns/PAGES.md",
+    ".design/verticals/web/BASE.md",
+    ".design/verticals/web/APP.md",
+    "templates/design/PROJECT.md",
+    "templates/design/COMPONENTS.md",
+    "templates/design/REFERENCES.md",
+    "templates/design/COMPOSITION.json",
+    "skills/design-system/SKILL.md",
+    "skills/design-review/SKILL.md"
+  ],
+  "provenance": {
+    "runId": "clean-room-contract-skills-001",
+    "generatedAt": "2026-07-22T19:46:22.9004896-04:00",
+    "model": "GPT-5 Codex",
+    "operator": "Codex clean-room automation",
+    "targetAccess": false,
+    "allowedInputFiles": [
+      "benchmarks/component-fidelity/button/clean-room/prompt.md",
+      "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json",
+      "benchmarks/component-fidelity/button/clean-room/candidate.schema.json",
+      "README.md",
+      "AGENTS.md",
+      "DESIGN.md",
+      ".design/AGENT.md",
+      ".design/INDEX.md",
+      ".design/components/ACTIONS.md",
+      ".design/components/FORMS.md",
+      ".design/components/DATA-DISPLAY.md",
+      ".design/patterns/PAGES.md",
+      ".design/verticals/web/BASE.md",
+      ".design/verticals/web/APP.md",
+      "templates/design/PROJECT.md",
+      "templates/design/COMPONENTS.md",
+      "templates/design/REFERENCES.md",
+      "templates/design/COMPOSITION.json",
+      "skills/design-system/SKILL.md",
+      "skills/design-review/SKILL.md"
+    ],
+    "promptSha256": "98e8e62d46d7fead741f9f2992eb5709a139424a99fcff80fd2e6b1a0f502db8",
+    "allowedInputsSha256": "707f2303c352977ce7c2e7dcdd58d1e29fd0a06434d5d6141208d72c521817f9",
+    "cleanRoomAttestation": "I generated this candidate only from the listed clean-room allowed inputs and did not read the hidden target, scorer misses, benchmark output, or existing candidate files."
+  },
+  "anatomy": [
+    "root: semantic button command for the single primary commitment in its action region",
+    "label: centered verb-first command text with compact label typography",
+    "leadingIcon: optional 14px publish/check-style icon only when it clarifies the command; not required for recognition",
+    "hint: secondary consequence text adjacent to or below the button in muted body-sm text, not inside the hit target",
+    "loadingIndicator: 14px inline spinner or progress glyph replacing the leading icon while preserving label width",
+    "focusAffordance: visible 2px focus ring using the focus token with offset outside the 6px radius",
+    "hitArea: visual height remains 32px on pointer-first web surfaces with an accessible target strategy when touch is present"
+  ],
+  "tokens": {
+    "intent": "action.button.primary",
+    "display": "inline-flex",
+    "alignItems": "center",
+    "justifyContent": "center",
+    "height": "32px",
+    "minWidth": "132px",
+    "paddingInline": "12px",
+    "gap": "8px",
+    "borderRadius": "6px",
+    "backgroundColor": "#9B4F32",
+    "textColor": "#FFFFFF",
+    "fontFamily": "Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+    "fontSize": "13px",
+    "fontWeight": 500,
+    "lineHeight": 1.2,
+    "letterSpacing": "0",
+    "border": "1px solid rgba(67, 52, 38, 0.22)",
+    "shadow": "inset 0 1px 0 rgba(255,255,255,0.18), 0 1px 2px rgba(67,52,38,0.16)",
+    "iconSize": "14px",
+    "spinnerSize": "14px",
+    "focusRing": "2px solid #7D4936",
+    "focusRingOffset": "2px",
+    "hintColor": "#675F57",
+    "hintTypography": "body-sm, 13px, 400, line-height 1.4",
+    "supportingSurface": "#FFFDF8"
+  },
+  "states": {
+    "default": {
+      "backgroundColor": "#9B4F32",
+      "textColor": "#FFFFFF",
+      "shadow": "shallow warm bevel and 1px ambient paper shadow",
+      "cursor": "pointer"
+    },
+    "hover": {
+      "backgroundColor": "#7A3F2A",
+      "textColor": "#FFFFFF",
+      "shadow": "inset 0 1px 0 rgba(255,255,255,0.16), 0 2px 4px rgba(67,52,38,0.18)",
+      "note": "hover is enhancement only; command remains visible without hover"
+    },
+    "focusVisible": {
+      "outline": "2px solid #7D4936",
+      "outlineOffset": "2px",
+      "shadow": "shallow warm bevel plus visible semantic focus affordance"
+    },
+    "pressed": {
+      "backgroundColor": "#7A3F2A",
+      "transform": "translateY(1px)",
+      "shadow": "inset 0 1px 2px rgba(43,39,35,0.24)"
+    },
+    "loading": {
+      "label": "Publishing",
+      "ariaBusy": "true",
+      "disabledDuplicateCommit": "true",
+      "indicator": "14px inline spinner in on-primary color",
+      "widthBehavior": "preserve default width to prevent layout shift"
+    },
+    "disabled": {
+      "backgroundColor": "#EDE3D5",
+      "textColor": "#766E65",
+      "border": "1px solid rgba(67, 52, 38, 0.10)",
+      "shadow": "none",
+      "cursor": "not-allowed",
+      "opacity": "1",
+      "hint": "explain the review requirement when disabled"
+    }
+  },
+  "content": {
+    "label": "Publish contract",
+    "loadingLabel": "Publishing",
+    "hint": "Available after review",
+    "disabledHint": "Review required before publishing",
+    "accessibleName": "Publish contract",
+    "scope": "Commits the reviewed design contract for the current region"
+  }
+}

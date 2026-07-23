@@ -13,6 +13,7 @@ DESIGN.md
 AGENTS.md
 design/PROJECT.md
 design/COMPONENTS.md
+design/REFERENCES.md
 design/DECISIONS.md
 design/COMPOSITION.json
 ```
@@ -33,7 +34,7 @@ Run after changing `DESIGN.md`, `design/`, target configuration, or overrides. D
 design-contract sync
 ```
 
-Synchronization updates the engine version and managed adapters, recompiles context, and preserves project-owned visual identity, mappings, and decisions. Legacy copied-engine installations are migrated into the façade layout.
+Synchronization updates the engine version and managed adapters, recompiles context, and preserves project-owned visual identity, mappings, references, and decisions. Legacy copied-engine installations are migrated into the façade layout.
 
 ## Health
 

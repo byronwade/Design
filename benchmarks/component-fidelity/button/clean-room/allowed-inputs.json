@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "suite": "button",
+  "component": "button",
+  "suiteMode": "training",
+  "publicClaimEligible": false,
+  "trainingNote": "This suite may be used to improve the contract after inspecting scored misses. Passing this suite is trained evidence, not a holdout public accuracy claim.",
+  "hiddenFiles": [
+    "benchmarks/component-fidelity/button/target.json",
+    "benchmarks/component-fidelity/button/candidates/raw-shadcn.json",
+    "benchmarks/component-fidelity/button/candidates/prompt-only.json",
+    "benchmarks/component-fidelity/button/candidates/contract-skill.json",
+    "benchmarks/component-fidelity/button/candidates/clean-room-contract-skills-001.json",
+    "benchmarks/component-fidelity/button/candidates/clean-room-contract-skills-002.json"
+  ],
+  "tracks": {
+    "baseline": {
+      "releaseEligible": false,
+      "description": "Generic primitive or shadcn vocabulary only. This track is useful as a baseline, not as a release claim.",
+      "allowedFiles": [
+        "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json"
+      ]
+    },
+    "plain-prompt": {
+      "releaseEligible": false,
+      "description": "The clean-room prompt with no installed Skills, compiled context, or project reference evidence.",
+      "allowedFiles": [
+        "benchmarks/component-fidelity/button/clean-room/prompt.md",
+        "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json",
+        "benchmarks/component-fidelity/button/clean-room/candidate.schema.json"
+      ]
+    },
+    "contract-plus-skills": {
+      "releaseEligible": true,
+      "description": "The clean-room prompt plus the package contract, generated target context, installed Skills, composition policy, mappings, and approved reference registry.",
+      "allowedFiles": [
+        "benchmarks/component-fidelity/button/clean-room/prompt.md",
+        "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json",
+        "benchmarks/component-fidelity/button/clean-room/candidate.schema.json",
+        "README.md",
+        "AGENTS.md",
+        "DESIGN.md",
+        ".design/AGENT.md",
+        ".design/INDEX.md",
+        ".design/components/ACTIONS.md",
+        ".design/components/FORMS.md",
+        ".design/components/DATA-DISPLAY.md",
+        ".design/patterns/PAGES.md",
+        ".design/verticals/web/BASE.md",
+        ".design/verticals/web/APP.md",
+        "templates/design/PROJECT.md",
+        "templates/design/COMPONENTS.md",
+        "templates/design/REFERENCES.md",
+        "templates/design/COMPOSITION.json",
+        "skills/design-system/SKILL.md",
+        "skills/design-review/SKILL.md"
+      ]
+    }
+  }
+}

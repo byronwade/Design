@@ -25,26 +25,27 @@ function routeFile(route) {
 
 try {
   await stat(dist);
-  const catalogSource = await readFile(path.join(website, 'src', 'data', 'catalog.ts'), 'utf8');
-  const showcaseSource = await readFile(path.join(website, 'src', 'data', 'showcase.ts'), 'utf8');
   const referenceSource = await readFile(path.join(website, 'src', 'data', 'reference.ts'), 'utf8');
-  const skillsSource = await readFile(path.join(website, 'src', 'data', 'skills.ts'), 'utf8');
-  const systemSource = await readFile(path.join(website, 'src', 'data', 'system.ts'), 'utf8');
+  const contractProjectSource = await readFile(path.join(website, 'src', 'data', 'contract-projects.ts'), 'utf8');
   const layoutSource = await readFile(path.join(website, 'src', 'layouts', 'SiteLayout.astro'), 'utf8');
   const headerSource = await readFile(path.join(website, 'src', 'components', 'SiteHeader.astro'), 'utf8');
-  const searchPageSource = await readFile(path.join(website, 'src', 'pages', 'search.astro'), 'utf8');
   const docsPageSource = await readFile(path.join(website, 'src', 'pages', 'docs.astro'), 'utf8');
   const packageSource = await readFile(path.join(root, 'package.json'), 'utf8');
-  const catalogSlugs = [...catalogSource.matchAll(/slug: '([^']+)'/g)].map((match) => match[1]);
-  const showcaseSlugs = [...showcaseSource.matchAll(/slug: '([^']+)'/g)].map((match) => match[1]);
   const referenceSlugs = [...referenceSource.matchAll(/slug: '([^']+)'/g)].map((match) => match[1]);
-  const skillSlugs = [...skillsSource.matchAll(/slug: '([^']+)'/g)].map((match) => match[1]);
-  const sourcePaths = [...new Set([catalogSource, showcaseSource, referenceSource, skillsSource].flatMap((source) => [...source.matchAll(/source: '([^']+)'/g)].map((match) => match[1])))];
-  if (!systemSource.includes("designSource = 'DESIGN.md'") || !systemSource.includes('readFileSync')) failures.push('Lab tokens must read the canonical DESIGN.md source');
-  if (!layoutSource.includes('designColors') || !layoutSource.includes('siteTokenCss') || !layoutSource.includes('set:html')) failures.push('shared site layout must inline canonical design tokens');
+  const contractProjectSlugs = [...contractProjectSource.matchAll(/slug: '([^']+)'/g)].map((match) => match[1]);
+  const sourcePaths = [...new Set([...referenceSource.matchAll(/source: '([^']+)'/g)].map((match) => match[1]))];
+  if (!layoutSource.includes('siteTokenCss') || !layoutSource.includes('set:html')) failures.push('shared site layout must inline canonical design tokens');
   if (headerSource.includes('class:list-active') || !headerSource.includes("class:list={{ 'list-active':")) failures.push('site navigation must use valid Astro class:list directives for active destinations');
-  if (!searchPageSource.includes('searchIndex.map') || !searchPageSource.includes('search-noscript-results')) failures.push('search must server-render the complete local index for no-JavaScript reading');
-  for (const section of ['#install', '#model', '#workflow', '#commands', '#verify', '#surface', '#contribute']) {
+  if (!headerSource.includes('/contracts/') || headerSource.includes('/catalog/') || headerSource.includes('/blocks/') || headerSource.includes('/showcase/') || headerSource.includes('/skills/')) failures.push('site navigation must only expose home, contracts, and docs');
+  for (const route of ['catalog', 'blocks', 'skills', 'reference', 'showcase', 'lab', 'tools', 'search']) {
+    try {
+      await stat(path.join(website, 'src', 'pages', route));
+      failures.push(`removed public route source still exists: /${route}/`);
+    } catch {
+      // Missing is the expected state for routes outside the public surface.
+    }
+  }
+  for (const section of ['#install', '#model', '#references', '#workflow', '#commands', '#verify', '#benchmarks', '#surface', '#contribute']) {
     if (!docsPageSource.includes(`id="${section.slice(1)}"`)) failures.push(`documentation route missing section: ${section}`);
   }
   if (!packageSource.includes('"license": "MIT"')) failures.push('package metadata must declare the open-source license');
@@ -54,32 +55,18 @@ try {
   for (const canonicalFile of canonicalDesignFiles) {
     if (!referenceSourcePaths.has(canonicalFile)) failures.push(`canonical source missing from Reference: ${canonicalFile}`);
   }
-  if (showcaseSlugs.length !== new Set(showcaseSlugs).size) failures.push('showcase records must have unique slugs');
-  for (const field of ['slug', 'title', 'author', 'kind', 'surface', 'summary', 'tags', 'preview', 'screens', 'source', 'notes']) {
-    if (!new RegExp(`\\b${field}:`).test(showcaseSource)) failures.push(`showcase record contract missing field: ${field}`);
-  }
-  for (const block of showcaseSource.split(/\n  \{ slug: '/).slice(1)) {
-    const slug = block.match(/^([^']+)/)?.[1] ?? 'unknown';
-    const screenCount = (block.match(/label: '/g) ?? []).length;
-    if (screenCount !== 3) failures.push(`showcase record must have three surface studies: ${slug}`);
-  }
-  for (const asset of [...showcaseSource.matchAll(/asset: '([^']+)'/g)].map((match) => match[1])) {
-    try { await stat(path.join(root, asset)); } catch { failures.push(`showcase asset missing: ${asset}`); }
-  }
-  const expectedRoutes = ['/', '/404.html', '/blocks/', '/catalog/', '/docs/', '/evaluate/', '/lab/', '/principles/', '/reference/', '/search/', '/showcase/', '/showcase/submit/', '/skills/', '/tools/'];
-  expectedRoutes.push(...catalogSlugs.map((slug) => `/catalog/${slug}/`));
-  expectedRoutes.push(...showcaseSlugs.map((slug) => `/showcase/${slug}/`));
-  expectedRoutes.push(...referenceSlugs.map((slug) => `/reference/${slug}/`));
-  expectedRoutes.push(...skillSlugs.map((slug) => `/skills/${slug}/`));
+  const expectedRoutes = ['/', '/404.html', '/contracts/', '/docs/'];
+  expectedRoutes.push(...contractProjectSlugs.map((slug) => `/contracts/${slug}/`));
 
   const files = await walk(dist);
   const htmlFiles = files.filter((file) => file.endsWith('.html'));
   const relativeFiles = new Set(files.map((file) => path.relative(dist, file).replaceAll(path.sep, '/')));
   const actual = new Set(htmlFiles.map((file) => path.relative(dist, file).replaceAll(path.sep, '/')));
-  for (const requiredAsset of ['robots.txt', 'sitemap.xml', 'search-index.json', 'design-tokens.css']) {
+  const htmlByRoute = new Map();
+  const routeForHtml = (relative) => relative === 'index.html' ? '/' : `/${relative.replace(/(?:^|\/)index\.html$/, '/').replace(/\\/g, '/')}`;
+  for (const requiredAsset of ['robots.txt', 'sitemap.xml', 'design-tokens.css']) {
     if (!relativeFiles.has(requiredAsset)) failures.push(`missing public asset: ${requiredAsset}`);
   }
-  if (!relativeFiles.has('search-index.json')) failures.push('missing search index asset: search-index.json');
   let inlineScriptBytes = 0;
   let externalScriptBytes = 0;
   let stylesheetBytes = 0;
@@ -104,6 +91,7 @@ try {
   for (const file of htmlFiles) {
     const html = await readFile(file, 'utf8');
     const relative = path.relative(dist, file).replaceAll(path.sep, '/');
+    htmlByRoute.set(routeForHtml(relative), html);
     largestHtmlBytes = Math.max(largestHtmlBytes, Buffer.byteLength(html));
     if (!/<html[^>]+lang="en"/.test(html)) failures.push(`missing lang=en: ${relative}`);
     if (!/<title>[^<]+<\/title>/.test(html)) failures.push(`missing title: ${relative}`);
@@ -115,7 +103,6 @@ try {
     const hasInlineTokens = /<style>html:root\{[^<]+<\/style>/.test(html);
     const hasTokenStylesheet = /<link[^>]+rel="stylesheet"[^>]+href="\/design-tokens\.css"/.test(html);
     if (!hasInlineTokens && !hasTokenStylesheet) failures.push(`missing canonical tokens: ${relative}`);
-    if (relative.startsWith('showcase/') && !['showcase/index.html', 'showcase/submit/index.html'].includes(relative) && !html.includes('showcase-screen-grid')) failures.push(`showcase detail missing screen gallery: ${relative}`);
     if (/<(?:script|img)[^>]+src=["']https?:\/\//i.test(html) || /<link[^>]+rel=["']stylesheet["'][^>]+href=["']https?:\/\//i.test(html)) { failures.push(`external asset reference: ${relative}`); externalAssetReferences += 1; }
     for (const match of html.matchAll(/<a[^>]+href=["']([^"']+)["']/gi)) {
       const href = match[1];
@@ -123,6 +110,15 @@ try {
       const route = href.split('#')[0].split('?')[0] || '/';
       const target = route === '/404.html' ? '404.html' : routeFile(route).replaceAll(path.sep, '/');
       if (!actual.has(target)) { failures.push(`broken internal link: ${relative} -> ${href}`); internalLinkFailures += 1; }
+      const anchor = href.includes('#') ? href.split('#')[1] : '';
+      if (anchor && actual.has(target)) {
+        const targetRoute = route === '/404.html' ? '/404.html' : routeForHtml(target);
+        const targetHtml = htmlByRoute.get(targetRoute) ?? await readFile(path.join(dist, target), 'utf8');
+        if (!new RegExp(`\\sid=["']${anchor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`).test(targetHtml)) {
+          failures.push(`broken internal anchor: ${relative} -> ${href}`);
+          internalLinkFailures += 1;
+        }
+      }
     }
     for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)) {
       const source = match[1].match(/src=["']([^"']+)["']/i)?.[1];

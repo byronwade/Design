@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate",
+    "track",
+    "generatedBy",
+    "cleanRoom",
+    "allowedInputs",
+    "provenance",
+    "anatomy",
+    "tokens",
+    "states",
+    "content"
+  ],
+  "properties": {
+    "candidate": { "type": "string" },
+    "track": { "enum": ["baseline", "plain-prompt", "contract-plus-skills"] },
+    "generatedBy": { "type": "string" },
+    "cleanRoom": { "const": true },
+    "allowedInputs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runId",
+        "model",
+        "operator",
+        "generatedAt",
+        "targetAccess",
+        "promptSha256",
+        "allowedInputsSha256",
+        "allowedInputFiles",
+        "cleanRoomAttestation"
+      ],
+      "properties": {
+        "runId": { "type": "string" },
+        "model": { "type": "string" },
+        "operator": { "type": "string" },
+        "generatedAt": { "type": "string" },
+        "targetAccess": { "const": false },
+        "promptSha256": { "type": "string" },
+        "allowedInputsSha256": { "type": "string" },
+        "allowedInputFiles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "cleanRoomAttestation": { "type": "string" }
+      }
+    },
+    "anatomy": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "filter.root",
+          "filter.leading-icon",
+          "filter.value-label",
+          "filter.count-badge",
+          "filter.chevron",
+          "filter.focus-ring",
+          "filter.popover",
+          "filter.option-row",
+          "filter.option-check",
+          "filter.empty-state"
+        ]
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "height",
+        "paddingInline",
+        "gap",
+        "radius",
+        "background",
+        "foreground",
+        "border",
+        "mutedForeground",
+        "accent",
+        "badgeBackground",
+        "shadow",
+        "fontFamily",
+        "fontWeight",
+        "labelSize",
+        "badgeSize",
+        "popoverWidth",
+        "optionHeight"
+      ],
+      "properties": {
+        "height": { "type": "number" },
+        "paddingInline": { "type": "number" },
+        "gap": { "type": "number" },
+        "radius": { "type": "number" },
+        "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "border": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "mutedForeground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "accent": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "badgeBackground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "shadow": { "type": "string" },
+        "fontFamily": { "type": "string" },
+        "fontWeight": { "type": "number" },
+        "labelSize": { "type": "number" },
+        "badgeSize": { "type": "number" },
+        "popoverWidth": { "type": "number" },
+        "optionHeight": { "type": "number" }
+      }
+    },
+    "states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hover", "focusVisible", "open", "selected", "disabled", "empty"],
+      "properties": {
+        "hover": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "border"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "border": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" }
+          }
+        },
+        "focusVisible": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outlineWidth", "outlineColor", "outlineOffset"],
+          "properties": {
+            "outlineWidth": { "type": "number" },
+            "outlineColor": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "outlineOffset": { "type": "number" }
+          }
+        },
+        "open": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "border", "shadow"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "border": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "shadow": { "type": "string" }
+          }
+        },
+        "selected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["optionBackground", "optionForeground", "checkColor"],
+          "properties": {
+            "optionBackground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "optionForeground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "checkColor": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" }
+          }
+        },
+        "disabled": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "foreground", "cursor"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "cursor": { "type": "string" }
+          }
+        },
+        "empty": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["label", "foreground"],
+          "properties": {
+            "label": { "type": "string" },
+            "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" }
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "value", "count", "placeholder", "empty"],
+      "properties": {
+        "label": { "type": "string" },
+        "value": { "type": "string" },
+        "count": { "type": "string" },
+        "placeholder": { "type": "string" },
+        "empty": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+---
+const { variant = 'outline', class: className = '' } = Astro.props;
+---
+<span class:list={['ui-badge', `ui-badge-${variant}`, className]}><slot /></span>

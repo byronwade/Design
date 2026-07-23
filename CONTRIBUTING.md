@@ -31,6 +31,6 @@ A change must remain understandable to humans, compile to narrow agent context, 
 
 ## Website contributions
 
-The official Astro surface is part of the contract, not a detached demo. For catalog, reference, skills, or showcase changes, update the local source data and owning documentation, then run `npm run site:check`. Showcase contributors should start at `/showcase/submit/`; the current workflow is a pull request against `website/src/data/showcase.ts`, with backend submission and moderation deliberately deferred.
+The official Astro surface is part of the contract, not a detached demo. Public routes stay limited to home, contracts, contract details, and docs. For contract-pack, Skill-stack, reference, or component-showcase changes, update `website/src/data/contract-projects.ts`, the owning documentation, and the relevant compiler/template behavior, then run `npm run site:check`.
 
 All contributions are accepted under the repository's [MIT License](LICENSE).

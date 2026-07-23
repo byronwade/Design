@@ -19,6 +19,25 @@ function uniqueDocuments(documents) {
   });
 }
 
+function compositionSummary(composition, appType) {
+  if (!appType) return null;
+  const source = composition.componentSource ?? {
+    adapter: composition.adapter,
+    required: composition.adapter !== 'none',
+    installed: composition.adapter !== 'none',
+    registry: composition.registry,
+    style: composition.style,
+    referenceAdapters: [],
+  };
+  return {
+    source,
+    visualReferences: composition.visualReferences ?? null,
+    skillStack: composition.skillStack ?? null,
+    skillsRequired: Boolean(composition.policies?.skillsRequired),
+    recipe: composition.appTypes[appType],
+  };
+}
+
 async function describeDocument(target, document) {
   const base = document.source === 'engine' ? contractRoot : target;
   const file = resolveWithin(base, document.file, `Resolved ${document.source} document`);
@@ -64,7 +83,7 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
       root: targetConfig.root ?? '.',
       default: Boolean(targetConfig.default),
       appType: targetConfig.appType ?? null,
-      composition: targetConfig.appType ? { adapter: composition.adapter, style: composition.style, recipe: composition.appTypes[targetConfig.appType] } : null,
+      composition: compositionSummary(composition, targetConfig.appType),
       description: targetConfig.description ?? profile.description,
       documents,
       fingerprint,
@@ -80,6 +99,30 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
 }
 
 function markdownForTarget(targetPlan, generatedAt) {
+  const selectedComposition = targetPlan.composition
+    ? [
+      `Component source: **${targetPlan.composition.source.adapter}** · required: **${targetPlan.composition.source.required ? 'yes' : 'no'}** · installed: **${targetPlan.composition.source.installed ? 'yes' : 'no'}** · style: **${targetPlan.composition.source.style}** · recipe: **${targetPlan.appType}**`,
+      ...(targetPlan.composition.source.referenceAdapters?.length
+        ? [`Reference adapters: ${targetPlan.composition.source.referenceAdapters.map((item) => `**${item.name}**${item.required ? ' (required)' : ' (optional)'}`).join(', ')}`]
+        : []),
+      ...(targetPlan.composition.visualReferences
+        ? [`Visual references: registry \`${targetPlan.composition.visualReferences.registry}\` · bundled: **${targetPlan.composition.visualReferences.bundled ? 'yes' : 'no'}** · recommended starter count: **${targetPlan.composition.visualReferences.recommendedStarterCount}**`]
+        : []),
+      ...(targetPlan.composition.visualReferences?.metadataFields?.length
+        ? [`Reference metadata fields: ${targetPlan.composition.visualReferences.metadataFields.map((item) => `\`${item}\``).join(', ')}`]
+        : []),
+      `Skills required: **${targetPlan.composition.skillsRequired ? 'yes' : 'no'}**`,
+      ...(targetPlan.composition.skillStack
+        ? [
+          `Skill stack: required **${targetPlan.composition.skillStack.required ? 'yes' : 'no'}** · paths ${targetPlan.composition.skillStack.registryPaths.map((item) => `\`${item}\``).join(', ')}`,
+          `Skill dispatch: ${targetPlan.composition.skillStack.dispatchPolicy}`,
+          ...(targetPlan.composition.skillStack.defaultSkills?.length
+            ? [`Default skills: ${targetPlan.composition.skillStack.defaultSkills.map((item) => `\`${item.name}\``).join(', ')}`]
+            : []),
+        ]
+        : []),
+    ].join('\n')
+    : 'No app-type composition recipe selected for this target.';
   const lines = [
     '---',
     'generated: true',
@@ -95,9 +138,9 @@ function markdownForTarget(targetPlan, generatedAt) {
     `Product root: \`${targetPlan.root}\`${targetPlan.default ? ' · default target' : ''}${targetPlan.appType ? ` · app type: \`${targetPlan.appType}\`` : ''}`, '',
     '> This is generated context. Project-authored truth lives in DESIGN.md and design/. Engine rules come from the pinned Design package. Later project documents specialize engine defaults without weakening accessibility, safety, legal, privacy, security, or explicit product requirements.', '',
     '## Contract model', '',
-    '`global engine + selected profile + project visual identity + project mappings and decisions = this target contract`', '',
+    '`global engine + selected profile + project visual identity + project mappings, references, and decisions = this target contract`', '',
     '## Selected composition', '',
-    targetPlan.composition ? `Adapter: **${targetPlan.composition.adapter}** · style: **${targetPlan.composition.style}** · recipe: **${targetPlan.appType}**` : 'No app-type composition recipe selected for this target.', '',
+    selectedComposition, '',
     '## Source order', '',
     ...targetPlan.documents.map((document, index) => `${index + 1}. \`${document.source}:${document.file}\` — ${document.role} — \`${document.hash.slice(0, 12)}\``), '',
   ];

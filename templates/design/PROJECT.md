@@ -36,7 +36,7 @@ Replace placeholders with verified product information. This project-specific la
 
 ## Themes and assets
 
-Document supported appearance modes, semantic theme mappings, icon systems, media rules, and asset locations.
+Document supported appearance modes, semantic theme mappings, icon systems, media rules, and asset locations. Register visual references separately in `design/REFERENCES.md`; do not paste or bundle large media sets here.
 
 ## Operating constraints
 

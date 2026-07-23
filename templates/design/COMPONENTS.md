@@ -5,7 +5,7 @@ status: project-owned
 
 # Production design mappings
 
-This file bridges design intent to shipped code. An unmapped critical intent is a visible system gap, not permission to invent a page-local primitive.
+This file bridges design intent to shipped code. An unmapped critical intent is a visible system gap, not permission to invent a page-local primitive. Use `design/REFERENCES.md` for visual-reference metadata, then link approved reference IDs here when they support a component or pattern mapping.
 
 ## Components
 

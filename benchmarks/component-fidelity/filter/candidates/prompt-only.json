@@ -1,0 +1,74 @@
+{
+  "candidate": "prompt-only",
+  "track": "plain-prompt",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": ["plain English prompt", "no Skills", "no reference images"],
+  "anatomy": [
+    "filter.root",
+    "filter.leading-icon",
+    "filter.value-label",
+    "filter.count-badge",
+    "filter.chevron",
+    "filter.popover",
+    "filter.option-row",
+    "filter.option-check",
+    "filter.empty-state"
+  ],
+  "tokens": {
+    "height": 36,
+    "paddingInline": 14,
+    "gap": 8,
+    "radius": 10,
+    "background": "#181818",
+    "foreground": "#f5f5f1",
+    "border": "#333333",
+    "mutedForeground": "#9b9b93",
+    "accent": "#9bb4ff",
+    "badgeBackground": "#252a33",
+    "shadow": "0 6px 16px rgba(0, 0, 0, 0.20)",
+    "fontFamily": "Inter",
+    "fontWeight": 600,
+    "labelSize": 13,
+    "badgeSize": 11,
+    "popoverWidth": 260,
+    "optionHeight": 34
+  },
+  "states": {
+    "hover": {
+      "background": "#202020",
+      "border": "#3a3a3a"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#9bb4ff",
+      "outlineOffset": 2
+    },
+    "open": {
+      "background": "#202020",
+      "border": "#9bb4ff",
+      "shadow": "0 10px 28px rgba(0, 0, 0, 0.24)"
+    },
+    "selected": {
+      "optionBackground": "#242c3e",
+      "optionForeground": "#f5f5f1",
+      "checkColor": "#9bb4ff"
+    },
+    "disabled": {
+      "background": "#151515",
+      "foreground": "#77736c",
+      "cursor": "not-allowed"
+    },
+    "empty": {
+      "label": "No filters",
+      "foreground": "#9b9b93"
+    }
+  },
+  "content": {
+    "label": "Status",
+    "value": "Open",
+    "count": "12",
+    "placeholder": "Filter status",
+    "empty": "No filters"
+  }
+}

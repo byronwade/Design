@@ -1,0 +1,72 @@
+{
+  "component": "graphite-filter-combobox",
+  "targetAccuracy": 99,
+  "anatomy": [
+    "filter.root",
+    "filter.leading-icon",
+    "filter.value-label",
+    "filter.count-badge",
+    "filter.chevron",
+    "filter.focus-ring",
+    "filter.popover",
+    "filter.option-row",
+    "filter.option-check",
+    "filter.empty-state"
+  ],
+  "tokens": {
+    "height": 36,
+    "paddingInline": 12,
+    "gap": 8,
+    "radius": 8,
+    "background": "#171717",
+    "foreground": "#f7f7f4",
+    "border": "#2e2e2b",
+    "mutedForeground": "#a7a29b",
+    "accent": "#9eb7ff",
+    "badgeBackground": "#262b35",
+    "shadow": "0 8px 18px rgba(0, 0, 0, 0.22)",
+    "fontFamily": "Inter",
+    "fontWeight": 650,
+    "labelSize": 13,
+    "badgeSize": 11,
+    "popoverWidth": 280,
+    "optionHeight": 34
+  },
+  "states": {
+    "hover": {
+      "background": "#20201d",
+      "border": "#3a3a36"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#9eb7ff",
+      "outlineOffset": 2
+    },
+    "open": {
+      "background": "#20201d",
+      "border": "#9eb7ff",
+      "shadow": "0 12px 30px rgba(0, 0, 0, 0.28)"
+    },
+    "selected": {
+      "optionBackground": "#232b3d",
+      "optionForeground": "#f7f7f4",
+      "checkColor": "#9eb7ff"
+    },
+    "disabled": {
+      "background": "#151515",
+      "foreground": "#706d68",
+      "cursor": "not-allowed"
+    },
+    "empty": {
+      "label": "No filters found",
+      "foreground": "#a7a29b"
+    }
+  },
+  "content": {
+    "label": "Status",
+    "value": "Open issues",
+    "count": "12",
+    "placeholder": "Filter status",
+    "empty": "No filters found"
+  }
+}

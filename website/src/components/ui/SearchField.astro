@@ -1,0 +1,16 @@
+---
+import Icon from '../Icon.astro';
+
+const {
+  id,
+  placeholder = 'Search',
+  shortcut = '/',
+  class: className = '',
+  autocomplete = 'off',
+} = Astro.props;
+---
+<label class:list={['ui-search-field', className]}>
+  <Icon name="search" size={16} />
+  <input id={id} type="search" placeholder={placeholder} autocomplete={autocomplete} />
+  {shortcut && <kbd>{shortcut}</kbd>}
+</label>

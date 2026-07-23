@@ -1,13 +1,147 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Icon from '../components/Icon.astro';
-import CatalogCard from '../components/CatalogCard.astro';
-import { catalog, featured, groups } from '../data/catalog';
+import ContractPreview from '../components/ContractPreview.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Surface from '../components/ui/Surface.astro';
+import { contractProjects } from '../data/contract-projects';
+import { benchmarkSummary } from '../data/benchmarks';
+
+const columns = [
+  { label: 'Skill stack', items: [['design-system', '/docs/#workflow'], ['frontend-design', '/contracts/warm-paper-workbench/'], ['design-review', '/docs/#verify']] },
+  { label: 'AI actions', items: [['Compile context', '/docs/#commands'], ['Inspect references', '/docs/#references'], ['Rewrite components', '/contracts/warm-paper-workbench/']] },
+  { label: 'Component bases', items: [['Button', '/contracts/warm-paper-workbench/'], ['Table', '/contracts/graphite-saas-console/'], ['Card', '/contracts/visual-reference-starter/']] },
+  { label: 'Reference memory', items: [['Approved media', '/docs/#references'], ['Golden states', '/contracts/warm-paper-workbench/'], ['Mobbin notes', '/docs/#references']] },
+];
+
+const workflow = [
+  ['01', 'Load the right Skill', 'The AI starts with executable behavior for the surface, not a generic style prompt.'],
+  ['02', 'Compile the contract', 'Identity, target context, mappings, decisions, and approved references resolve into one job.'],
+  ['03', 'Rewrite the primitives', 'shadcn can supply behavior and vocabulary. The contract still owns the final component.'],
+  ['04', 'Review real evidence', 'Rendered states, reference use, accessibility, and fidelity scores close the loop.'],
+];
 ---
-<SiteLayout title="Design Contract — Components, blocks, and rules" description="An open design contract for building consistent products with shadcn/ui components, reusable blocks, and inspectable decisions." active="home">
-  <section class="hero page-frame"><div class="hero-copy"><a class="hero-announcement" href="/docs/"><span class="announcement-dot"></span> Design Contract 1.2 <Icon name="arrow" size={13} /></a><h1>Build on a<br /><span>living contract.</span></h1><p class="hero-lede">A shadcn/ui-inspired reference surface for components, blocks, app recipes, and the decisions that keep every product surface consistent.</p><div class="hero-actions"><a class="button button-primary" href="/docs/">Get started <Icon name="arrow" size={16} /></a><a class="text-link" href="/catalog/">Browse components <Icon name="arrow" size={15} /></a></div><div class="hero-command"><span>$</span><code>npx --yes github:byronwade/Design init --profile web-app</code></div></div></section>
-  <section class="index-strip page-frame" aria-label="Index summary"><div><strong>{catalog.length}</strong><span>topics in the catalog</span></div><div><strong>{groups.length}</strong><span>connected layers</span></div><div><strong>0</strong><span>client dependencies</span></div><div class="strip-note">Every entry links back to a versioned source in the repository.</div></section>
-  <section class="home-section page-frame"><div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Start here</p><h2>Components you can build on.</h2></div><a class="text-link" href="/catalog/">View all components <Icon name="arrow" size={15} /></a></div><div class="catalog-grid featured-grid">{featured.map((item) => <CatalogCard item={item} />)}</div></section>
-  <section class="layer-section page-frame"><div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Compose with intent</p><h2>From primitives to product surfaces.</h2></div><p class="section-intro">Use foundations, components, blocks, recipes, and quality rules as one connected system. The AI gets the same map every time.</p></div><div class="layer-list">{groups.map((group, index) => <a href={`/catalog/?group=${encodeURIComponent(group.name)}`} class="layer-row"><span class="layer-index">0{index + 1}</span><span class="layer-name">{group.name}</span><span class="layer-description">{group.description}</span><span class="layer-count">{group.count} topics <Icon name="arrow" size={15} /></span></a>)}</div></section>
-  <section class="cta-band page-frame"><div><p class="eyebrow"><span class="eyebrow-rule"></span> Open source, locally owned</p><h2>Make the system<br />your own.</h2></div><div class="hero-actions"><a class="button button-secondary" href="/blocks/">Explore blocks <Icon name="arrow" size={15} /></a><a class="text-link" href="https://github.com/byronwade/Design" target="_blank" rel="noreferrer">View source <Icon name="github" size={16} /></a></div></section>
+<SiteLayout title="Design Contract - AI design packs" description="Browse design contracts as AI-ready project packs with prompts, files, skills, visual references, and component showcases." active="home">
+  <section class="discover-shell home-page">
+    <section class="home-hero">
+      <div class="home-hero-inner page-frame">
+        <div class="hero-copy">
+          <div class="hero-kicker"><Badge variant="muted">Open-source design compiler</Badge><Badge variant="success">{benchmarkSummary.approvalBadgeHoldoutRun.score}% active public holdout</Badge></div>
+          <h1>Design direction your AI can execute.</h1>
+          <p class="hero-summary">Give every agent the same visual rules, Skills, project files, approved references, and component recipes. Then compile only what the current interface needs.</p>
+          <div class="hero-actions">
+            <Button href="/contracts/" variant="default" iconAfter="arrow">Browse contracts</Button>
+            <Button href="/docs/#install" variant="outline">Install the contract</Button>
+          </div>
+        </div>
+
+        <Surface class="compiler-stage" aria-label="A design contract compiles project context into a rendered interface">
+          <div class="compiler-inputs">
+            <span><Icon name="book" size={15} /> DESIGN.md</span>
+            <span><Icon name="layers" size={15} /> Skill stack</span>
+            <span><Icon name="check" size={15} /> Mappings</span>
+            <span><Icon name="search" size={15} /> References</span>
+          </div>
+          <div class="compiler-line"><i></i><b>compile</b><i></i></div>
+          <div class="compiler-output">
+            <div class="compiler-output-meta"><span>Compiled target</span><strong>web-app / saas-workbench</strong><em>Current</em></div>
+            <ContractPreview project={contractProjects[0]} compact={true} />
+          </div>
+        </Surface>
+      </div>
+    </section>
+
+    <section class="discover-library page-frame" aria-labelledby="discover-title">
+      <div class="discover-top">
+        <div>
+          <p class="eyebrow">Contract library</p>
+          <h2 id="discover-title">Start from a complete design project.</h2>
+        </div>
+        <Button href="/contracts/" variant="outline" icon="search">Search contract packs</Button>
+      </div>
+
+      <div class="discover-columns">
+        {columns.map((column) => (
+          <div>
+            <span>{column.label}</span>
+            {column.items.map(([item, href]) => <a href={href}>{item}</a>)}
+          </div>
+        ))}
+      </div>
+
+      <div class="discover-filterbar">
+        <div class="platform-pills"><span>Native</span><b>Web</b></div>
+        <div class="contract-tabs">
+          <a class="is-active" href="/contracts/">All packs</a>
+          <a href="/contracts/warm-paper-workbench/">Warm workbench</a>
+          <a href="/contracts/graphite-saas-console/">Operations</a>
+          <a href="/contracts/visual-reference-starter/">References</a>
+        </div>
+        <a class="filter-link" href="/contracts/">View all <Icon name="arrow" size={14} /></a>
+      </div>
+
+      <div class="discover-grid project-grid">
+        {contractProjects.map((project) => (
+          <a class="discover-card project-discover-card" href={`/contracts/${project.slug}/`}>
+            <ContractPreview project={project} />
+            <div class="discover-card-footer">
+              <span class="contract-icon">{project.title.slice(0, 1)}</span>
+              <div>
+                <span class="card-status">{project.status}</span>
+                <strong>{project.title}</strong>
+                <p>{project.description}</p>
+                <div class="card-metrics"><span>{project.skills.length} Skills</span><span>{project.files.length} files</span><span>{project.photos.length} references</span></div>
+              </div>
+              <Icon name="arrow" size={17} />
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="workflow-band">
+      <div class="page-frame">
+        <div class="workflow-heading">
+          <p class="eyebrow">The operating model</p>
+          <h2>From project truth to reviewed interface.</h2>
+          <p>The contract stays small for the developer and precise for the agent. Every layer has a job.</p>
+        </div>
+        <div class="why-better-section">
+          <div class="why-better-grid">
+            {workflow.map(([number, title, copy]) => <Surface as="article"><span>{number}</span><strong>{title}</strong><p>{copy}</p></Surface>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benchmark-section page-frame" aria-labelledby="benchmark-title">
+      <div class="benchmark-lead">
+        <p class="eyebrow">Component fidelity</p>
+        <h2 id="benchmark-title">The design quality is measurable.</h2>
+        <p>The benchmark hides a target component, gives the AI only the allowed contract inputs, and scores anatomy, tokens, states, and content.</p>
+        <div class="command-ribbon"><span>Release gate</span><code>{benchmarkSummary.releaseCommand}</code></div>
+      </div>
+      <Surface class="benchmark-score">
+        <span>Active public holdout</span>
+        <strong>{benchmarkSummary.approvalBadgeHoldoutRun.score}<sup>%</sup></strong>
+        <p>Contract + Skills candidate</p>
+        <em>{benchmarkSummary.publicClaimEligible ? 'Release eligible' : 'Gate blocked'}</em>
+      </Surface>
+      <div class="benchmark-comparison">
+        {benchmarkSummary.tracks.map((track) => (
+          <article>
+            <div><span>{track.label}</span><strong>{track.score}%</strong></div>
+            <i style={`--score:${track.score}%`}></i>
+            <h3>{track.name}</h3>
+            <p>{track.description}</p>
+          </article>
+        ))}
+      </div>
+      <div class="benchmark-foot">
+        <p>{benchmarkSummary.limitation}</p>
+        <a class="text-link" href="/docs/#benchmarks">Read the benchmark method <Icon name="arrow" size={15} /></a>
+      </div>
+    </section>
+  </section>
 </SiteLayout>

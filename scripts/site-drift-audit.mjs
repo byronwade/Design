@@ -33,10 +33,9 @@ function cssDeclarations(source) {
   return new Map([...body.matchAll(/(--[\w-]+)\s*:\s*([^;]+)/g)].map((match) => [match[1], match[2].trim()]));
 }
 
-const [design, mirror, system, siteTokens, layout, header, homepage, globalCss, distHomepage, distTokens, driftDoc] = await Promise.all([
+const [design, mirror, siteTokens, layout, header, homepage, globalCss, distHomepage, distTokens, driftDoc, contractPreview, contractDemo, contractsIndex, contractDetail, buttonPrimitive, badgePrimitive, searchPrimitive, tabsPrimitive, surfacePrimitive] = await Promise.all([
   read('DESIGN.md'),
   read('.design/DESIGN.md'),
-  read('website/src/data/system.ts'),
   read('website/src/data/site-tokens.ts'),
   read('website/src/layouts/SiteLayout.astro'),
   read('website/src/components/SiteHeader.astro'),
@@ -45,20 +44,54 @@ const [design, mirror, system, siteTokens, layout, header, homepage, globalCss, 
   read('website/dist/index.html'),
   read('website/dist/design-tokens.css'),
   read('docs/site/DRIFT.md'),
+  read('website/src/components/ContractPreview.astro'),
+  read('website/src/components/ContractDemo.astro'),
+  read('website/src/pages/contracts/index.astro'),
+  read('website/src/pages/contracts/[...slug].astro'),
+  read('website/src/components/ui/Button.astro'),
+  read('website/src/components/ui/Badge.astro'),
+  read('website/src/components/ui/SearchField.astro'),
+  read('website/src/components/ui/Tabs.astro'),
+  read('website/src/components/ui/Surface.astro'),
 ]);
 
 if (design !== mirror) failures.push('root DESIGN.md and .design/DESIGN.md are no longer exact mirrors');
-if (!system.includes("designSource = 'DESIGN.md'") || !system.includes('readFileSync')) failures.push('Lab token data must read the canonical DESIGN.md source');
+if (!siteTokens.includes("designSource = 'DESIGN.md'") || !siteTokens.includes('readFileSync')) failures.push('site token data must read the canonical DESIGN.md source');
 if (!layout.includes('siteTokenCss') || !layout.includes('set:html') || !layout.includes('design-tokens.css')) failures.push('shared layout must expose the canonical token bridge');
 if (homepage.includes('content-visibility')) failures.push('homepage must not hide canonical content from screenshots, assistive technology, or crawlers');
 if (!driftDoc.includes('npm run site:drift')) failures.push('drift documentation must describe the enforced audit command');
 
-for (const route of ['/catalog/', '/blocks/', '/skills/', '/reference/', '/showcase/', '/lab/', '/tools/', '/docs/']) {
+for (const route of ['/', '/contracts/', '/docs/']) {
   if (!header.includes(`href="${route}"`)) failures.push(`primary navigation is missing ${route}`);
 }
+for (const route of ['/catalog/', '/blocks/', '/skills/', '/reference/', '/showcase/', '/lab/', '/tools/', '/search/']) {
+  if (header.includes(`href="${route}"`) || layout.includes(`href="${route}"`)) failures.push(`removed public route still linked: ${route}`);
+}
 
-for (const section of ['class="hero', 'class="index-strip', 'class="home-section', 'class="layer-section', 'class="cta-band']) {
+for (const section of ['class="discover-shell', 'class="discover-columns', 'class="discover-filterbar', 'class="discover-grid']) {
   if (!homepage.includes(section)) failures.push(`homepage is missing required region: ${section}`);
+}
+if (!homepage.includes('Skill stack') || !homepage.includes('Component bases')) failures.push('homepage must frame contracts as skill stacks with component bases');
+if (!homepage.includes('ContractPreview') || !contractsIndex.includes('ContractPreview')) failures.push('home and contracts must render contract previews instead of empty color blocks');
+if (!contractDetail.includes('theme={project.slug}') || !contractDetail.includes('ContractDemo')) failures.push('contract detail pages must apply their pack theme and rendered component showcase');
+if (contractsIndex.includes("querySelectorAll('[data-section]')")) failures.push('contract filters must not use a broad data-section selector that can intercept card navigation');
+if (!contractsIndex.includes('data-filter-section') || !contractsIndex.includes('data-contract-section')) failures.push('contract filters and navigable cards must use separate data attributes');
+if (!contractsIndex.includes(".contract-section-tabs [data-filter-section]")) failures.push('contract filter listeners must be scoped to the filter tab region');
+if (!header.includes("components/ui") && !header.includes("./ui/")) failures.push('shared header must consume the local UI primitive layer');
+if (!homepage.includes("components/ui/") || !contractsIndex.includes("components/ui/") || !contractDetail.includes("components/ui/")) failures.push('public contract surfaces must consume shared local UI primitives');
+for (const [name, source, marker] of [
+  ['Button', buttonPrimitive, 'ui-button'],
+  ['Badge', badgePrimitive, 'ui-badge'],
+  ['SearchField', searchPrimitive, 'ui-search-field'],
+  ['Tabs', tabsPrimitive, 'ui-tabs'],
+  ['Surface', surfacePrimitive, 'ui-surface'],
+]) {
+  if (!source.includes(marker)) failures.push(`local UI primitive is incomplete: ${name}`);
+}
+for (const slug of ['warm-paper-workbench', 'graphite-saas-console', 'visual-reference-starter']) {
+  if (!contractPreview.includes(`project.slug === '${slug}'`)) failures.push(`contract preview missing visual variant: ${slug}`);
+  if (!contractDemo.includes(`project.slug === '${slug}'`)) failures.push(`contract demo missing visual variant: ${slug}`);
+  if (!globalCss.includes(`.theme-${slug}`)) failures.push(`contract page theme missing: ${slug}`);
 }
 
 const colors = flatBlock(design, 'colors', 'typography');
@@ -113,11 +146,12 @@ if (!normalize(distTokens).includes(normalize(expectedTokenCss))) failures.push(
 
 const requiredResponsiveRules = [
   '@media (max-width:640px)',
-  '.main-nav { height:auto; flex-wrap:wrap',
-  '.main-nav a { min-height:44px',
-  '.header-search { min-width:44px',
-  '.button { min-height:44px',
-  '.table-panel { overflow-x:auto',
+  '.main-nav{height:auto;flex-wrap:wrap',
+  '.main-nav a{min-height:44px',
+  '.header-search-label',
+  '.ui-button-sm',
+  '.button{min-height:44px',
+  '.discover-grid',
 ];
 for (const rule of requiredResponsiveRules) if (!globalCss.includes(rule)) failures.push(`responsive drift guard missing: ${rule}`);
 
@@ -130,6 +164,7 @@ const result = {
   canonicalColorCount: colors.size,
   mappedColorTokenCount: mappedTokens.size,
   responsiveRulesChecked: requiredResponsiveRules.length,
+  contractVisualVariantsChecked: 3,
   failures,
 };
 console.log(JSON.stringify(result, null, 2));

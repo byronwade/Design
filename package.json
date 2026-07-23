@@ -34,13 +34,15 @@
     "site:audit": "node ./scripts/site-audit.mjs",
     "site:drift": "node ./scripts/site-drift-audit.mjs",
     "site:check": "npm run site:build && npm run site:audit && npm run site:drift",
+    "benchmark": "node ./scripts/component-fidelity-benchmark.mjs",
+    "benchmark:release": "node ./scripts/component-fidelity-benchmark.mjs --require-target --fail-under=99",
     "test": "node --test",
     "validate": "node ./bin/design-contract.mjs validate --package --no-google",
     "validate:strict": "node ./bin/design-contract.mjs validate --package --require-google",
     "design:lint": "designmd lint DESIGN.md",
     "smoke": "node ./scripts/package-smoke.mjs",
     "production:smoke": "node ./scripts/production-smoke.mjs",
-    "check": "npm run validate:strict && npm test && npm run build && npm run smoke && npm run site:check"
+    "check": "npm run validate:strict && npm test && npm run build && npm run smoke && npm run benchmark && npm run site:check"
   },
   "dependencies": {
     "@google/design.md": "0.3.0",

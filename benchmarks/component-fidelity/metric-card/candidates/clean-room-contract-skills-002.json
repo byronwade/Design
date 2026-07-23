@@ -1,0 +1,127 @@
+{
+  "candidate": "clean-room-contract-skills-002",
+  "track": "contract-plus-skills",
+  "generatedBy": "GPT-5 Codex",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/metric-card/clean-room/prompt.md",
+    "benchmarks/component-fidelity/metric-card/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/metric-card/clean-room/candidate.schema.json",
+    "README.md",
+    "AGENTS.md",
+    "DESIGN.md",
+    ".design/AGENT.md",
+    ".design/INDEX.md",
+    ".design/components/ACTIONS.md",
+    ".design/components/COMMANDS-SEARCH.md",
+    ".design/components/DATA-DISPLAY.md",
+    ".design/components/FEEDBACK-OVERLAYS.md",
+    ".design/patterns/PAGES.md",
+    ".design/patterns/SHELLS.md",
+    ".design/verticals/web/BASE.md",
+    ".design/verticals/web/APP.md",
+    "templates/design/PROJECT.md",
+    "templates/design/COMPONENTS.md",
+    "templates/design/REFERENCES.md",
+    "templates/design/COMPOSITION.json",
+    "skills/design-system/SKILL.md",
+    "skills/design-review/SKILL.md"
+  ],
+  "provenance": {
+    "runId": "clean-room-contract-skills-002-2026-07-22T20-36-58-04-00",
+    "model": "GPT-5 Codex",
+    "operator": "OpenAI Codex",
+    "generatedAt": "2026-07-22T20:36:58.9377129-04:00",
+    "targetAccess": false,
+    "promptSha256": "0a08ec6c83e0561d5ffda6ec86d8a6cdccf3a1af31b68f0d0d5f5d924870a271",
+    "allowedInputsSha256": "783ad772fd247c5239d0e2aa2e78da798a3d620558c1605a996096f823fa6631",
+    "allowedInputFiles": [
+      "benchmarks/component-fidelity/metric-card/clean-room/prompt.md",
+      "benchmarks/component-fidelity/metric-card/clean-room/allowed-inputs.json",
+      "benchmarks/component-fidelity/metric-card/clean-room/candidate.schema.json",
+      "README.md",
+      "AGENTS.md",
+      "DESIGN.md",
+      ".design/AGENT.md",
+      ".design/INDEX.md",
+      ".design/components/ACTIONS.md",
+      ".design/components/COMMANDS-SEARCH.md",
+      ".design/components/DATA-DISPLAY.md",
+      ".design/components/FEEDBACK-OVERLAYS.md",
+      ".design/patterns/PAGES.md",
+      ".design/patterns/SHELLS.md",
+      ".design/verticals/web/BASE.md",
+      ".design/verticals/web/APP.md",
+      "templates/design/PROJECT.md",
+      "templates/design/COMPONENTS.md",
+      "templates/design/REFERENCES.md",
+      "templates/design/COMPOSITION.json",
+      "skills/design-system/SKILL.md",
+      "skills/design-review/SKILL.md"
+    ],
+    "cleanRoomAttestation": "I did not read the hidden target, prior candidates, scorer output, benchmark misses, or any non-allowlisted benchmark files."
+  },
+  "anatomy": [
+    "metric.root",
+    "metric.header",
+    "metric.label",
+    "metric.menu-trigger",
+    "metric.value",
+    "metric.delta",
+    "metric.caption",
+    "metric.sparkline",
+    "metric.status-dot",
+    "metric.focus-ring"
+  ],
+  "tokens": {
+    "width": 284,
+    "padding": 16,
+    "gap": 12,
+    "radius": 10,
+    "background": "#181817",
+    "foreground": "#f7f7f4",
+    "border": "#30302c",
+    "mutedForeground": "#9f9a91",
+    "accent": "#9eb7ff",
+    "positive": "#7bd88f",
+    "warning": "#d9b26f",
+    "shadow": "0 10px 24px rgba(0, 0, 0, 0.20)",
+    "fontFamily": "Inter",
+    "labelWeight": 650,
+    "valueWeight": 760,
+    "labelSize": 12,
+    "valueSize": 30,
+    "deltaSize": 12,
+    "captionSize": 11,
+    "sparklineHeight": 38
+  },
+  "states": {
+    "hover": {
+      "background": "#20201d",
+      "border": "#3a3a36",
+      "shadow": "0 14px 30px rgba(0, 0, 0, 0.24)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#9eb7ff",
+      "outlineOffset": 3
+    },
+    "selected": {
+      "border": "#9eb7ff",
+      "background": "#1d2230"
+    },
+    "stale": {
+      "statusColor": "#d9b26f",
+      "caption": "Data delayed",
+      "opacity": 0.82
+    }
+  },
+  "content": {
+    "label": "Resolution SLA",
+    "value": "94.2%",
+    "delta": "+3.8%",
+    "caption": "Last 7 days",
+    "menuLabel": "Metric actions",
+    "staleCaption": "Data delayed"
+  }
+}

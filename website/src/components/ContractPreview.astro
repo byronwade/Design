@@ -1,0 +1,71 @@
+---
+const { project, compact = false } = Astro.props;
+---
+<div class:list={['contract-visual', `visual-${project.slug}`, { 'is-compact': compact }]} aria-hidden="true">
+  <div class="visual-windowbar">
+    <span class="window-dots"><i></i><i></i><i></i></span>
+    <span>{project.shortTitle}</span>
+    <b>{project.status}</b>
+  </div>
+
+  {project.slug === 'warm-paper-workbench' && (
+    <div class="warm-preview">
+      <aside>
+        <strong>W</strong>
+        <i class="is-active"></i><i></i><i></i><i></i>
+        <span></span>
+      </aside>
+      <div class="warm-preview-main">
+        <div class="preview-command"><span>Northstar / Renewal</span><b>Publish</b></div>
+        <div class="preview-heading"><small>Customer workspace</small><strong>Renewal brief</strong></div>
+        <div class="preview-note-grid">
+          <div><span>Decision</span><b>References approved</b><i></i></div>
+          <div><span>Coverage</span><b>6 mapped states</b><i></i></div>
+        </div>
+        <div class="preview-table">
+          <span>Component</span><span>Intent</span><span>Status</span>
+          <b>Button</b><i>Quiet command</i><em>Ready</em>
+          <b>Table</b><i>Calm scan lines</i><em>Ready</em>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {project.slug === 'graphite-saas-console' && (
+    <div class="graphite-preview">
+      <aside>
+        <strong>G</strong>
+        <i class="is-active"></i><i></i><i></i><i></i><i></i>
+      </aside>
+      <div class="graphite-preview-main">
+        <div class="graphite-command"><span>Search commands</span><kbd>/</kbd></div>
+        <div class="graphite-metrics">
+          <div><span>Active users</span><b>2,418</b><i>+12.4%</i></div>
+          <div><span>Review queue</span><b>48</b><i>8 urgent</i></div>
+          <div><span>Success rate</span><b>99.2%</b><i>Stable</i></div>
+        </div>
+        <div class="graphite-table">
+          <span>Account</span><span>Plan</span><span>Risk</span>
+          <b>Northstar</b><i>Enterprise</i><em>Low</em>
+          <b>Fieldwork</b><i>Business</i><em>Review</em>
+          <b>Relay Labs</b><i>Enterprise</i><em>Low</em>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {project.slug === 'visual-reference-starter' && (
+    <div class="reference-preview">
+      <div class="reference-preview-head">
+        <div><small>Reference board</small><strong>Customer settings</strong></div>
+        <b>12 sources</b>
+      </div>
+      <div class="reference-canvas">
+        <div class="reference-shot shot-a"><span>Navigation</span><i></i><i></i><i></i></div>
+        <div class="reference-shot shot-b"><span>Form rhythm</span><strong>Aa</strong><i></i></div>
+        <div class="reference-shot shot-c"><span>Golden state</span><i></i><i></i></div>
+        <div class="reference-annotation"><small>Preserve</small><b>Quiet hierarchy</b><p>Do not copy brand marks or exact composition.</p></div>
+      </div>
+    </div>
+  )}
+</div>

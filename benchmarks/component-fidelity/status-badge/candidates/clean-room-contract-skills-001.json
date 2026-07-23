@@ -1,0 +1,100 @@
+{
+  "candidate": "clean-room-contract-skills-001",
+  "track": "contract-plus-skills",
+  "generatedBy": "GPT-5 Codex",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/status-badge/clean-room/prompt.md",
+    "benchmarks/component-fidelity/status-badge/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/status-badge/clean-room/candidate.schema.json",
+    "README.md",
+    "AGENTS.md",
+    "DESIGN.md",
+    ".design/AGENT.md",
+    ".design/INDEX.md",
+    ".design/components/DATA-DISPLAY.md",
+    ".design/components/FEEDBACK-OVERLAYS.md",
+    ".design/global/CONTENT.md",
+    ".design/global/INTERACTION.md",
+    ".design/verticals/web/BASE.md",
+    ".design/verticals/web/APP.md",
+    "templates/design/PROJECT.md",
+    "templates/design/COMPONENTS.md",
+    "templates/design/REFERENCES.md",
+    "templates/design/COMPOSITION.json",
+    "skills/design-system/SKILL.md",
+    "skills/design-review/SKILL.md"
+  ],
+  "provenance": {
+    "runId": "clean-room-contract-skills-001-2026-07-23T012038Z",
+    "model": "GPT-5 Codex",
+    "operator": "Codex",
+    "generatedAt": "2026-07-23T01:20:38Z",
+    "targetAccess": false,
+    "promptSha256": "5662d872b6e6ce987c005bfd329cd688cb4ac908894234dfbf67eb4f207a8712",
+    "allowedInputsSha256": "e8d5775a0c10bdef2ac005ef8c89f2e7ef4128a3e303ff733057f7037e7f1147",
+    "allowedInputFiles": [
+      "benchmarks/component-fidelity/status-badge/clean-room/prompt.md",
+      "benchmarks/component-fidelity/status-badge/clean-room/allowed-inputs.json",
+      "benchmarks/component-fidelity/status-badge/clean-room/candidate.schema.json",
+      "README.md",
+      "AGENTS.md",
+      "DESIGN.md",
+      ".design/AGENT.md",
+      ".design/INDEX.md",
+      ".design/components/DATA-DISPLAY.md",
+      ".design/components/FEEDBACK-OVERLAYS.md",
+      ".design/global/CONTENT.md",
+      ".design/global/INTERACTION.md",
+      ".design/verticals/web/BASE.md",
+      ".design/verticals/web/APP.md",
+      "templates/design/PROJECT.md",
+      "templates/design/COMPONENTS.md",
+      "templates/design/REFERENCES.md",
+      "templates/design/COMPOSITION.json",
+      "skills/design-system/SKILL.md",
+      "skills/design-review/SKILL.md"
+    ],
+    "cleanRoomAttestation": "I did not read the hidden target, prior candidates, benchmark output, scorer output, scorer misses, or any files outside the allowed contract-plus-skills inputs listed here."
+  },
+  "anatomy": [
+    "badge.root",
+    "badge.status-dot",
+    "badge.label",
+    "badge.focus-ring"
+  ],
+  "tokens": {
+    "height": 24,
+    "paddingInline": 8,
+    "gap": 4,
+    "radius": 999,
+    "background": "#FFF1D6",
+    "foreground": "#7A5417",
+    "border": "1px solid rgba(67, 52, 38, 0.15)",
+    "dotColor": "#7A5417",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 12,
+    "dotSize": 6
+  },
+  "states": {
+    "hover": {
+      "background": "#F5EEE3",
+      "border": "1px solid rgba(67, 52, 38, 0.22)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#7D4936",
+      "outlineOffset": 2
+    },
+    "disabled": {
+      "background": "#FAF5EC",
+      "foreground": "#766E65",
+      "opacity": 0.56
+    }
+  },
+  "content": {
+    "label": "Needs review",
+    "ariaLabel": "Needs review"
+  }
+}

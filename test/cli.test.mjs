@@ -15,12 +15,15 @@ async function ready(target) {
   await fs.writeFile(path.join(target, 'design/COMPONENTS.md'), '# Components\n\n| Intent | Code | Status |\n| --- | --- | --- |\n| action.button | Button | approved |\n');
   await fs.writeFile(path.join(target, 'design/COMPOSITION.json'), `${JSON.stringify({
     schemaVersion: 1,
-    adapter: 'shadcn',
-    registry: 'https://ui.shadcn.com',
-    style: 'new-york',
-    paths: { ui: 'src/components/ui', blocks: 'src/components/blocks', recipes: 'design/recipes' },
+    adapter: 'none',
+    registry: 'project-local',
+    style: 'project-owned',
+    componentSource: { adapter: 'none', required: false, installed: false, registry: 'project-local', style: 'project-owned', referenceAdapters: [{ name: 'shadcn/ui', registry: 'https://ui.shadcn.com', style: 'new-york', required: false, installed: false }] },
+    paths: { ui: 'src/components/ui', blocks: 'src/components/blocks', recipes: 'design/recipes', references: 'design/references' },
+    visualReferences: { required: false, bundled: false, registry: 'design/REFERENCES.md', paths: ['design/references'], recommendedStarterCount: 10, metadataFields: ['surface', 'flow', 'pattern', 'interaction', 'source/provenance', 'applicability', 'what to preserve', 'what not to copy'], aiPolicy: 'Inspect applicable approved references before visual changes.' },
+    skillStack: { required: true, registryPaths: ['.agents/skills', '.claude/skills', 'skills'], dispatchPolicy: 'Select the smallest applicable design-system Skill before UI work.', defaultSkills: [{ name: 'design-system', path: '.agents/skills/design-system/SKILL.md', required: true, when: 'Before UI work.', purpose: 'Apply the compiled contract.' }, { name: 'design-review', path: '.agents/skills/design-review/SKILL.md', required: true, when: 'Before approval.', purpose: 'Review rendered states.' }] },
     appTypes: { 'saas-workbench': { label: 'SaaS workbench', targetProfile: 'web-app', shell: 'deep workbench', layout: 'operational canvas', blocks: ['sidebar'], intents: ['navigation.global'] } },
-    policies: { reuseBeforeCreate: true, tokenAuthority: 'DESIGN.md', mappingAuthority: 'design/COMPONENTS.md', newPrimitiveRequiresDecision: true, verifyRenderedStates: true, blockReuse: 'prefer' },
+    policies: { reuseBeforeCreate: true, tokenAuthority: 'DESIGN.md', mappingAuthority: 'design/COMPONENTS.md', newPrimitiveRequiresDecision: true, verifyRenderedStates: true, blockReuse: 'prefer', componentLibraryRequired: false, skillsRequired: true },
   }, null, 2)}\n`);
 }
 
@@ -28,7 +31,7 @@ test('installs a minimal façade instead of copying the engine', async () => {
   const target = await temp();
   const result = await installContract({ target, profiles: ['web-app'], adapters: ['codex','claude','copilot'] });
   assert.deepEqual(result.generatedTargets, ['web-app']);
-  for (const file of ['DESIGN.md','AGENTS.md','CLAUDE.md','design/PROJECT.md','design/COMPONENTS.md','design/DECISIONS.md','design/COMPOSITION.json','.design/config.json','.design/lock.json','.design/generated/web-app.md','.design/generated/web-app.json']) await fs.access(path.join(target, file));
+  for (const file of ['DESIGN.md','AGENTS.md','CLAUDE.md','design/PROJECT.md','design/COMPONENTS.md','design/REFERENCES.md','design/DECISIONS.md','design/COMPOSITION.json','.design/config.json','.design/lock.json','.design/generated/web-app.md','.design/generated/web-app.json']) await fs.access(path.join(target, file));
   await assert.rejects(() => fs.access(path.join(target, '.design/global/PRINCIPLES.md')));
   assert.match(await fs.readFile(path.join(target, 'CLAUDE.md'), 'utf8'), /^@AGENTS\.md/m);
   assert.match(await fs.readFile(path.join(target, 'AGENTS.md'), 'utf8'), /npx --yes github:byronwade\/Design status/);
@@ -51,7 +54,7 @@ test('compiles several targets without mixing sibling profiles', async () => {
   assert.doesNotMatch(ios, /Android overlay/);
 });
 
-test('selects an app type and compiles the shadcn composition contract', async () => {
+test('selects an app type and compiles component-agnostic composition', async () => {
   const target = await temp();
   await installContract({ target, profiles: ['web-app'], adapters: [], appType: 'saas-workbench' });
   const config = JSON.parse(await fs.readFile(path.join(target, '.design/config.json'), 'utf8'));
@@ -60,7 +63,12 @@ test('selects an app type and compiles the shadcn composition contract', async (
   await resolveInstalledContract({ target });
   const contract = await fs.readFile(path.join(target, '.design/generated/web-app.md'), 'utf8');
   assert.match(contract, /app type: `saas-workbench`/);
-  assert.match(contract, /Adapter: \*\*shadcn\*\* · style: \*\*new-york\*\* · recipe: \*\*saas-workbench\*\*/);
+  assert.match(contract, /Component source: \*\*none\*\* · required: \*\*no\*\* · installed: \*\*no\*\* · style: \*\*project-owned\*\* · recipe: \*\*saas-workbench\*\*/);
+  assert.match(contract, /Reference adapters: \*\*shadcn\/ui\*\* \(optional\)/);
+  assert.match(contract, /Visual references: registry `design\/REFERENCES\.md` · bundled: \*\*no\*\* · recommended starter count: \*\*10\*\*/);
+  assert.match(contract, /Skills required: \*\*yes\*\*/);
+  assert.match(contract, /Skill stack: required \*\*yes\*\* · paths `\.agents\/skills`, `\.claude\/skills`, `skills`/);
+  assert.match(contract, /Default skills: `design-system`, `design-review`/);
   assert.match(contract, /project:design\/COMPOSITION\.json/);
   assert.match(contract, /https:\/\/ui\.shadcn\.com/);
 });

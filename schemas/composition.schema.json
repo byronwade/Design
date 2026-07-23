@@ -1,20 +1,88 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["schemaVersion", "adapter", "registry", "style", "paths", "appTypes", "policies"],
+  "required": ["schemaVersion", "adapter", "registry", "style", "paths", "visualReferences", "skillStack", "appTypes", "policies"],
   "properties": {
     "$schema": {"type": "string"},
     "schemaVersion": {"const": 1},
     "adapter": {"enum": ["shadcn", "custom", "none"]},
     "registry": {"type": "string", "minLength": 1},
     "style": {"type": "string", "minLength": 1},
+    "componentSource": {
+      "type": "object",
+      "required": ["adapter", "required", "installed", "registry", "style"],
+      "properties": {
+        "adapter": {"enum": ["shadcn", "custom", "none"]},
+        "required": {"type": "boolean"},
+        "installed": {"type": "boolean"},
+        "registry": {"type": "string", "minLength": 1},
+        "style": {"type": "string", "minLength": 1},
+        "referenceAdapters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "required", "installed"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "registry": {"type": "string"},
+              "style": {"type": "string"},
+              "required": {"type": "boolean"},
+              "installed": {"type": "boolean"},
+              "notes": {"type": "string"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "paths": {
       "type": "object",
       "required": ["ui", "blocks", "recipes"],
       "properties": {
         "ui": {"type": "string", "minLength": 1},
         "blocks": {"type": "string", "minLength": 1},
-        "recipes": {"type": "string", "minLength": 1}
+        "recipes": {"type": "string", "minLength": 1},
+        "references": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "visualReferences": {
+      "type": "object",
+      "required": ["required", "bundled", "registry", "paths", "recommendedStarterCount", "metadataFields", "aiPolicy"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "bundled": {"type": "boolean"},
+        "registry": {"type": "string", "minLength": 1},
+        "paths": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "recommendedStarterCount": {"type": "integer", "minimum": 0, "maximum": 10},
+        "metadataFields": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "aiPolicy": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "skillStack": {
+      "type": "object",
+      "required": ["required", "registryPaths", "dispatchPolicy", "defaultSkills"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "registryPaths": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "dispatchPolicy": {"type": "string", "minLength": 1},
+        "defaultSkills": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "path", "required", "when", "purpose"],
+            "properties": {
+              "name": {"type": "string", "minLength": 1},
+              "path": {"type": "string", "minLength": 1},
+              "required": {"type": "boolean"},
+              "when": {"type": "string", "minLength": 1},
+              "purpose": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        }
       },
       "additionalProperties": false
     },
@@ -45,7 +113,9 @@
         "mappingAuthority": {"type": "string", "minLength": 1},
         "newPrimitiveRequiresDecision": {"type": "boolean"},
         "verifyRenderedStates": {"type": "boolean"},
-        "blockReuse": {"enum": ["prefer", "required", "optional"]}
+        "blockReuse": {"enum": ["prefer", "required", "optional"]},
+        "componentLibraryRequired": {"type": "boolean"},
+        "skillsRequired": {"type": "boolean"}
       },
       "additionalProperties": false
     }

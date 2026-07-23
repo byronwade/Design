@@ -1,0 +1,32 @@
+---
+import Icon from '../Icon.astro';
+
+const {
+  href,
+  variant = 'default',
+  size = 'default',
+  icon,
+  iconAfter,
+  class: className = '',
+  type = 'button',
+  target,
+  rel,
+  ariaLabel,
+  dataCopy,
+} = Astro.props;
+
+const classes = ['ui-button', `ui-button-${variant}`, `ui-button-${size}`, className];
+---
+{href ? (
+  <a class:list={classes} href={href} target={target} rel={rel} aria-label={ariaLabel}>
+    {icon && <Icon name={icon} size={16} />}
+    <slot />
+    {iconAfter && <Icon name={iconAfter} size={16} />}
+  </a>
+) : (
+  <button class:list={classes} type={type} aria-label={ariaLabel} data-copy={dataCopy}>
+    {icon && <Icon name={icon} size={16} />}
+    <slot />
+    {iconAfter && <Icon name={iconAfter} size={16} />}
+  </button>
+)}

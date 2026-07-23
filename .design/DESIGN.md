@@ -166,6 +166,8 @@ Warm Paper Workbench is calm, warm, tactile, precise, compact, capable, legible,
 
 In a consuming project, this root file is the single editable visual contract. Read `AGENTS.md` before UI work. Product-specific context, production mappings, and decisions live in `design/`. The selected platform profile is compiled from the versioned engine through `.design/config.json` into `.design/generated/<target>.md`.
 
+Skills and visual references are part of the design workflow, not decoration. Use the installed design-system Skills before UI work, and inspect applicable approved references from `design/REFERENCES.md` when a surface needs visual continuity. Mobbin-style pattern references may guide surface, flow, pattern, interaction, and state research, but references guide cohesion; they do not override tokens, accessibility, platform behavior, or production mappings.
+
 The package repository keeps `.design/DESIGN.md` only as a verified internal mirror. Installed projects must not create a second editable `DESIGN.md`.
 
 ## Colors
@@ -204,8 +206,10 @@ Primary buttons commit or advance the principal task of one region. A region has
 
 Rows, boards, timelines, inspectors, forms, menus, previews, and overlays follow the component and pattern contracts compiled into the selected target. `design/COMPONENTS.md` maps those intents to actual production APIs, variants, stories, tests, and approved design references. Native profiles may replace a visual primitive with the platform-standard control while preserving semantic role and product identity.
 
+Component libraries are optional adapters. shadcn/ui may be used as an approved starter vocabulary when a project declares it, but the design contract must also work with custom components, another library, native platform controls, or no component package.
+
 ## Do's and Don'ts
 
-**Do:** preserve context; use progressive disclosure; keep one dominant action per region; make state and consequence explicit; align repeated information; provide keyboard and assistive-technology access; transform representations at constrained widths; test realistic content and failure states; recompile context after authored design changes.
+**Do:** preserve context; use progressive disclosure; keep one dominant action per region; make state and consequence explicit; align repeated information; provide keyboard and assistive-technology access; transform representations at constrained widths; use applicable approved visual references; use the installed design-system Skills; test realistic content and failure states; recompile context after authored design changes.
 
-**Don't:** use gradients decoratively; create a card for every section; combine every control scope into one toolbar; invent one-off spacing or radius values; center operational forms; use accent color as decoration; imitate native chrome in a browser; shrink desktop layouts until they technically fit; hide destructive consequence; animate high-frequency keyboard actions merely for flourish; edit `.design/generated/` directly.
+**Don't:** use gradients decoratively; create a card for every section; combine every control scope into one toolbar; invent one-off spacing or radius values; require shadcn/ui or any component package unless the project declares it; bundle bulk photo sets with the contract; center operational forms; use accent color as decoration; imitate native chrome in a browser; shrink desktop layouts until they technically fit; hide destructive consequence; animate high-frequency keyboard actions merely for flourish; edit `.design/generated/` directly.

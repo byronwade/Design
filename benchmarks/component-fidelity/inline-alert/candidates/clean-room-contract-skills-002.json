@@ -1,0 +1,118 @@
+{
+  "candidate": "clean-room-contract-skills-002",
+  "track": "contract-plus-skills",
+  "generatedBy": "GPT-5 Codex",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/inline-alert/clean-room/prompt.md",
+    "benchmarks/component-fidelity/inline-alert/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/inline-alert/clean-room/candidate.schema.json",
+    "README.md",
+    "AGENTS.md",
+    "DESIGN.md",
+    ".design/AGENT.md",
+    ".design/INDEX.md",
+    ".design/components/ACTIONS.md",
+    ".design/components/FEEDBACK-OVERLAYS.md",
+    ".design/global/CONTENT.md",
+    ".design/global/INTERACTION.md",
+    ".design/patterns/PAGES.md",
+    ".design/verticals/web/BASE.md",
+    ".design/verticals/web/APP.md",
+    "templates/design/PROJECT.md",
+    "templates/design/COMPONENTS.md",
+    "templates/design/REFERENCES.md",
+    "templates/design/COMPOSITION.json",
+    "skills/design-system/SKILL.md",
+    "skills/design-review/SKILL.md"
+  ],
+  "provenance": {
+    "runId": "clean-room-contract-skills-002-2026-07-22T21-03-04-04-00",
+    "model": "GPT-5 Codex",
+    "operator": "Codex",
+    "generatedAt": "2026-07-22T21:03:04-04:00",
+    "targetAccess": false,
+    "promptSha256": "C562E613F4C1D5113F562D1DA1A073E70C7B1D4FB318D3C0CB4AD81CC3FBDB15",
+    "allowedInputsSha256": "B60A0C431DB723CEDFEE1F054FC10F8EF271A126268ECC99A0DB34516B6C0269",
+    "allowedInputFiles": [
+      "benchmarks/component-fidelity/inline-alert/clean-room/prompt.md",
+      "benchmarks/component-fidelity/inline-alert/clean-room/allowed-inputs.json",
+      "benchmarks/component-fidelity/inline-alert/clean-room/candidate.schema.json",
+      "README.md",
+      "AGENTS.md",
+      "DESIGN.md",
+      ".design/AGENT.md",
+      ".design/INDEX.md",
+      ".design/components/ACTIONS.md",
+      ".design/components/FEEDBACK-OVERLAYS.md",
+      ".design/global/CONTENT.md",
+      ".design/global/INTERACTION.md",
+      ".design/patterns/PAGES.md",
+      ".design/verticals/web/BASE.md",
+      ".design/verticals/web/APP.md",
+      "templates/design/PROJECT.md",
+      "templates/design/COMPONENTS.md",
+      "templates/design/REFERENCES.md",
+      "templates/design/COMPOSITION.json",
+      "skills/design-system/SKILL.md",
+      "skills/design-review/SKILL.md"
+    ],
+    "cleanRoomAttestation": "I did not read the hidden target, prior candidates, benchmark output, scorer output, scorer misses, or any files outside the allowed contract-plus-skills input set."
+  },
+  "anatomy": [
+    "alert.root",
+    "alert.icon",
+    "alert.title",
+    "alert.description",
+    "alert.action",
+    "alert.dismiss",
+    "alert.focus-ring"
+  ],
+  "tokens": {
+    "width": 420,
+    "padding": 14,
+    "gap": 12,
+    "radius": 10,
+    "background": "#FFF1D6",
+    "foreground": "#2B2723",
+    "border": "#E0C28E",
+    "mutedForeground": "#675F57",
+    "accent": "#9B4F32",
+    "iconColor": "#7A5417",
+    "shadow": "0 8px 18px rgba(67, 52, 38, 0.10)",
+    "fontFamily": "Inter",
+    "titleWeight": 650,
+    "bodyWeight": 400,
+    "titleSize": 13,
+    "bodySize": 13,
+    "actionSize": 12
+  },
+  "states": {
+    "hover": {
+      "actionBackground": "#F4E5DB",
+      "actionForeground": "#7A3F2A",
+      "dismissBackground": "#F5EEE3"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#7D4936",
+      "outlineOffset": 2
+    },
+    "busy": {
+      "opacity": 0.88,
+      "actionLabel": "Refreshing",
+      "indicator": "spinner"
+    },
+    "dismissed": {
+      "opacity": 0,
+      "height": 0,
+      "ariaHidden": "aria-hidden=\"true\""
+    }
+  },
+  "content": {
+    "title": "Source may be stale",
+    "description": "Refresh before publishing changes to this contract.",
+    "actionLabel": "Refresh source",
+    "dismissLabel": "Dismiss notice"
+  }
+}

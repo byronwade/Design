@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidate": "clean-room-contract-skills-002",
+  "track": "contract-plus-skills",
+  "generatedBy": "gpt-5-codex",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/button/clean-room/prompt.md",
+    "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/button/clean-room/candidate.schema.json",
+    "README.md",
+    "AGENTS.md",
+    "DESIGN.md",
+    ".design/AGENT.md",
+    ".design/INDEX.md",
+    ".design/components/ACTIONS.md",
+    ".design/components/FORMS.md",
+    ".design/components/DATA-DISPLAY.md",
+    ".design/patterns/PAGES.md",
+    ".design/verticals/web/BASE.md",
+    ".design/verticals/web/APP.md",
+    "templates/design/PROJECT.md",
+    "templates/design/COMPONENTS.md",
+    "templates/design/REFERENCES.md",
+    "templates/design/COMPOSITION.json",
+    "skills/design-system/SKILL.md",
+    "skills/design-review/SKILL.md"
+  ],
+  "provenance": {
+    "runId": "clean-room-contract-skills-002",
+    "generatedAt": "2026-07-22T23:50:50.969Z",
+    "model": "gpt-5-codex",
+    "operator": "Codex automation",
+    "targetAccess": false,
+    "allowedInputFiles": [
+      "benchmarks/component-fidelity/button/clean-room/prompt.md",
+      "benchmarks/component-fidelity/button/clean-room/allowed-inputs.json",
+      "benchmarks/component-fidelity/button/clean-room/candidate.schema.json",
+      "README.md",
+      "AGENTS.md",
+      "DESIGN.md",
+      ".design/AGENT.md",
+      ".design/INDEX.md",
+      ".design/components/ACTIONS.md",
+      ".design/components/FORMS.md",
+      ".design/components/DATA-DISPLAY.md",
+      ".design/patterns/PAGES.md",
+      ".design/verticals/web/BASE.md",
+      ".design/verticals/web/APP.md",
+      "templates/design/PROJECT.md",
+      "templates/design/COMPONENTS.md",
+      "templates/design/REFERENCES.md",
+      "templates/design/COMPOSITION.json",
+      "skills/design-system/SKILL.md",
+      "skills/design-review/SKILL.md"
+    ],
+    "promptSha256": "49feeef3e66ad7eef11eb5650f9be34d978c71ecb7fdabeca4e160dcbc8ee612",
+    "allowedInputsSha256": "707f2303c352977ce7c2e7dcdd58d1e29fd0a06434d5d6141208d72c521817f9",
+    "cleanRoomAttestation": "Generated only from the contract-plus-skills allowed inputs; did not read the hidden target, scorer misses, benchmark output, or existing candidates."
+  },
+  "anatomy": [
+    "button.root",
+    "button.icon-slot",
+    "button.label",
+    "button.hint",
+    "button.loading-indicator",
+    "button.focus-ring"
+  ],
+  "tokens": {
+    "height": 32,
+    "paddingInline": 12,
+    "gap": 8,
+    "radius": 6,
+    "background": "#9B4F32",
+    "foreground": "#FFFFFF",
+    "border": "#7A3F2A",
+    "shadow": "inset 0 1px 0 rgba(255,255,255,.18),0 1px 2px rgba(67,52,38,.18)",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 13,
+    "hintSize": 12
+  },
+  "states": {
+    "hover": {
+      "background": "#7A3F2A",
+      "translateY": -1,
+      "shadow": "inset 0 1px 0 rgba(255,255,255,.16),0 3px 8px rgba(67,52,38,.22)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#7D4936",
+      "outlineOffset": 2
+    },
+    "loading": {
+      "opacity": 0.72,
+      "label": "Publishing",
+      "indicator": "spinner"
+    },
+    "disabled": {
+      "background": "#EDE3D5",
+      "foreground": "#766E65",
+      "cursor": "not-allowed"
+    }
+  },
+  "content": {
+    "label": "Publish contract",
+    "hint": "Reviewed"
+  }
+}

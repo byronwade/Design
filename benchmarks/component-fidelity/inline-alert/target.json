@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "component": "warm-inline-alert",
+  "description": "A warm warning inline alert for stale source context, with icon, title, description, refresh action, dismiss control, focus ring, and busy state.",
+  "targetAccuracy": 99,
+  "anatomy": [
+    "alert.root",
+    "alert.icon",
+    "alert.title",
+    "alert.description",
+    "alert.action",
+    "alert.dismiss",
+    "alert.focus-ring"
+  ],
+  "tokens": {
+    "width": 420,
+    "padding": 14,
+    "gap": 12,
+    "radius": 10,
+    "background": "#FFF1D6",
+    "foreground": "#2B2723",
+    "border": "#E0C28E",
+    "mutedForeground": "#675F57",
+    "accent": "#9B4F32",
+    "iconColor": "#7A5417",
+    "shadow": "0 8px 18px rgba(67, 52, 38, 0.10)",
+    "fontFamily": "Inter",
+    "titleWeight": 650,
+    "bodyWeight": 400,
+    "titleSize": 13,
+    "bodySize": 13,
+    "actionSize": 12
+  },
+  "states": {
+    "hover": {
+      "actionBackground": "#F4E5DB",
+      "actionForeground": "#7A3F2A",
+      "dismissBackground": "#F5EEE3"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#7D4936",
+      "outlineOffset": 2
+    },
+    "busy": {
+      "opacity": 0.88,
+      "actionLabel": "Refreshing",
+      "indicator": "spinner"
+    },
+    "dismissed": {
+      "opacity": 0,
+      "height": 0,
+      "ariaHidden": "true"
+    }
+  },
+  "content": {
+    "title": "Source may be stale",
+    "description": "Refresh before publishing changes to this contract.",
+    "actionLabel": "Refresh source",
+    "dismissLabel": "Dismiss notice"
+  }
+}

@@ -1,13 +1,61 @@
 {
   "$schema": "https://raw.githubusercontent.com/byronwade/Design/main/schemas/composition.schema.json",
   "schemaVersion": 1,
-  "adapter": "shadcn",
-  "registry": "https://ui.shadcn.com",
-  "style": "new-york",
+  "adapter": "none",
+  "registry": "project-local",
+  "style": "project-owned",
+  "componentSource": {
+    "adapter": "none",
+    "required": false,
+    "installed": false,
+    "registry": "project-local",
+    "style": "project-owned",
+    "referenceAdapters": [
+      {
+        "name": "shadcn/ui",
+        "registry": "https://ui.shadcn.com",
+        "style": "new-york",
+        "required": false,
+        "installed": false,
+        "notes": "Optional starter vocabulary and block reference. The design contract must work without shadcn/ui installed."
+      }
+    ]
+  },
   "paths": {
     "ui": "src/components/ui",
     "blocks": "src/components/blocks",
-    "recipes": "design/recipes"
+    "recipes": "design/recipes",
+    "references": "design/references"
+  },
+  "visualReferences": {
+    "required": false,
+    "bundled": false,
+    "registry": "design/REFERENCES.md",
+    "paths": ["design/references"],
+    "recommendedStarterCount": 10,
+    "metadataFields": ["surface", "flow", "pattern", "interaction", "source/provenance", "applicability", "what to preserve", "what not to copy"],
+    "aiPolicy": "Inspect applicable approved references before designing or visually modifying a surface; use the smallest relevant set and name the references in the design brief."
+  },
+  "skillStack": {
+    "required": true,
+    "registryPaths": [".agents/skills", ".claude/skills", "skills"],
+    "dispatchPolicy": "Select the smallest applicable design-system Skill before UI work. Skills are the executable contract layer; source contracts are compiled context, not pages for agents to browse manually.",
+    "defaultSkills": [
+      {
+        "name": "design-system",
+        "path": ".agents/skills/design-system/SKILL.md",
+        "required": true,
+        "when": "Before UI, component, layout, content-state, motion, or visual-reference work.",
+        "purpose": "Apply the selected compiled contract, component source policy, references, and production mappings."
+      },
+      {
+        "name": "design-review",
+        "path": ".agents/skills/design-review/SKILL.md",
+        "required": true,
+        "when": "Before approving or reporting completed UI work.",
+        "purpose": "Review rendered states, evidence, accessibility, component mapping, and intentional visual-baseline changes."
+      }
+    ]
   },
   "appTypes": {
     "saas-workbench": {
@@ -53,6 +101,8 @@
     "mappingAuthority": "design/COMPONENTS.md",
     "newPrimitiveRequiresDecision": true,
     "verifyRenderedStates": true,
-    "blockReuse": "prefer"
+    "blockReuse": "prefer",
+    "componentLibraryRequired": false,
+    "skillsRequired": true
   }
 }

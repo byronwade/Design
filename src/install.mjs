@@ -98,9 +98,12 @@ async function migrateLegacyInstall(target) {
 
   const oldProject = await combineLegacy(target, [
     'project/CONTEXT.md', 'project/TERMINOLOGY.md', 'project/SURFACES.md',
-    'project/THEMES.md', 'project/ASSETS.md', 'project/REFERENCES.md',
+    'project/THEMES.md', 'project/ASSETS.md',
   ], 'Project design context');
   await migrateAuthoredDocument(target, oldProject, 'design/PROJECT.md', 'PROJECT-v1.md', backups);
+
+  const oldReferences = await combineLegacy(target, ['project/REFERENCES.md'], 'Visual references');
+  await migrateAuthoredDocument(target, oldReferences, 'design/REFERENCES.md', 'REFERENCES-v1.md', backups);
 
   const oldComponents = await readOptional(path.join(target, '.design/project/COMPONENTS.md'));
   await migrateAuthoredDocument(target, oldComponents, 'design/COMPONENTS.md', 'COMPONENTS-v1.md', backups);
@@ -132,6 +135,28 @@ async function ensureAuthoredFacade(target) {
   return created;
 }
 
+async function ensureCompositionDefaults(target) {
+  const compositionPath = path.join(target, 'design/COMPOSITION.json');
+  if (!await exists(compositionPath)) return false;
+  const [current, template] = await Promise.all([
+    readJson(compositionPath),
+    readJson(path.join(templateRoot, 'design/COMPOSITION.json')),
+  ]);
+  let changed = false;
+  for (const key of ['visualReferences', 'skillStack']) {
+    if (current[key] === undefined && template[key] !== undefined) {
+      current[key] = template[key];
+      changed = true;
+    }
+  }
+  if (!current.paths?.references && template.paths?.references) {
+    current.paths = { ...(current.paths ?? {}), references: template.paths.references };
+    changed = true;
+  }
+  if (changed) await writeJson(compositionPath, current);
+  return changed;
+}
+
 async function writeLock(target, manifest, adapters, migration = null, previous = null) {
   const now = new Date().toISOString();
   const lock = {
@@ -160,6 +185,7 @@ export async function installContract({ target, profiles, adapters, appType = nu
   await fs.mkdir(path.join(target, CACHE_DIRECTORY), { recursive: true });
   await fs.rm(path.join(target, GENERATED_DIRECTORY), { recursive: true, force: true });
   const created = await ensureAuthoredFacade(target);
+  await ensureCompositionDefaults(target);
   const config = {
     $schema: 'https://raw.githubusercontent.com/byronwade/Design/main/schemas/config.schema.json',
     schemaVersion: 1,
@@ -178,6 +204,7 @@ export async function syncContract({ target }) {
   const manifest = await loadManifest();
   const migration = await migrateLegacyInstall(target);
   await ensureAuthoredFacade(target);
+  await ensureCompositionDefaults(target);
   const config = await loadProjectConfig(target);
   const previous = await (async () => {
     try { return await readJson(path.join(target, LOCK_FILE)); } catch { return null; }

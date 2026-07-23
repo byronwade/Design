@@ -318,7 +318,7 @@
       "id": "DS-PROJECT-002",
       "severity": "warning",
       "category": "governance",
-      "requirement": "Representative golden references and realistic fixtures exist for adopted shells and critical flows."
+      "requirement": "Representative golden references in the project-owned reference registry and realistic fixtures exist for adopted shells and critical flows."
     },
     {
       "id": "DS-PROJECT-003",
@@ -336,7 +336,13 @@
       "id": "DS-PROJECT-005",
       "severity": "warning",
       "category": "governance",
-      "requirement": "Every shipped theme and asset family has an executable production source, design mapping, target scope, accessibility behavior, and owner."
+      "requirement": "Every shipped theme, asset family, and approved visual-reference family has an executable production source or registry entry, design mapping, target scope, accessibility behavior, and owner."
+    },
+    {
+      "id": "DS-PROJECT-006",
+      "severity": "warning",
+      "category": "governance",
+      "requirement": "Component libraries are declared as optional or required project adapters; the engine does not require a component package by default."
     },
     {
       "id": "DS-EVIDENCE-001",

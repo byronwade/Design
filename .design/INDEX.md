@@ -10,8 +10,9 @@ Start with the repository `README.md` for installation and product usage.
 2. Run `design-contract status`; run `design-contract context` when output is missing or stale.
 3. Select the task’s target from `.design/config.json`.
 4. Read root `DESIGN.md` and `.design/generated/<target>.md`.
-5. Read the project-owned files under `design/`.
-6. Inspect production components, routes, stories, fixtures, tests, and design mappings before proposing new system behavior.
+5. Select the smallest applicable design-system Skill from `.agents/skills`, `.claude/skills`, or repository `skills/`.
+6. Read only the project-owned files under `design/` needed for the task; use `design/references/` for approved screenshots, photos, and golden states.
+7. Inspect production components, routes, stories, fixtures, tests, and design mappings before proposing new system behavior.
 
 Do not read sibling platform contracts unless cross-platform comparison is explicitly the task.
 
@@ -31,7 +32,7 @@ Do not read sibling platform contracts unless cross-platform comparison is expli
 | Engine schemas | `schema/` |
 | Source provenance and external research | `sources/` |
 
-Installed product context is not stored here. It lives in root `DESIGN.md`, `design/PROJECT.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json` in the consuming repository.
+Installed product context is not stored here. The active AI workflow lives in root `AGENTS.md` and installed Skills. Product identity lives in root `DESIGN.md`. Thin project registries and reference media live in `design/PROJECT.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/references/`, `design/DECISIONS.md`, and `design/COMPOSITION.json` in the consuming repository.
 
 ## Authority
 
@@ -69,7 +70,7 @@ person, situation, and task
 - Engine inheritance and profiles: `.design/manifest.json`
 - Engine workflow: `.design/AGENT.md`
 - Project visual identity: consuming root `DESIGN.md`
-- Project context and implementation truth: consuming `design/PROJECT.md`, `design/COMPONENTS.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`
+- Project context and implementation truth: installed Skills, consuming `design/PROJECT.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/references/`, `design/DECISIONS.md`, and `design/COMPOSITION.json`
 - Target selection: consuming `.design/config.json`
 - Installed engine version: consuming `.design/lock.json`
 - Compiled target context: consuming `.design/generated/`

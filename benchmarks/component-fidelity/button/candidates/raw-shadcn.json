@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "candidate": "raw-shadcn",
+  "track": "baseline",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": ["generic shadcn button vocabulary"],
+  "anatomy": [
+    "button.root",
+    "button.label"
+  ],
+  "tokens": {
+    "height": 40,
+    "paddingInline": 16,
+    "gap": 8,
+    "radius": 6,
+    "background": "#111111",
+    "foreground": "#ffffff",
+    "border": "#111111",
+    "shadow": "none",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 14,
+    "hintSize": 0
+  },
+  "states": {
+    "hover": {
+      "background": "#272727",
+      "translateY": 0,
+      "shadow": "none"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#111111",
+      "outlineOffset": 2
+    },
+    "loading": {
+      "opacity": 0.5,
+      "label": "Loading",
+      "indicator": "none"
+    },
+    "disabled": {
+      "background": "#e5e5e5",
+      "foreground": "#737373",
+      "cursor": "not-allowed"
+    }
+  },
+  "content": {
+    "label": "Publish",
+    "hint": ""
+  }
+}

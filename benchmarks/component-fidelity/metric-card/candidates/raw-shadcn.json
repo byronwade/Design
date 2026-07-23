@@ -1,0 +1,67 @@
+{
+  "candidate": "raw-shadcn",
+  "track": "baseline",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": ["generic shadcn card and dropdown menu vocabulary"],
+  "anatomy": [
+    "metric.root",
+    "metric.header",
+    "metric.label",
+    "metric.menu-trigger",
+    "metric.value",
+    "metric.delta",
+    "metric.caption"
+  ],
+  "tokens": {
+    "width": 320,
+    "padding": 24,
+    "gap": 8,
+    "radius": 12,
+    "background": "#ffffff",
+    "foreground": "#111111",
+    "border": "#e5e5e5",
+    "mutedForeground": "#737373",
+    "accent": "#111111",
+    "positive": "#16a34a",
+    "warning": "#f59e0b",
+    "shadow": "none",
+    "fontFamily": "Inter",
+    "labelWeight": 500,
+    "valueWeight": 700,
+    "labelSize": 14,
+    "valueSize": 30,
+    "deltaSize": 12,
+    "captionSize": 12,
+    "sparklineHeight": 0
+  },
+  "states": {
+    "hover": {
+      "background": "#ffffff",
+      "border": "#e5e5e5",
+      "shadow": "none"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#111111",
+      "outlineOffset": 2
+    },
+    "selected": {
+      "border": "#111111",
+      "background": "#ffffff"
+    },
+    "stale": {
+      "statusColor": "#f59e0b",
+      "caption": "Stale",
+      "opacity": 0.5
+    }
+  },
+  "content": {
+    "label": "Metric",
+    "value": "94%",
+    "delta": "+4%",
+    "caption": "This week",
+    "menuLabel": "Open menu",
+    "staleCaption": "Stale"
+  }
+}

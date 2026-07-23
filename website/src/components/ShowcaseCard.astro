@@ -1,6 +1,0 @@
----
-import Icon from './Icon.astro';
-import ShowcasePreview from './ShowcasePreview.astro';
-const { item } = Astro.props;
----
-<a class="showcase-card" href={`/showcase/${item.slug}/`} data-showcase-search={`${item.title} ${item.author} ${item.surface} ${item.tags.join(' ')}`}><ShowcasePreview type={item.preview} /><div class="showcase-card-body"><div class="showcase-card-meta"><span>{item.kind}</span><span>{item.surface}</span></div><h3>{item.title}</h3><p>{item.summary}</p><div class="showcase-card-footer"><span>{item.author}</span><span><Icon name="arrow" size={15} /></span></div></div></a>

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "candidate": "prompt-only",
+  "track": "plain-prompt",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": [
+    "benchmarks/component-fidelity/status-badge/clean-room/prompt.md",
+    "benchmarks/component-fidelity/status-badge/clean-room/allowed-inputs.json",
+    "benchmarks/component-fidelity/status-badge/clean-room/candidate.schema.json"
+  ],
+  "anatomy": ["badge.root", "badge.status-dot", "badge.label", "badge.focus-ring"],
+  "tokens": {
+    "height": 24,
+    "paddingInline": 8,
+    "gap": 4,
+    "radius": 999,
+    "background": "#FFF1D6",
+    "foreground": "#7A5417",
+    "border": "rgba(67, 52, 38, 0.15)",
+    "dotColor": "#7A5417",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 12,
+    "dotSize": 6
+  },
+  "states": {
+    "hover": { "background": "#FFF1D6", "border": "rgba(67, 52, 38, 0.22)" },
+    "focusVisible": { "outlineWidth": 2, "outlineColor": "#7D4936", "outlineOffset": 2 },
+    "disabled": { "background": "#FAF5EC", "foreground": "#766E65", "opacity": 0.72 }
+  },
+  "content": {
+    "label": "Needs review",
+    "ariaLabel": "Status: Needs review"
+  }
+}

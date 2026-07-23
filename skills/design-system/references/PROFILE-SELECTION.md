@@ -19,7 +19,7 @@ A responsive web app viewed on a phone remains `web-app`; it does not inherit na
 
 ## App type is a second choice
 
-`profile` selects platform behavior. `appType` selects the product recipe layered on top of that platform. When the project uses shadcn/ui, the recipe is defined in `design/COMPOSITION.json` and names the approved shell, layout, block families, and component intent IDs.
+`profile` selects platform behavior. `appType` selects the product recipe layered on top of that platform. The recipe is defined in `design/COMPOSITION.json` and names the approved shell, layout, block families, component intent IDs, optional component source, and visual-reference policy. shadcn/ui may be one optional reference adapter, but it is not required for app-type composition.
 
 Examples:
 

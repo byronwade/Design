@@ -56,8 +56,9 @@ export function projectDocuments() {
   return [
     { id: 'project.context', file: 'design/PROJECT.md', role: 'project context, surfaces, terminology, themes, and constraints' },
     { id: 'project.components', file: 'design/COMPONENTS.md', role: 'production component, pattern, story, test, and design mappings' },
+    { id: 'project.references', file: 'design/REFERENCES.md', role: 'approved visual references, screenshots, photos, golden states, and AI reference policy' },
     { id: 'project.decisions', file: 'design/DECISIONS.md', role: 'accepted decisions, exceptions, gaps, migrations, and baseline approvals' },
-    { id: 'project.composition', file: 'design/COMPOSITION.json', role: 'component source adapter, app-type recipes, block composition, and AI reuse policies' },
+    { id: 'project.composition', file: 'design/COMPOSITION.json', role: 'optional component source adapter, app-type recipes, visual-reference policy, block composition, and AI reuse policies' },
   ];
 }
 
@@ -101,7 +102,7 @@ export async function inspectProjectReadiness(target) {
   if (await exists(compositionPath)) {
     const value = await fs.readFile(compositionPath, 'utf8');
     const incomplete = /replace-me/i.test(value);
-    add('composition', incomplete ? 'warning' : 'pass', 'design/COMPOSITION.json', incomplete ? 'Composition contract still contains its starter recipe.' : 'Composition adapter and app-type recipes are populated.', incomplete ? 'Choose the component source, define app-type recipes, and replace starter intent/block values.' : undefined);
+    add('composition', incomplete ? 'warning' : 'pass', 'design/COMPOSITION.json', incomplete ? 'Composition contract still contains its starter recipe.' : 'Composition source, app-type recipes, visual references, and AI policies are populated.', incomplete ? 'Choose the component source, define app-type recipes, and replace starter intent/block values.' : undefined);
   }
   return checks;
 }

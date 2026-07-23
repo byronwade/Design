@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["candidate", "track", "generatedBy", "cleanRoom", "allowedInputs", "provenance", "anatomy", "tokens", "states", "content"],
+  "properties": {
+    "candidate": { "type": "string" },
+    "track": { "enum": ["baseline", "plain-prompt", "contract-plus-skills"] },
+    "generatedBy": { "type": "string" },
+    "cleanRoom": { "const": true },
+    "allowedInputs": { "type": "array", "items": { "type": "string" } },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runId", "model", "operator", "generatedAt", "targetAccess", "promptSha256", "allowedInputsSha256", "allowedInputFiles", "cleanRoomAttestation"],
+      "properties": {
+        "runId": { "type": "string" },
+        "model": { "type": "string" },
+        "operator": { "type": "string" },
+        "generatedAt": { "type": "string" },
+        "targetAccess": { "const": false },
+        "promptSha256": { "type": "string" },
+        "allowedInputsSha256": { "type": "string" },
+        "allowedInputFiles": { "type": "array", "items": { "type": "string" } },
+        "cleanRoomAttestation": { "type": "string" }
+      }
+    },
+    "anatomy": {
+      "type": "array",
+      "items": { "enum": ["badge.root", "badge.status-dot", "badge.label", "badge.focus-ring"] }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["height", "paddingInline", "gap", "radius", "background", "foreground", "border", "dotColor", "fontFamily", "fontWeight", "labelSize", "dotSize"],
+      "properties": {
+        "height": { "type": "number" },
+        "paddingInline": { "type": "number" },
+        "gap": { "type": "number" },
+        "radius": { "type": "number" },
+        "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "border": { "type": "string" },
+        "dotColor": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "fontFamily": { "type": "string" },
+        "fontWeight": { "type": "number" },
+        "labelSize": { "type": "number" },
+        "dotSize": { "type": "number" }
+      }
+    },
+    "states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hover", "focusVisible", "disabled"],
+      "properties": {
+        "hover": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "border"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "border": { "type": "string" }
+          }
+        },
+        "focusVisible": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outlineWidth", "outlineColor", "outlineOffset"],
+          "properties": {
+            "outlineWidth": { "type": "number" },
+            "outlineColor": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "outlineOffset": { "type": "number" }
+          }
+        },
+        "disabled": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "foreground", "opacity"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "opacity": { "type": "number" }
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "ariaLabel"],
+      "properties": {
+        "label": { "type": "string" },
+        "ariaLabel": { "type": "string" }
+      }
+    }
+  }
+}

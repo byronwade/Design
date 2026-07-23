@@ -1,0 +1,67 @@
+{
+  "component": "graphite-metric-card",
+  "targetAccuracy": 99,
+  "anatomy": [
+    "metric.root",
+    "metric.header",
+    "metric.label",
+    "metric.menu-trigger",
+    "metric.value",
+    "metric.delta",
+    "metric.caption",
+    "metric.sparkline",
+    "metric.status-dot",
+    "metric.focus-ring"
+  ],
+  "tokens": {
+    "width": 284,
+    "padding": 16,
+    "gap": 12,
+    "radius": 10,
+    "background": "#181817",
+    "foreground": "#f7f7f4",
+    "border": "#30302c",
+    "mutedForeground": "#9f9a91",
+    "accent": "#9eb7ff",
+    "positive": "#7bd88f",
+    "warning": "#d9b26f",
+    "shadow": "0 10px 24px rgba(0, 0, 0, 0.20)",
+    "fontFamily": "Inter",
+    "labelWeight": 650,
+    "valueWeight": 760,
+    "labelSize": 12,
+    "valueSize": 30,
+    "deltaSize": 12,
+    "captionSize": 11,
+    "sparklineHeight": 38
+  },
+  "states": {
+    "hover": {
+      "background": "#20201d",
+      "border": "#3a3a36",
+      "shadow": "0 14px 30px rgba(0, 0, 0, 0.24)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#9eb7ff",
+      "outlineOffset": 3
+    },
+    "selected": {
+      "border": "#9eb7ff",
+      "background": "#1d2230"
+    },
+    "stale": {
+      "statusColor": "#d9b26f",
+      "caption": "Data delayed",
+      "opacity": 0.82
+    }
+  },
+  "content": {
+    "label": "Resolution SLA",
+    "value": "94.2%",
+    "delta": "+3.8%",
+    "caption": "Last 7 days",
+    "menuLabel": "Metric actions",
+    "staleCaption": "Data delayed"
+  }
+}

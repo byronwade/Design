@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "component": "warm-complex-button",
+  "description": "A warm, high-trust command button with icon, label, supporting hint, focus ring, loading state, and disabled treatment.",
+  "targetAccuracy": 99,
+  "anatomy": [
+    "button.root",
+    "button.icon-slot",
+    "button.label",
+    "button.hint",
+    "button.loading-indicator",
+    "button.focus-ring"
+  ],
+  "tokens": {
+    "height": 48,
+    "paddingInline": 18,
+    "gap": 10,
+    "radius": 999,
+    "background": "#9b4f32",
+    "foreground": "#fffdf8",
+    "border": "#7a3f2a",
+    "shadow": "0 10px 24px rgba(67, 52, 38, 0.18)",
+    "fontFamily": "Inter",
+    "fontWeight": 800,
+    "labelSize": 14,
+    "hintSize": 11
+  },
+  "states": {
+    "hover": {
+      "background": "#7a3f2a",
+      "translateY": -1,
+      "shadow": "0 12px 28px rgba(67, 52, 38, 0.22)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#2b2723",
+      "outlineOffset": 3
+    },
+    "loading": {
+      "opacity": 0.92,
+      "label": "Saving",
+      "indicator": "spinner"
+    },
+    "disabled": {
+      "background": "#ede3d5",
+      "foreground": "#766e65",
+      "cursor": "not-allowed"
+    }
+  },
+  "content": {
+    "label": "Publish contract",
+    "hint": "Visible after review"
+  }
+}

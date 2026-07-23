@@ -1,4 +1,29 @@
-import { designColors, designTypography } from './system';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+export const designSource = 'DESIGN.md';
+
+const designPath = [resolve(process.cwd(), designSource), resolve(process.cwd(), '..', designSource)].find(existsSync);
+if (!designPath) throw new Error(`Missing canonical design source: ${designSource}`);
+const designText = readFileSync(designPath, 'utf8');
+
+function frontmatter(source: string) {
+  return source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '';
+}
+
+function flatBlock(source: string, name: string, next: string) {
+  const value = frontmatter(source);
+  const start = value.match(new RegExp(`^${name}:\\r?\\n`, 'm'));
+  if (!start) return new Map<string, string>();
+  const bodyStart = start.index! + start[0].length;
+  const remainder = value.slice(bodyStart);
+  const end = remainder.match(new RegExp(`^${next}:`, 'm'));
+  const body = remainder.slice(0, end?.index ?? remainder.length);
+  return new Map([...body.matchAll(/^  ([\w-]+):\s*(?:"([^"]*)"|'([^']*)'|([^\r\n]+))/gm)].map((match) => [match[1], (match[2] ?? match[3] ?? match[4] ?? '').trim()]));
+}
+
+const designColors = Object.fromEntries(flatBlock(designText, 'colors', 'typography'));
+const designTypography = Object.fromEntries(flatBlock(designText, 'typography', 'rounded'));
 
 export const siteTokenMap: Record<string, string> = {
   '--canvas': designColors.canvas,

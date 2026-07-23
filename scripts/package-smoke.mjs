@@ -36,6 +36,7 @@ for (const args of [
 ]) run(process.execPath, [bin, ...args]);
 await fs.access(path.join(project, 'DESIGN.md'));
 await fs.access(path.join(project, 'design/PROJECT.md'));
+await fs.access(path.join(project, 'design/REFERENCES.md'));
 await fs.access(path.join(project, '.design/generated/web-app.md'));
 await assert.rejects(() => fs.access(path.join(project, '.design/global/PRINCIPLES.md')));
 console.log('Package façade smoke test passed.');

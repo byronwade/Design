@@ -39,6 +39,41 @@ Repeated rows, cards, table cells, and dashboard modules do not each contain a p
 
 Desktop pointer-first surfaces use 28px compact, 32px routine, and 36px emphasis controls. Touch profiles use platform target metrics or a larger effective wrapper without visually inflating every control. Search or command input may use 40–44px only when it is itself the primary task.
 
+## Warm primary commitment recipe
+
+Use this recipe when a warm workbench contract asks for a primary commitment button that publishes, saves, or finalizes a reviewed design artifact. This is a named component recipe, not the default for every primary button.
+
+| Field | Value |
+| --- | --- |
+| Anatomy | `button.root`, `button.icon-slot`, `button.label`, `button.hint`, `button.loading-indicator`, `button.focus-ring` |
+| Label | `Publish contract` |
+| Supporting hint | `Visible after review` |
+| Loading label | `Saving` |
+| Loading indicator | `spinner` |
+| Height | `48` |
+| Inline padding | `18` |
+| Gap | `10` |
+| Radius | `999` |
+| Background | `#9b4f32` |
+| Foreground | `#fffdf8` |
+| Border | `#7a3f2a` |
+| Shadow | `0 10px 24px rgba(67, 52, 38, 0.18)` |
+| Font family | `Inter` |
+| Font weight | `800` |
+| Label size | `14` |
+| Hint size | `11` |
+| Hover background | `#7a3f2a` |
+| Hover translateY | `-1` |
+| Hover shadow | `0 12px 28px rgba(67, 52, 38, 0.22)` |
+| Focus outline | `2px #2b2723` |
+| Focus offset | `3` |
+| Loading opacity | `0.92` |
+| Disabled background | `#ede3d5` |
+| Disabled foreground | `#766e65` |
+| Disabled cursor | `not-allowed` |
+
+The recipe exists because warm commitment buttons carry more ceremony than routine toolbar commands. Do not downshift it to the routine desktop tier when the task is a region-level publish or finalization action.
+
 ## Selection and toggles
 
 A switch changes a persistent boolean setting and exposes current state. A checkbox selects one or more items or consents to a proposition. A radio group chooses one mutually exclusive option. A segmented control changes a small peer representation; it does not replace global navigation.

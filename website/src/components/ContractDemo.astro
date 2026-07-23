@@ -1,0 +1,112 @@
+---
+const { project } = Astro.props;
+---
+<div class:list={['contract-demo', `demo-${project.slug}`]}>
+  {project.slug === 'warm-paper-workbench' && (
+    <>
+      <div class="warm-demo-rail" aria-label="Workspace navigation">
+        <strong>W</strong>
+        <button class="is-active" type="button" title="Overview">O</button>
+        <button type="button" title="References">R</button>
+        <button type="button" title="Components">C</button>
+        <span></span>
+        <button type="button" title="Settings">S</button>
+      </div>
+      <div class="warm-demo-workspace">
+        <div class="demo-topbar">
+          <div><small>Northstar / Customer settings</small><strong>Design review</strong></div>
+          <div class="demo-actions"><button type="button">Share</button><button class="is-primary" type="button">Publish contract</button></div>
+        </div>
+        <div class="warm-demo-title">
+          <div><span>Contract workspace</span><h3>Settings that feel considered.</h3><p>Reference-backed components rewritten for a calm, high-trust customer workflow.</p></div>
+          <div class="warm-status"><span>Review status</span><strong>Ready for approval</strong><i>6 of 6 states mapped</i></div>
+        </div>
+        <div class="warm-demo-grid">
+          <section>
+            <span class="demo-label">Component card</span>
+            <h4>Reference packet</h4>
+            <p>Approved materials, interface states, and pattern notes are attached to this surface.</p>
+            <div class="demo-segmented"><button class="is-active" type="button">Brief</button><button type="button">Files</button><button type="button">States</button></div>
+            <div class="warm-file-row"><i>01</i><div><b>Customer settings</b><span>Golden state</span></div><em>Approved</em></div>
+            <div class="warm-file-row"><i>02</i><div><b>Form rhythm</b><span>Pattern note</span></div><em>Mapped</em></div>
+          </section>
+          <form>
+            <span class="demo-label">Form controls</span>
+            <label>Surface name<input value="Customer settings" /></label>
+            <label>Design intent<textarea>Warm, focused, high-trust, with clay reserved for commitment.</textarea></label>
+            <label class="demo-check"><input type="checkbox" checked /> Include approved reference memory</label>
+            <button class="is-primary" type="button">Generate mapped UI</button>
+          </form>
+        </div>
+      </div>
+    </>
+  )}
+
+  {project.slug === 'graphite-saas-console' && (
+    <>
+      <div class="graphite-demo-rail">
+        <strong>G</strong>
+        <button class="is-active" type="button" title="Overview">O</button>
+        <button type="button" title="Accounts">A</button>
+        <button type="button" title="Automations">W</button>
+        <span></span>
+        <button type="button" title="Settings">S</button>
+      </div>
+      <div class="graphite-demo-workspace">
+        <div class="graphite-demo-top">
+          <div><span>Operations</span><strong>Account review</strong></div>
+          <label><span>Search or run a command</span><kbd>/</kbd></label>
+          <button type="button">Export</button>
+        </div>
+        <div class="graphite-demo-filters">
+          <button class="is-active" type="button">All accounts <b>124</b></button>
+          <button type="button">Needs review <b>8</b></button>
+          <button type="button">At risk <b>3</b></button>
+          <span></span>
+          <button type="button">Filter</button>
+        </div>
+        <div class="graphite-demo-metrics">
+          <div><span>Monthly volume</span><strong>$248.2k</strong><small>+8.2% this month</small></div>
+          <div><span>Active accounts</span><strong>2,418</strong><small>94.6% healthy</small></div>
+          <div><span>Manual review</span><strong>48</strong><small>8 due today</small></div>
+        </div>
+        <div class="graphite-demo-table">
+          <div class="is-head"><span>Account</span><span>Owner</span><span>Plan</span><span>Volume</span><span>Risk</span></div>
+          <div><strong>Northstar Labs</strong><span>Casey Lin</span><span>Enterprise</span><code>$84,200</code><em>Low</em></div>
+          <div><strong>Fieldwork Co.</strong><span>Mara Ortiz</span><span>Business</span><code>$42,610</code><em class="is-review">Review</em></div>
+          <div><strong>Relay Systems</strong><span>Dev Rao</span><span>Enterprise</span><code>$38,940</code><em>Low</em></div>
+          <div><strong>Harbor Studio</strong><span>Ana Bell</span><span>Business</span><code>$21,880</code><em class="is-review">Review</em></div>
+        </div>
+      </div>
+    </>
+  )}
+
+  {project.slug === 'visual-reference-starter' && (
+    <>
+      <div class="reference-demo-workspace">
+        <div class="reference-demo-top">
+          <div><small>Visual memory</small><strong>Customer settings board</strong></div>
+          <div><button type="button">Add note</button><button class="is-primary" type="button">Approve selection</button></div>
+        </div>
+        <div class="reference-demo-body">
+          <aside>
+            <span>Collections</span>
+            <button class="is-active" type="button">All references <b>12</b></button>
+            <button type="button">Navigation <b>4</b></button>
+            <button type="button">Form patterns <b>5</b></button>
+            <button type="button">Golden states <b>3</b></button>
+            <span>Source</span>
+            <button type="button">Project owned</button>
+            <button type="button">Mobbin notes</button>
+          </aside>
+          <div class="reference-board">
+            <div class="board-shot shot-one"><span>Settings shell</span><div><i></i><i></i><i></i></div><strong>Quiet navigation</strong></div>
+            <div class="board-shot shot-two"><span>Input rhythm</span><strong>Aa</strong><div><i></i><i></i></div></div>
+            <div class="board-shot shot-three"><span>Golden state</span><div><i></i><i></i><i></i></div><strong>Clear commitment</strong></div>
+            <div class="board-note"><small>What to preserve</small><strong>Calm hierarchy, strong labels, one clear action.</strong><p>Do not copy brand marks, exact spacing, imagery, or proprietary content.</p><div><span>settings</span><span>form</span><span>approved</span></div></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )}
+</div>

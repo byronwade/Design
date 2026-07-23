@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "candidate": "raw-shadcn",
+  "track": "baseline",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": ["generic shadcn badge vocabulary"],
+  "anatomy": ["badge.root", "badge.label"],
+  "tokens": {
+    "height": 22,
+    "paddingInline": 10,
+    "gap": 0,
+    "radius": 999,
+    "background": "#f4f4f5",
+    "foreground": "#18181b",
+    "border": "transparent",
+    "dotColor": "#18181b",
+    "fontFamily": "Inter",
+    "fontWeight": 500,
+    "labelSize": 12,
+    "dotSize": 0
+  },
+  "states": {
+    "hover": { "background": "#e4e4e7", "border": "transparent" },
+    "focusVisible": { "outlineWidth": 2, "outlineColor": "#18181b", "outlineOffset": 2 },
+    "disabled": { "background": "#f4f4f5", "foreground": "#a1a1aa", "opacity": 0.5 }
+  },
+  "content": {
+    "label": "Badge",
+    "ariaLabel": "Badge"
+  }
+}

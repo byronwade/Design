@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://design.byronwade.com',
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   compressHTML: true,
   server: {
     host: true,

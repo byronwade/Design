@@ -108,7 +108,7 @@ export async function validatePackage({ google = true, requireGoogle = false } =
     'DESIGN.md', 'AGENTS.md', 'README.md', 'CONTRIBUTING.md', 'package.json',
     '.design/AGENT.md', '.design/DESIGN.md', '.design/INDEX.md', '.design/manifest.json',
     '.design/schema/manifest.schema.json', '.design/schema/rules.schema.json', '.design/quality/RULES.json',
-    'templates/AGENTS.md', 'templates/design/PROJECT.md', 'templates/design/COMPONENTS.md', 'templates/design/DECISIONS.md', 'templates/design/COMPOSITION.json',
+    'templates/AGENTS.md', 'templates/design/PROJECT.md', 'templates/design/COMPONENTS.md', 'templates/design/REFERENCES.md', 'templates/design/DECISIONS.md', 'templates/design/COMPOSITION.json',
     'schemas/config.schema.json', 'schemas/lock.schema.json', 'schemas/generated-context.schema.json', 'schemas/composition.schema.json',
   ];
   for (const relative of required) if (!await exists(path.join(packageRoot, relative))) addFinding(findings, 'error', 'required-file', relative, 'Required package file is missing.');
@@ -179,7 +179,7 @@ export async function validatePackage({ google = true, requireGoogle = false } =
 
 export async function validateProject({ target, google = true, requireGoogle = false, mode = 'development' }) {
   const findings = [];
-  const required = ['DESIGN.md', 'AGENTS.md', 'design/PROJECT.md', 'design/COMPONENTS.md', 'design/DECISIONS.md', 'design/COMPOSITION.json', '.design/config.json', '.design/lock.json'];
+  const required = ['DESIGN.md', 'AGENTS.md', 'design/PROJECT.md', 'design/COMPONENTS.md', 'design/REFERENCES.md', 'design/DECISIONS.md', 'design/COMPOSITION.json', '.design/config.json', '.design/lock.json'];
   for (const relative of required) if (!await exists(path.join(target, relative))) addFinding(findings, 'error', 'required-file', relative, 'Required project façade file is missing.');
   if (findings.some((item) => item.severity === 'error')) return summarize(findings);
 
@@ -220,7 +220,7 @@ export async function validateProject({ target, google = true, requireGoogle = f
   const legacy = (await walk(path.join(target, '.design'))).some((relative) => /^(global|components|patterns|verticals|quality|sources|schema|project)\//.test(relative));
   if (legacy) addFinding(findings, mode === 'release' ? 'error' : 'warning', 'legacy-engine-copy', '.design/', 'Legacy engine files remain in the consuming project. Run design-contract sync to migrate to the façade layout.');
 
-  const authoredMarkdown = ['DESIGN.md', 'AGENTS.md', 'design/PROJECT.md', 'design/COMPONENTS.md', 'design/DECISIONS.md'].filter(async (relative) => exists(path.join(target, relative)));
+  const authoredMarkdown = ['DESIGN.md', 'AGENTS.md', 'design/PROJECT.md', 'design/COMPONENTS.md', 'design/REFERENCES.md', 'design/DECISIONS.md'].filter(async (relative) => exists(path.join(target, relative)));
   await markdownLinks(target, authoredMarkdown, findings);
   return summarize(findings);
 }

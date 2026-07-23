@@ -1,0 +1,4 @@
+---
+const { label, class: className = '' } = Astro.props;
+---
+<div class:list={['ui-tabs', className]} role="tablist" aria-label={label}><slot /></div>

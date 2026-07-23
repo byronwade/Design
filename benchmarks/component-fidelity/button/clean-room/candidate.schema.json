@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Component fidelity benchmark candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "candidate",
+    "track",
+    "generatedBy",
+    "cleanRoom",
+    "allowedInputs",
+    "provenance",
+    "anatomy",
+    "tokens",
+    "states",
+    "content"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "candidate": { "type": "string", "minLength": 1 },
+    "track": {
+      "type": "string",
+      "enum": ["baseline", "plain-prompt", "contract-plus-skills"]
+    },
+    "generatedBy": { "type": "string", "minLength": 1 },
+    "cleanRoom": { "const": true },
+    "allowedInputs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runId",
+        "generatedAt",
+        "model",
+        "operator",
+        "targetAccess",
+        "allowedInputFiles",
+        "promptSha256",
+        "allowedInputsSha256",
+        "cleanRoomAttestation"
+      ],
+      "properties": {
+        "runId": { "type": "string", "minLength": 1 },
+        "generatedAt": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "operator": { "type": "string", "minLength": 1 },
+        "targetAccess": { "const": false },
+        "allowedInputFiles": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "promptSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "allowedInputsSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "cleanRoomAttestation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "anatomy": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "button.root",
+          "button.icon-slot",
+          "button.label",
+          "button.hint",
+          "button.loading-indicator",
+          "button.focus-ring"
+        ]
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "height",
+        "paddingInline",
+        "gap",
+        "radius",
+        "background",
+        "foreground",
+        "border",
+        "shadow",
+        "fontFamily",
+        "fontWeight",
+        "labelSize",
+        "hintSize"
+      ],
+      "properties": {
+        "height": { "type": "number" },
+        "paddingInline": { "type": "number" },
+        "gap": { "type": "number" },
+        "radius": { "type": "number" },
+        "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "border": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+        "shadow": { "type": "string" },
+        "fontFamily": { "type": "string" },
+        "fontWeight": { "type": "number" },
+        "labelSize": { "type": "number" },
+        "hintSize": { "type": "number" }
+      }
+    },
+    "states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hover", "focusVisible", "loading", "disabled"],
+      "properties": {
+        "hover": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "translateY", "shadow"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "translateY": { "type": "number" },
+            "shadow": { "type": "string" }
+          }
+        },
+        "focusVisible": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outlineWidth", "outlineColor", "outlineOffset"],
+          "properties": {
+            "outlineWidth": { "type": "number" },
+            "outlineColor": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "outlineOffset": { "type": "number" }
+          }
+        },
+        "loading": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["opacity", "label", "indicator"],
+          "properties": {
+            "opacity": { "type": "number" },
+            "label": { "type": "string" },
+            "indicator": { "type": "string" }
+          }
+        },
+        "disabled": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["background", "foreground", "cursor"],
+          "properties": {
+            "background": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "foreground": { "type": "string", "pattern": "^#[a-fA-F0-9]{6}$" },
+            "cursor": { "type": "string" }
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "hint"],
+      "properties": {
+        "label": { "type": "string" },
+        "hint": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "suite": "status-badge",
+  "component": "status-badge",
+  "suiteMode": "training",
+  "publicClaimEligible": false,
+  "trainingNote": "This suite was converted to training after the active public holdout misses were inspected and encoded into the warm warning status badge recipe. Passing this suite is trained evidence, not a public accuracy claim.",
+  "hiddenFiles": [
+    "benchmarks/component-fidelity/status-badge/target.json",
+    "benchmarks/component-fidelity/status-badge/candidates/raw-shadcn.json",
+    "benchmarks/component-fidelity/status-badge/candidates/prompt-only.json",
+    "benchmarks/component-fidelity/status-badge/candidates/contract-skill.json",
+    "benchmarks/component-fidelity/status-badge/candidates/clean-room-contract-skills-001.json",
+    "benchmarks/component-fidelity/status-badge/candidates/clean-room-contract-skills-002.json",
+    "benchmarks/component-fidelity/status-badge/candidates/clean-room-contract-skills-003.json"
+  ],
+  "tracks": {
+    "baseline": {
+      "releaseEligible": false,
+      "description": "Generic primitive or shadcn badge vocabulary only. This track is useful as a baseline, not as a release claim.",
+      "allowedFiles": [
+        "benchmarks/component-fidelity/status-badge/clean-room/allowed-inputs.json"
+      ]
+    },
+    "plain-prompt": {
+      "releaseEligible": false,
+      "description": "The clean-room prompt with no installed Skills, compiled context, or project reference evidence.",
+      "allowedFiles": [
+        "benchmarks/component-fidelity/status-badge/clean-room/prompt.md",
+        "benchmarks/component-fidelity/status-badge/clean-room/allowed-inputs.json",
+        "benchmarks/component-fidelity/status-badge/clean-room/candidate.schema.json"
+      ]
+    },
+    "contract-plus-skills": {
+      "releaseEligible": true,
+      "description": "The clean-room prompt plus the package contract, generated target context, installed Skills, composition policy, mappings, and approved reference registry.",
+      "allowedFiles": [
+        "benchmarks/component-fidelity/status-badge/clean-room/prompt.md",
+        "benchmarks/component-fidelity/status-badge/clean-room/allowed-inputs.json",
+        "benchmarks/component-fidelity/status-badge/clean-room/candidate.schema.json",
+        "README.md",
+        "AGENTS.md",
+        "DESIGN.md",
+        ".design/AGENT.md",
+        ".design/INDEX.md",
+        ".design/components/DATA-DISPLAY.md",
+        ".design/components/FEEDBACK-OVERLAYS.md",
+        ".design/global/CONTENT.md",
+        ".design/global/INTERACTION.md",
+        ".design/verticals/web/BASE.md",
+        ".design/verticals/web/APP.md",
+        "templates/design/PROJECT.md",
+        "templates/design/COMPONENTS.md",
+        "templates/design/REFERENCES.md",
+        "templates/design/COMPOSITION.json",
+        "skills/design-system/SKILL.md",
+        "skills/design-review/SKILL.md"
+      ]
+    }
+  }
+}

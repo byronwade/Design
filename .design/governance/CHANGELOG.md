@@ -9,10 +9,15 @@ status: normative
 
 ## 1.2.0 — 2026-07-22
 
-- added the project-owned `design/COMPOSITION.json` contract for shadcn/ui adapters, reusable blocks, app-type recipes, and AI reuse policies
+- added the project-owned `design/COMPOSITION.json` contract for optional component-source adapters, reusable blocks, app-type recipes, visual-reference policy, and AI reuse policies
+- added project-owned `design/REFERENCES.md` so teams can register screenshots, photos, golden states, and Mobbin-style pattern references without bundling binary assets in the package
+- made design-system Skills mandatory workflow entrypoints across adapters while keeping each agent adapter thin
 - added optional `--app-type` target metadata so generated context identifies the product recipe without mixing platform profiles
-- reshaped the public Astro surface around compact shadcn/ui-style docs, component catalog, reusable blocks, and source-linked app recipes
-- moved the shared theme controller to one static public script and refreshed the site output caps for the expanded 119-route reference surface
+- reshaped the public Astro surface around home, contract packs, contract detail pages, and docs, with component showcases, references, Skills, prompts, and evidence inside the owning contract detail page
+- rebuilt the public site as a neutral design workbench with rendered contract previews, a compiler-stage homepage, compact benchmark evidence, responsive contract discovery, and pack-specific warm, graphite, and visual-reference detail experiences
+- unified the public surface around a Cursor-inspired warm-black shell, added reusable shadcn-style Astro primitives, and separated contract filter attributes from card navigation so filtered contract links remain functional
+- tightened the official-site route audit so removed route folders, broken generated links, and missing same-site anchors fail the site gate
+- added component-fidelity benchmark fixtures and clean-room protocol, including trained button, filter, metric-card, inline-alert, and status-badge suites, original filter, metric-card, inline-alert, and status-badge holdout results, an active approval-badge public holdout, and the training-versus-holdout distinction for scoped public accuracy claims
 
 ## 1.1.0 — 2026-07-21
 

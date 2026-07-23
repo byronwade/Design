@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "candidate": "prompt-only",
+  "track": "plain-prompt",
+  "generatedBy": "calibration-fixture",
+  "cleanRoom": true,
+  "allowedInputs": ["plain English prompt", "no Skills", "no reference images"],
+  "anatomy": [
+    "button.root",
+    "button.icon-slot",
+    "button.label",
+    "button.focus-ring"
+  ],
+  "tokens": {
+    "height": 44,
+    "paddingInline": 18,
+    "gap": 8,
+    "radius": 12,
+    "background": "#a65a3a",
+    "foreground": "#fffaf2",
+    "border": "#8a472f",
+    "shadow": "0 8px 20px rgba(67, 52, 38, 0.14)",
+    "fontFamily": "Inter",
+    "fontWeight": 700,
+    "labelSize": 14,
+    "hintSize": 0
+  },
+  "states": {
+    "hover": {
+      "background": "#89462d",
+      "translateY": -1,
+      "shadow": "0 10px 24px rgba(67, 52, 38, 0.18)"
+    },
+    "focusVisible": {
+      "outlineWidth": 2,
+      "outlineColor": "#3a312b",
+      "outlineOffset": 2
+    },
+    "loading": {
+      "opacity": 0.9,
+      "label": "Publishing",
+      "indicator": "spinner"
+    },
+    "disabled": {
+      "background": "#eadfd1",
+      "foreground": "#766e65",
+      "cursor": "not-allowed"
+    }
+  },
+  "content": {
+    "label": "Publish contract",
+    "hint": ""
+  }
+}
