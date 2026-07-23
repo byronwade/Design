@@ -228,6 +228,22 @@ function inspectHtmlArtifact(artifact) {
   return { inspections, categories: [...categories].sort() };
 }
 
+function detectStates(artifacts) {
+  const found = new Set();
+  for (const artifact of artifacts) {
+    const lower = `${artifact.path}\n${artifact.text ?? ''}`.toLowerCase();
+    if (artifact.categories.includes('rendered')) found.add('default');
+    if (/data-state=["']default["']|default state/.test(lower)) found.add('default');
+    if (/data-state=["']loading["']|aria-busy=["']true["']|role=["']progressbar["']|\bloading\b/.test(lower)) found.add('loading');
+    if (/data-state=["']empty["']|\bempty\b|no results|no work|nothing yet/.test(lower)) found.add('empty');
+    if (/data-state=["']error["']|role=["']alert["']|\berror\b|unable to|failed/.test(lower)) found.add('error');
+    if (/data-state=["']permission["']|\bpermission\b|forbidden|unauthorized|access denied/.test(lower)) found.add('permission');
+    if (/data-state=["']disabled["']|\bdisabled\b|aria-disabled=["']true["']/.test(lower)) found.add('disabled');
+    if (/focus-visible|data-state=["']focus-visible["']|focus ring|keyboard focus/.test(lower)) found.add('focus-visible');
+  }
+  return [...found].sort();
+}
+
 async function writeStaticCapture(target, evidenceDir, artifact, renderedIndex) {
   const bodyText = textOnly(artifact.text).slice(0, 500) || artifact.path;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Static verification capture for ${escapeXml(artifact.path)}">
@@ -314,7 +330,7 @@ async function writeBrowserScreenshot(target, evidenceDir, artifact, renderedInd
   };
 }
 
-async function collectEvidence({ target, surfaces, evidence, generatedAt }) {
+async function collectEvidence({ target, surfaces, evidence, generatedAt, expectedStates = [] }) {
   const surfaceEntries = entryList(surfaces);
   const evidenceEntries = new Set(entryList(evidence));
   const renderedSurfaces = surfaceEntries.map((surface) => ({ id: safeId(surface), label: surface }));
@@ -355,10 +371,15 @@ async function collectEvidence({ target, surfaces, evidence, generatedAt }) {
   for (const artifact of found) {
     for (const category of artifact.categories) categoryCounts[category] = (categoryCounts[category] ?? 0) + 1;
   }
+  const statesDetected = detectStates(found);
+  const statesMissing = [...new Set(expectedStates)].filter((state) => !statesDetected.includes(state));
   const coverage = Object.fromEntries(
     ['rendered', 'screenshot', 'accessibility', 'responsiveness', 'keyboard', 'overflow', 'states', 'baseline']
       .map((category) => [category, { present: Boolean(categoryCounts[category]), count: categoryCounts[category] ?? 0 }]),
   );
+  coverage.states.expected = [...new Set(expectedStates)];
+  coverage.states.detected = statesDetected;
+  coverage.states.missing = statesMissing;
 
   const manifest = {
     schemaVersion: 1,
@@ -436,7 +457,8 @@ export async function verifyDesign({ target, request = null, mode = 'development
     checkDesign({ target, mode }),
   ]);
   const renderedSurfaces = entryList(surfaces).map((surface) => ({ id: safeId(surface), label: surface }));
-  const evidenceReport = await collectEvidence({ target, surfaces, evidence, generatedAt });
+  const expectedStates = Array.isArray(task.taskModel?.states) ? task.taskModel.states : [];
+  const evidenceReport = await collectEvidence({ target, surfaces, evidence, generatedAt, expectedStates });
   const baselineComparisons = await compareBaselines({ target, renderedSurfaces, evidence: evidenceReport, baselines });
   const warnings = [];
   if (!generated.current) warnings.push(`Compiled context is ${generated.state}.`);
@@ -451,6 +473,15 @@ export async function verifyDesign({ target, request = null, mode = 'development
       .filter(([category]) => !evidenceReport.coverage[category]?.present)
       .map(([category, ruleId, message]) => ({ type: 'missing-evidence-category', category, ruleId, message }))
     : [];
+  const missingStateEvidence = mode === 'release'
+    ? evidenceReport.coverage.states.missing.map((state) => ({
+      type: 'missing-state-evidence',
+      category: 'states',
+      state,
+      ruleId: 'DS-STATE-001',
+      message: `Resolved task state "${state}" was not present in rendered evidence.`,
+    }))
+    : [];
   const unapprovedBaselineChanges = baselineComparisons
     .filter((comparison) => comparison.change && !comparison.approved)
     .map((comparison) => ({ type: 'unapproved-baseline-change', ruleId: 'DS-CI-001', ...comparison }));
@@ -462,6 +493,7 @@ export async function verifyDesign({ target, request = null, mode = 'development
     ...(renderedSurfaces.length === 0 ? [{ type: 'missing-rendered-surfaces', ruleId: 'DS-EVIDENCE-001' }] : []),
     ...(evidenceReport.found.length === 0 ? [{ type: 'missing-evidence', ruleId: 'DS-EVIDENCE-001' }] : []),
     ...missingReleaseEvidence,
+    ...missingStateEvidence,
     ...unapprovedBaselineChanges,
   ];
 

@@ -27,6 +27,8 @@ const verifiedHtml = (body = 'No results.') => `<!doctype html>
     <p role="status">${body}</p>
     <button aria-label="Approve request" data-state="default">Approve</button>
     <button disabled data-state="disabled">Queued</button>
+    <p data-state="loading" aria-busy="true" hidden>Loading queue.</p>
+    <p data-state="permission" hidden>Permission required.</p>
     <p role="alert" hidden>Unable to load queue.</p>
   </main>
 </body>

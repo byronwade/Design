@@ -37,6 +37,8 @@ const renderedEmptyState = `<!doctype html>
     <p role="status">No work yet.</p>
     <button aria-label="Create first item" data-state="default">Create item</button>
     <button disabled data-state="disabled">Waiting</button>
+    <p data-state="loading" aria-busy="true" hidden>Loading queue.</p>
+    <p data-state="permission" hidden>Permission required.</p>
     <p role="alert" hidden>Unable to load the queue.</p>
   </main>
 </body>

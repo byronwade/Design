@@ -245,7 +245,7 @@ Use sentence case, specific nouns, and verb-first action labels. Avoid vague com
 
 ## Trust and Acceptance
 
-Acceptance requires a design receipt with source revision, contract fingerprint, task model, checked rules, rendered surfaces, results, warnings, exceptions, and visual changes. `design verify --mode release` must collect or inspect rendered evidence for accessibility, responsiveness, keyboard/focus behavior, overflow, state coverage, browser screenshot or static capture evidence, and approved baseline comparison when baselines exist. CI must block stale context, failed error rules, missing evidence categories, unapproved baseline changes, and expired exceptions.
+Acceptance requires a design receipt with source revision, contract fingerprint, task model, checked rules, rendered surfaces, results, warnings, exceptions, and visual changes. `design verify --mode release` must collect or inspect rendered evidence for accessibility, responsiveness, keyboard/focus behavior, overflow, resolved state-matrix coverage, browser screenshot or static capture evidence, and approved baseline comparison when baselines exist. CI must block stale context, failed error rules, missing evidence categories, missing resolved states, unapproved baseline changes, and expired exceptions.
 
 ## References
 

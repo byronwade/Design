@@ -128,7 +128,7 @@ design-contract sync
 design-contract explain DS-ACTION-001
 ```
 
-`resolve` writes `.design/generated/TASK.json`. `check` writes `.design/receipts/check-report.json`. `verify` writes `.design/receipts/latest.json`, a timestamped receipt, and an evidence manifest under `.design/receipts/evidence/`. In release mode the verifier requires rendered surface evidence, accessibility semantics, keyboard/focus coverage, responsive coverage, overflow coverage, state coverage, browser screenshot or static-capture evidence, and approved baseline comparison when a baseline manifest exists. CI should block stale context, failed error rules, missing evidence categories, unapproved baseline changes, and expired exceptions.
+`resolve` writes `.design/generated/TASK.json`. `check` writes `.design/receipts/check-report.json`. `verify` writes `.design/receipts/latest.json`, a timestamped receipt, and an evidence manifest under `.design/receipts/evidence/`. In release mode the verifier requires rendered surface evidence, accessibility semantics, keyboard/focus coverage, responsive coverage, overflow coverage, resolved state-matrix coverage, browser screenshot or static-capture evidence, and approved baseline comparison when a baseline manifest exists. CI should block stale context, failed error rules, missing evidence categories, missing resolved states, unapproved baseline changes, and expired exceptions.
 
 ## Public Workflow
 

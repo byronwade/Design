@@ -43,6 +43,8 @@ const renderedHome = `<!doctype html>
     <p role="status">Ready for review.</p>
     <button aria-label="Approve request" data-state="default">Approve</button>
     <button disabled data-state="disabled">Queued</button>
+    <p data-state="loading" aria-busy="true" hidden>Loading approvals.</p>
+    <p data-state="permission" hidden>Permission required.</p>
     <p role="alert" hidden>Unable to load approvals.</p>
   </main>
 </body>
