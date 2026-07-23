@@ -48,7 +48,7 @@ const references = contractReferences(project);
           <p class="eyebrow">Design project / {String(index + 1).padStart(2, '0')}</p>
           <h1>{project.title}</h1>
           <p>{project.description}</p>
-          <div class="hero-contract-meta"><span>{project.skills.length} Skills</span><span>{project.files.length} project files</span><span>{project.photos.length} reference entries</span></div>
+          <div class="hero-contract-meta"><span>{project.skills.length} Skills</span><span>{project.files.length} control-plane files</span><span>{project.photos.length} reference entries</span></div>
         </div>
         <div class="hero-contract-visual">
           <ContractPreview project={project} compact={true} />
@@ -62,8 +62,8 @@ const references = contractReferences(project);
       <Surface as="section" class="prompt-panel" aria-labelledby="copy-prompt-title">
         <div>
           <p class="eyebrow">Primary handoff</p>
-          <h2 id="copy-prompt-title">Give the AI the whole contract in one move.</h2>
-          <p>Use the command or prompt to give the AI the contract, then let the installed Skills choose which design files, mappings, references, and component recipes apply.</p>
+          <h2 id="copy-prompt-title">Give the AI the right contract in one move.</h2>
+          <p>Use the command or prompt to start from the one-file grammar, then let the universal Skill resolve the task packet, check source, and verify evidence.</p>
         </div>
         <Button class="copy-contract-prompt" dataCopy={project.prompt}>Copy AI prompt</Button>
         <pre><code>{project.prompt}</code></pre>
@@ -74,7 +74,7 @@ const references = contractReferences(project);
         <p class="eyebrow">Rendered contract</p>
         <div class="section-heading-row">
           <h2 id="component-showcase-title">Same component vocabulary. A completely owned result.</h2>
-          <p>Every contract can start from the same core primitives. The product identity comes from the Skills rewriting structure, spacing, color, state, and copy for that contract.</p>
+          <p>Every contract can start from the same core primitives. The product identity comes from the grammar rewriting structure, spacing, color, state, and copy for that contract.</p>
         </div>
         <ContractDemo project={project} />
         <div class="component-contract-grid">
@@ -91,8 +91,8 @@ const references = contractReferences(project);
       <section class="contract-benchmark-panel" aria-labelledby="contract-benchmark-title">
         <div>
           <p class="eyebrow">Verification layer</p>
-          <h2 id="contract-benchmark-title">Component fidelity is measured after generation.</h2>
-          <p>The clean-room protocol hides the target component from the AI, gives each track only its allowed inputs, records prompt and manifest hashes, then scores the result. Five trained recipes now score {benchmarkSummary.trainedAverageScore}%, and the active approval-badge public holdout scored {benchmarkSummary.approvalBadgeHoldoutRun.score}%. That is the current benchmark evidence behind the 99% gate.</p>
+          <h2 id="contract-benchmark-title">Design drift is measured after generation.</h2>
+          <p>The clean-room protocol hides the target component from the AI, gives each track only its allowed inputs, records prompt and manifest hashes, then scores the result. Runtime work adds a design receipt so checks, rendered surfaces, warnings, exceptions, and visual changes are tied to one revision.</p>
         </div>
         <div class="benchmark-mini-grid">
           {benchmarkSummary.tracks.map((track) => (
@@ -132,7 +132,7 @@ const references = contractReferences(project);
 
       <section class="source-reference-section" aria-labelledby="source-reference-title">
         <p class="eyebrow">Internal engine context</p>
-        <h2 id="source-reference-title">The Skill compiles these behind the scenes.</h2>
+        <h2 id="source-reference-title">The resolver can cite these behind the scenes.</h2>
         <div class="source-reference-list">
           {references.map((item) => (
             <a href={`https://github.com/byronwade/Design/blob/main/${item.source}`} target="_blank" rel="noreferrer">

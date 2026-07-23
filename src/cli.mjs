@@ -1,9 +1,10 @@
 import path from 'node:path';
 import process from 'node:process';
 import {
-  doctorContract, explainContract, installContract, listProfiles,
-  resolveInstalledContract, statusContract, syncContract,
+  checkDesign, doctorContract, explainContract, installContract, listProfiles,
+  resolveInstalledContract, resolveTaskContext, statusContract, syncContract,
   validatePackage, validateProject,
+  verifyDesign,
 } from './core.mjs';
 
 function parseArgs(argv) {
@@ -34,13 +35,23 @@ function output(value, json) {
   else console.log(value);
 }
 
+function commaList(value) {
+  return many(value, []);
+}
+
 const HELP = `Design Contract CLI
 
 Usage:
+  design init [--target DIR] [--profile ID ...] [--app-type ID] [--adapters LIST] [--force]
+  design resolve --request TEXT [--target DIR] [--id TARGET] [--json]
+  design check [--target DIR] [--mode development|release] [--json]
+  design verify [--target DIR] [--mode development|release] [--request TEXT] [--surface LIST] [--evidence LIST] [--json]
+
+Compatibility:
   design-contract list [--json]
   design-contract init [--target DIR] [--profile ID ...] [--app-type ID] [--adapters LIST] [--force]
   design-contract context [--target DIR] [--id TARGET] [--stdout]
-  design-contract resolve [--target DIR]                 # compatibility alias
+  design-contract resolve --request TEXT [--target DIR]  # bounded task packet
   design-contract status [--target DIR] [--json]
   design-contract doctor [--target DIR] [--mode development|release]
   design-contract validate [--target DIR] [--mode development|release] [--require-google|--no-google]
@@ -49,14 +60,14 @@ Usage:
   design-contract explain QUERY [--target DIR]
 
 Mental model:
-  DESIGN.md + selected profile + design/ project customizations = compiled target context
+  DESIGN.md + optional design/references/ + generated adapters, fingerprints, checks, and receipts = enforceable AI design context
 `;
 
-export async function runCli(argv) {
+export async function runCli(argv, { binary = 'design-contract' } = {}) {
   const { command, options, positionals } = parseArgs(argv);
   const json = Boolean(options.json);
   const target = path.resolve(String(options.target ?? process.cwd()));
-  if (command === 'help' || command === '--help' || command === '-h') { console.log(HELP); return; }
+  if (command === 'help' || command === '--help' || command === '-h' || options.help || options.h) { console.log(HELP); return; }
   if (command === 'list') { output(await listProfiles(), json); return; }
   if (command === 'init') {
     const profiles = many(options.profile, ['web-app']);
@@ -65,12 +76,42 @@ export async function runCli(argv) {
     output(await installContract({ target, profiles, adapters, appType: options['app-type'] ? String(options['app-type']) : null, force: Boolean(options.force) }), json);
     return;
   }
-  if (command === 'context' || command === 'resolve') {
+  if (command === 'context') {
     const result = await resolveInstalledContract({ target, stdoutTarget: options.id ? String(options.id) : null });
     if (options.stdout) {
       if (!result.stdout) throw new Error('Use --id TARGET with --stdout.');
       process.stdout.write(result.stdout);
     } else output(result, json);
+    return;
+  }
+  if (command === 'resolve') {
+    if (!options.request) {
+      if (binary === 'design-contract') {
+        const result = await resolveInstalledContract({ target, stdoutTarget: options.id ? String(options.id) : null });
+        output({ ...result, warning: 'Compatibility mode: pass --request to get the bounded design resolve packet.' }, json);
+        return;
+      }
+      throw new Error('design resolve requires --request "what the AI should build or change".');
+    }
+    output(await resolveTaskContext({ target, request: String(options.request), targetId: options.id ? String(options.id) : null }), true);
+    return;
+  }
+  if (command === 'check') {
+    const report = await checkDesign({ target, mode: String(options.mode ?? 'development') });
+    output(report, json);
+    if (!report.healthy) process.exitCode = 2;
+    return;
+  }
+  if (command === 'verify') {
+    const receipt = await verifyDesign({
+      target,
+      request: options.request ? String(options.request) : null,
+      mode: String(options.mode ?? 'development'),
+      surfaces: commaList(options.surface),
+      evidence: commaList(options.evidence),
+    });
+    output(receipt, json);
+    if (!receipt.healthy) process.exitCode = 2;
     return;
   }
   if (command === 'status') {

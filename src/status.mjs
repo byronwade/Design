@@ -25,7 +25,7 @@ export async function statusContract({ target }) {
 export async function doctorContract({ target, mode = 'development' }) {
   const status = await statusContract({ target });
   const checks = await inspectProjectReadiness(target);
-  checks.unshift({ id: 'compiled-context', status: status.generated.current ? 'pass' : 'error', path: '.design/generated/', message: status.generated.current ? 'Compiled context is current.' : `Compiled context is ${status.generated.state}.`, remediation: status.generated.current ? undefined : 'Run design-contract context.' });
+  checks.unshift({ id: 'compiled-context', status: status.generated.current ? 'pass' : 'error', path: '.design/generated/', message: status.generated.current ? 'Compiled context is current.' : `Compiled context is ${status.generated.state}.`, remediation: status.generated.current ? undefined : 'Run design-contract context for legacy compiled context, then design resolve --request "<task>".' });
   checks.unshift({ id: 'package-version', status: status.updateAvailable ? 'warning' : 'pass', path: '.design/lock.json', message: status.updateAvailable ? `Installed ${status.installedVersion}; available ${status.availableVersion}.` : `Package ${status.installedVersion} is current.`, remediation: status.updateAvailable ? 'Run design-contract sync.' : undefined });
   const strict = mode === 'release';
   const errors = checks.filter((item) => item.status === 'error' || (strict && item.status === 'warning')).length;

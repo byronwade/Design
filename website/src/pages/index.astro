@@ -9,17 +9,17 @@ import { contractProjects } from '../data/contract-projects';
 import { benchmarkSummary } from '../data/benchmarks';
 
 const columns = [
-  { label: 'Skill stack', items: [['design-system', '/docs/#workflow'], ['frontend-design', '/contracts/warm-paper-workbench/'], ['design-review', '/docs/#verify']] },
-  { label: 'AI actions', items: [['Compile context', '/docs/#commands'], ['Inspect references', '/docs/#references'], ['Rewrite components', '/contracts/warm-paper-workbench/']] },
-  { label: 'Component bases', items: [['Button', '/contracts/warm-paper-workbench/'], ['Table', '/contracts/graphite-saas-console/'], ['Card', '/contracts/visual-reference-starter/']] },
+  { label: 'One file', items: [['DESIGN.md grammar', '/docs/#model'], ['Invariant rules', '/docs/#workflow'], ['Acceptance', '/docs/#verify']] },
+  { label: 'Four commands', items: [['design init', '/docs/#commands'], ['design resolve', '/docs/#commands'], ['design check', '/docs/#commands'], ['design verify', '/docs/#commands']] },
+  { label: 'AI actions', items: [['Task packet', '/contracts/warm-paper-workbench/'], ['Source check', '/docs/#verify'], ['Receipt', '/docs/#verify']] },
   { label: 'Reference memory', items: [['Approved media', '/docs/#references'], ['Golden states', '/contracts/warm-paper-workbench/'], ['Mobbin notes', '/docs/#references']] },
 ];
 
 const workflow = [
-  ['01', 'Load the right Skill', 'The AI starts with executable behavior for the surface, not a generic style prompt.'],
-  ['02', 'Compile the contract', 'Identity, target context, mappings, decisions, and approved references resolve into one job.'],
-  ['03', 'Rewrite the primitives', 'shadcn can supply behavior and vocabulary. The contract still owns the final component.'],
-  ['04', 'Review real evidence', 'Rendered states, reference use, accessibility, and fidelity scores close the loop.'],
+  ['01', 'Understand', 'The agent starts from the product grammar, user intent, risk, state, and consequence.'],
+  ['02', 'Resolve', 'The resolver returns only the packet this task needs, not the full engine.'],
+  ['03', 'Check', 'The checker inspects source for raw values, arbitrary styles, unmapped pieces, and expired exceptions.'],
+  ['04', 'Verify', 'The verifier records rendered surfaces, evidence, warnings, exceptions, and visual changes in a receipt.'],
 ];
 ---
 <SiteLayout title="Design Contract - AI design packs" description="Browse design contracts as AI-ready project packs with prompts, files, skills, visual references, and component showcases." active="home">
@@ -28,8 +28,8 @@ const workflow = [
       <div class="home-hero-inner page-frame">
         <div class="hero-copy">
           <div class="hero-kicker"><Badge variant="muted">Open-source design compiler</Badge><Badge variant="success">{benchmarkSummary.approvalBadgeHoldoutRun.score}% active public holdout</Badge></div>
-          <h1>Design direction your AI can execute.</h1>
-          <p class="hero-summary">Give every agent the same visual rules, Skills, project files, approved references, and component recipes. Then compile only what the current interface needs.</p>
+          <h1>One design system. Every AI. No unreviewed drift.</h1>
+          <p class="hero-summary">Author one DESIGN.md grammar. Let any agent resolve the current task, build with the right constraints, check source independently, and verify the rendered result with a receipt.</p>
           <div class="hero-actions">
             <Button href="/contracts/" variant="default" iconAfter="arrow">Browse contracts</Button>
             <Button href="/docs/#install" variant="outline">Install the contract</Button>
@@ -39,13 +39,13 @@ const workflow = [
         <Surface class="compiler-stage" aria-label="A design contract compiles project context into a rendered interface">
           <div class="compiler-inputs">
             <span><Icon name="book" size={15} /> DESIGN.md</span>
-            <span><Icon name="layers" size={15} /> Skill stack</span>
-            <span><Icon name="check" size={15} /> Mappings</span>
+            <span><Icon name="layers" size={15} /> Universal Skill</span>
+            <span><Icon name="check" size={15} /> Checks</span>
             <span><Icon name="search" size={15} /> References</span>
           </div>
           <div class="compiler-line"><i></i><b>compile</b><i></i></div>
           <div class="compiler-output">
-            <div class="compiler-output-meta"><span>Compiled target</span><strong>web-app / saas-workbench</strong><em>Current</em></div>
+            <div class="compiler-output-meta"><span>Task packet</span><strong>web-app / saas-workbench</strong><em>Verified</em></div>
             <ContractPreview project={contractProjects[0]} compact={true} />
           </div>
         </Surface>
@@ -56,7 +56,7 @@ const workflow = [
       <div class="discover-top">
         <div>
           <p class="eyebrow">Contract library</p>
-          <h2 id="discover-title">Start from a complete design project.</h2>
+          <h2 id="discover-title">Start from a complete contract pack.</h2>
         </div>
         <Button href="/contracts/" variant="outline" icon="search">Search contract packs</Button>
       </div>
@@ -104,8 +104,8 @@ const workflow = [
       <div class="page-frame">
         <div class="workflow-heading">
           <p class="eyebrow">The operating model</p>
-          <h2>From project truth to reviewed interface.</h2>
-          <p>The contract stays small for the developer and precise for the agent. Every layer has a job.</p>
+          <h2>From one file to reviewed interface.</h2>
+          <p>The developer edits one grammar. The generated control plane decides what the AI sees and what evidence can be accepted.</p>
         </div>
         <div class="why-better-section">
           <div class="why-better-grid">

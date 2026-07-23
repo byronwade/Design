@@ -4,8 +4,9 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {
-  doctorContract, explainContract, installContract, resolveInstalledContract,
-  statusContract, syncContract, validatePackage, validateProject,
+  checkDesign, doctorContract, explainContract, installContract, resolveInstalledContract,
+  resolveTaskContext, statusContract, syncContract, validatePackage, validateProject,
+  verifyDesign,
 } from '../src/core.mjs';
 
 const temp = () => fs.mkdtemp(path.join(os.tmpdir(), 'design-facade-'));
@@ -27,14 +28,15 @@ async function ready(target) {
   }, null, 2)}\n`);
 }
 
-test('installs a minimal façade instead of copying the engine', async () => {
+test('installs a minimal one-file façade instead of copying the engine', async () => {
   const target = await temp();
   const result = await installContract({ target, profiles: ['web-app'], adapters: ['codex','claude','copilot'] });
   assert.deepEqual(result.generatedTargets, ['web-app']);
-  for (const file of ['DESIGN.md','AGENTS.md','CLAUDE.md','design/PROJECT.md','design/COMPONENTS.md','design/REFERENCES.md','design/DECISIONS.md','design/COMPOSITION.json','.design/config.json','.design/lock.json','.design/generated/web-app.md','.design/generated/web-app.json']) await fs.access(path.join(target, file));
+  for (const file of ['DESIGN.md','AGENTS.md','CLAUDE.md','design/references','.agents/skills/design/SKILL.md','.design/config.json','.design/lock.json','.design/generated/web-app.md','.design/generated/web-app.json']) await fs.access(path.join(target, file));
+  for (const file of ['design/PROJECT.md','design/COMPONENTS.md','design/REFERENCES.md','design/DECISIONS.md','design/COMPOSITION.json']) await assert.rejects(() => fs.access(path.join(target, file)));
   await assert.rejects(() => fs.access(path.join(target, '.design/global/PRINCIPLES.md')));
   assert.match(await fs.readFile(path.join(target, 'CLAUDE.md'), 'utf8'), /^@AGENTS\.md/m);
-  assert.match(await fs.readFile(path.join(target, 'AGENTS.md'), 'utf8'), /npx --yes github:byronwade\/Design status/);
+  assert.match(await fs.readFile(path.join(target, 'AGENTS.md'), 'utf8'), /npx --yes github:byronwade\/Design resolve --request/);
   const contract = await fs.readFile(path.join(target, '.design/generated/web-app.md'), 'utf8');
   assert.match(contract, /Web application overlay/);
   assert.doesNotMatch(contract, /Web marketing overlay/);
@@ -59,18 +61,22 @@ test('selects an app type and compiles component-agnostic composition', async ()
   await installContract({ target, profiles: ['web-app'], adapters: [], appType: 'saas-workbench' });
   const config = JSON.parse(await fs.readFile(path.join(target, '.design/config.json'), 'utf8'));
   assert.equal(config.targets[0].appType, 'saas-workbench');
-  await ready(target);
   await resolveInstalledContract({ target });
   const contract = await fs.readFile(path.join(target, '.design/generated/web-app.md'), 'utf8');
   assert.match(contract, /app type: `saas-workbench`/);
-  assert.match(contract, /Component source: \*\*none\*\* · required: \*\*no\*\* · installed: \*\*no\*\* · style: \*\*project-owned\*\* · recipe: \*\*saas-workbench\*\*/);
-  assert.match(contract, /Reference adapters: \*\*shadcn\/ui\*\* \(optional\)/);
-  assert.match(contract, /Visual references: registry `design\/REFERENCES\.md` · bundled: \*\*no\*\* · recommended starter count: \*\*10\*\*/);
-  assert.match(contract, /Skills required: \*\*yes\*\*/);
-  assert.match(contract, /Skill stack: required \*\*yes\*\* · paths `\.agents\/skills`, `\.claude\/skills`, `skills`/);
-  assert.match(contract, /Default skills: `design-system`, `design-review`/);
-  assert.match(contract, /project:design\/COMPOSITION\.json/);
-  assert.match(contract, /https:\/\/ui\.shadcn\.com/);
+  assert.match(contract, /No app-type composition recipe selected for this target/);
+});
+
+test('resolves a bounded task packet without dumping the full engine', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  const packet = await resolveTaskContext({ target, request: 'Add a delete confirmation dialog with a primary button' });
+  assert.equal(packet.action, 'resolve');
+  assert.equal(packet.taskModel.risk, 'high');
+  assert.ok(packet.relevant.components.includes('button'));
+  assert.ok(packet.relevant.components.includes('dialog'));
+  assert.ok(packet.relevant.documents.every((document) => document.source === 'project'));
+  await fs.access(path.join(target, '.design/generated/TASK.json'));
 });
 
 test('rejects an invalid composition adapter before release', async () => {
@@ -115,10 +121,11 @@ test('sync preserves project-owned identity and decisions', async () => {
   const target = await temp();
   await installContract({ target, profiles: ['web-app'], adapters: ['codex'] });
   await fs.appendFile(path.join(target, 'DESIGN.md'), '\n<!-- identity -->\n');
-  await fs.appendFile(path.join(target, 'design/DECISIONS.md'), '\n## D-100\nPreserve me.\n');
+  await fs.writeFile(path.join(target, 'design/DECISIONS.md'), '# Legacy decisions\n\n## D-100\nPreserve me.\n');
   await syncContract({ target });
   assert.match(await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8'), /identity/);
-  assert.match(await fs.readFile(path.join(target, 'design/DECISIONS.md'), 'utf8'), /Preserve me/);
+  assert.match(await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8'), /Preserve me/);
+  await assert.rejects(() => fs.access(path.join(target, 'design/DECISIONS.md')));
 });
 
 test('sync migrates the previous copied-engine installation', async () => {
@@ -133,11 +140,15 @@ test('sync migrates the previous copied-engine installation', async () => {
   await fs.writeFile(path.join(target, '.design/governance/DECISIONS.md'), '# Legacy decisions\n\nPreserve decision.\n');
   await fs.writeFile(path.join(target, '.design/global/PRINCIPLES.md'), '# Copied engine file\n');
   const result = await syncContract({ target });
-  assert.equal(result.migration?.to, '1.1-facade');
+  assert.match(result.migration?.to, /one-file-control-plane|1\.1-facade/);
   assert.match(await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8'), /Legacy visual contract/);
-  assert.match(await fs.readFile(path.join(target, 'design/PROJECT.md'), 'utf8'), /Preserve project context/);
-  assert.match(await fs.readFile(path.join(target, 'design/COMPONENTS.md'), 'utf8'), /Preserve component mapping/);
-  assert.match(await fs.readFile(path.join(target, 'design/DECISIONS.md'), 'utf8'), /Preserve decision/);
+  const design = await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8');
+  assert.match(design, /Preserve project context/);
+  assert.match(design, /Preserve component mapping/);
+  assert.match(design, /Preserve decision/);
+  await assert.rejects(() => fs.access(path.join(target, 'design/PROJECT.md')));
+  await assert.rejects(() => fs.access(path.join(target, 'design/COMPONENTS.md')));
+  await assert.rejects(() => fs.access(path.join(target, 'design/DECISIONS.md')));
   await assert.rejects(() => fs.access(path.join(target, '.design/global/PRINCIPLES.md')));
   await fs.access(path.join(target, '.design/generated/app.md'));
 });
@@ -156,20 +167,33 @@ test('migration backs up conflicting authored files instead of replacing them', 
   await fs.writeFile(path.join(target, '.design/project.json'), JSON.stringify({ schemaVersion: 1, targets: [{ id: 'app', profile: 'web-app', root: '.', default: true }], adapters: [] }));
   const result = await syncContract({ target });
   assert.match(await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8'), /Existing root design/);
-  assert.match(await fs.readFile(path.join(target, 'design/PROJECT.md'), 'utf8'), /Existing project context/);
+  assert.match(await fs.readFile(path.join(target, 'DESIGN.md'), 'utf8'), /Existing project context/);
+  await assert.rejects(() => fs.access(path.join(target, 'design/PROJECT.md')));
   assert.ok(result.migration.backups.length >= 2);
   for (const relative of result.migration.backups) await fs.access(path.join(target, relative));
 });
 
-test('development allows placeholders while release mode blocks them', async () => {
+test('development and release validate the one-file starter grammar', async () => {
   const target = await temp();
   await installContract({ target, profiles: ['web-app'], adapters: [] });
   assert.equal((await doctorContract({ target, mode: 'development' })).healthy, true);
-  assert.equal((await doctorContract({ target, mode: 'release' })).healthy, false);
+  assert.equal((await doctorContract({ target, mode: 'release' })).healthy, true);
   assert.equal((await validateProject({ target, google: false, mode: 'development' })).summary.errors, 0);
-  await ready(target);
   await resolveInstalledContract({ target });
   assert.equal((await validateProject({ target, google: false, mode: 'release' })).summary.errors, 0);
+});
+
+test('check and verify produce machine-readable receipts', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  await resolveTaskContext({ target, request: 'Add an approved empty state' });
+  const check = await checkDesign({ target });
+  assert.equal(check.summary.errors, 0, JSON.stringify(check.findings));
+  await fs.writeFile(path.join(target, 'empty-state.html'), '<main><p>No results.</p></main>\n');
+  const receipt = await verifyDesign({ target, request: 'Add an approved empty state', surfaces: ['empty-state'], evidence: ['empty-state.html'] });
+  assert.equal(receipt.healthy, true, JSON.stringify(receipt.blocking));
+  assert.match(receipt.receipt, /\.design\/receipts\/design-receipt-/);
+  await fs.access(path.join(target, '.design/receipts/latest.json'));
 });
 
 test('explains profiles and stable quality rules', async () => {

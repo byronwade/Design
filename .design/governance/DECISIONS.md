@@ -7,7 +7,7 @@ status: normative
 
 # Design decisions
 
-This file records canonical engine decisions. Installed projects record their own decisions, exceptions, gaps, migrations, and baseline approvals in `design/DECISIONS.md`.
+This file records canonical engine decisions. Installed projects record their own decisions, exceptions, gaps, migrations, and baseline approvals in `DESIGN.md`.
 
 ## D-001 — Source authority
 
@@ -59,7 +59,7 @@ This file records canonical engine decisions. Installed projects record their ow
 
 ## D-009 — Simple project façade, versioned package engine
 
-- **Status:** accepted
+- **Status:** superseded by D-016
 - **Decision:** consuming projects expose root `DESIGN.md`, root `AGENTS.md`, and project-owned `design/PROJECT.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`. The detailed global, component, pattern, quality, platform, and source contracts remain in the versioned package engine.
 - **Reason:** daily adoption should be obvious and standard-aligned without sacrificing inheritance, selective context, governance, or enforcement.
 
@@ -83,13 +83,13 @@ This file records canonical engine decisions. Installed projects record their ow
 
 ## D-013 — Component sources are optional adapters, app types are project recipes
 
-- **Status:** accepted
+- **Status:** superseded by D-016
 - **Decision:** consuming projects may declare a component source adapter such as shadcn/ui in `design/COMPOSITION.json`, but no component library is required by the engine. The project owns registry/style choices, local primitive and block paths, app-type recipes, and AI reuse policies. Platform profiles continue to own platform behavior; app types select product shape on top of a platform profile.
 - **Reason:** teams should be able to compose a coherent SaaS workbench, admin console, content studio, or marketing surface from shared blocks without turning a framework’s defaults or another product’s identity into the package-wide source of truth.
 
 ## D-014 — Visual references are project-owned, not bundled assets
 
-- **Status:** accepted
+- **Status:** superseded by D-016
 - **Decision:** consuming projects own visual references through `design/REFERENCES.md` and optional local files under `design/references/`. The package does not download or bundle photo sets. Approved references are optional for initial adoption, but agents must inspect applicable references before designing or visually modifying a surface. Mobbin-style entries name surface, flow, pattern, interaction, source/provenance, applicability, what to preserve, and what not to copy.
 - **Reason:** images and real product pattern references can improve cohesion and design judgment, but bulk media in the package would inflate installs, blur ownership, and create stale, unauthorized, or copied visual authority.
 
@@ -98,3 +98,9 @@ This file records canonical engine decisions. Installed projects record their ow
 - **Status:** accepted
 - **Decision:** component-fidelity benchmark suites may be used for training or holdout evidence. If scored misses are used to improve an allowed contract, Skill, prompt, schema, or reference policy, that suite becomes training evidence. Public accuracy claims require a separate holdout suite, matching clean-room hashes, no-target-access provenance, and a passing release gate.
 - **Reason:** trained suites are valuable product feedback, but they cannot prove generalized AI fidelity after the target has influenced the allowed inputs.
+
+## D-016 — One-file control plane
+
+- **Status:** accepted
+- **Decision:** consuming projects author one root `DESIGN.md` grammar. Optional screenshots, photos, golden states, and Mobbin-style notes live under `design/references/`. `AGENTS.md`, Skills, schemas, caches, fingerprints, task packets, receipts, and agent adapters are generated or hidden. The public workflow is `design init`, `design resolve`, `design check`, and `design verify`.
+- **Reason:** one source of truth gives humans a small editing surface while still giving every AI a deterministic resolver, independent checker, and receipt-backed verifier.

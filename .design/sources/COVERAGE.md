@@ -24,10 +24,10 @@ This map confirms that durable requirements from the governing sources have an o
 | accessibility and responsive release gates | `global/ACCESSIBILITY.md`, verticals, `quality/REVIEW.md`, `quality/RULES.json` |
 | performance, resilience, fresh evidence | `global/PERFORMANCE.md`, `quality/EVIDENCE.md` |
 | design lint rules and review scorecard | `quality/RULES.json`, `quality/REVIEW.md` |
-| project-specific product, surfaces, themes, assets, terminology, trust states | consuming `design/PROJECT.md` |
-| production components, patterns, stories, tests, design mappings, golden screens | consuming `design/COMPONENTS.md` and `design/REFERENCES.md` |
-| project decisions, exceptions, gaps, migrations, and baseline approvals | consuming `design/DECISIONS.md` |
-| optional component source, reusable blocks, app types, visual-reference policy, and AI composition policy | consuming `design/COMPOSITION.json` |
+| project-specific product, surfaces, themes, assets, terminology, trust states | consuming `DESIGN.md` |
+| production components, patterns, stories, tests, design mappings, golden screens | consuming `DESIGN.md` and `design/references/` |
+| project decisions, exceptions, gaps, migrations, and baseline approvals | consuming `DESIGN.md` |
+| optional component source, reusable blocks, app types, visual-reference policy, and AI composition policy | consuming `DESIGN.md` |
 | package-engine governance and change history | `governance/DECISIONS.md`, `governance/CHANGELOG.md` |
 
 When a governing source introduces a durable requirement with no operational owner, add the owner and update this map in the same change.

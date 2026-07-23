@@ -1,1 +1,1 @@
-Follow `AGENTS.md`, `README.md`, and the owning design contract. This repository builds the design engine; do not replace the project façade with copied internal contracts.
+Follow `AGENTS.md`, `README.md`, and the owning design contract. This repository builds the design control plane; keep consuming projects on one authored `DESIGN.md`, generated adapters, optional `design/references/`, and receipt-based verification.

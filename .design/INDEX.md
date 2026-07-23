@@ -7,11 +7,11 @@ Start with the repository `README.md` for installation and product usage.
 ## Consuming-project read order
 
 1. Read root `AGENTS.md`.
-2. Run `design-contract status`; run `design-contract context` when output is missing or stale.
-3. Select the task’s target from `.design/config.json`.
-4. Read root `DESIGN.md` and `.design/generated/<target>.md`.
-5. Select the smallest applicable design-system Skill from `.agents/skills`, `.claude/skills`, or repository `skills/`.
-6. Read only the project-owned files under `design/` needed for the task; use `design/references/` for approved screenshots, photos, and golden states.
+2. Run `design status`; run `design sync` when the engine is out of date.
+3. Run `design resolve --request "<task>"` and use the returned bounded task packet.
+4. Read root `DESIGN.md` and only the packet-relevant generated context.
+5. Use the universal `design` Skill from `.agents/skills`, `.claude/skills`, or repository `skills/`.
+6. Use `design/references/` only for approved screenshots, photos, golden states, and pattern notes that apply to the task.
 7. Inspect production components, routes, stories, fixtures, tests, and design mappings before proposing new system behavior.
 
 Do not read sibling platform contracts unless cross-platform comparison is explicitly the task.
@@ -32,7 +32,7 @@ Do not read sibling platform contracts unless cross-platform comparison is expli
 | Engine schemas | `schema/` |
 | Source provenance and external research | `sources/` |
 
-Installed product context is not stored here. The active AI workflow lives in root `AGENTS.md` and installed Skills. Product identity lives in root `DESIGN.md`. Thin project registries and reference media live in `design/PROJECT.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/references/`, `design/DECISIONS.md`, and `design/COMPOSITION.json` in the consuming repository.
+Installed product context is not stored here. The active AI workflow lives in generated router files and installed Skills. Product identity, product context, component-source policy, mappings, references, decisions, exceptions, and acceptance live in root `DESIGN.md`. Reference media live in `design/references/` in the consuming repository.
 
 ## Authority
 
@@ -69,8 +69,8 @@ person, situation, and task
 
 - Engine inheritance and profiles: `.design/manifest.json`
 - Engine workflow: `.design/AGENT.md`
-- Project visual identity: consuming root `DESIGN.md`
-- Project context and implementation truth: installed Skills, consuming `design/PROJECT.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/references/`, `design/DECISIONS.md`, and `design/COMPOSITION.json`
+- Project visual identity, product grammar, mappings, references, decisions, and acceptance: consuming root `DESIGN.md`
+- Project reference media: consuming `design/references/`
 - Target selection: consuming `.design/config.json`
 - Installed engine version: consuming `.design/lock.json`
 - Compiled target context: consuming `.design/generated/`

@@ -6,355 +6,1025 @@
       "id": "DS-LAYOUT-001",
       "severity": "error",
       "category": "layout",
-      "requirement": "Authenticated application work uses an approved target profile, shell, and layout archetype."
+      "requirement": "Authenticated application work uses an approved target profile, shell, and layout archetype.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-LAYOUT-002",
       "severity": "error",
       "category": "layout",
-      "requirement": "Global destinations are not duplicated across competing navigation owners."
+      "requirement": "Global destinations are not duplicated across competing navigation owners.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-LAYOUT-003",
       "severity": "warning",
       "category": "layout",
-      "requirement": "Narrative content does not exceed an approximately 800px readable measure without an explicit decision."
+      "requirement": "Narrative content does not exceed an approximately 800px readable measure without an explicit decision.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-LAYOUT-004",
       "severity": "error",
       "category": "layout",
-      "requirement": "A docked supporting pane transforms before primary reading width falls below approximately 640px."
+      "requirement": "A docked supporting pane transforms before primary reading width falls below approximately 640px.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-LAYOUT-005",
       "severity": "warning",
       "category": "layout",
-      "requirement": "Board columns preserve a useful 280px minimum and normally target approximately 320px."
+      "requirement": "Board columns preserve a useful 280px minimum and normally target approximately 320px.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-LAYOUT-006",
       "severity": "warning",
       "category": "layout",
-      "requirement": "A timeline preserves a semantic pane or documents an accessible alternative."
+      "requirement": "A timeline preserves a semantic pane or documents an accessible alternative.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-LAYOUT-007",
       "severity": "error",
       "category": "layout",
-      "requirement": "The primary task and viewport do not become accidental competing vertical scroll owners."
+      "requirement": "The primary task and viewport do not become accidental competing vertical scroll owners.",
+      "scope": [
+        "layout"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-SHELL-001",
       "severity": "error",
       "category": "shell",
-      "requirement": "Deep workbench tools remain one application frame rather than a set of unrelated floating cards."
+      "requirement": "Deep workbench tools remain one application frame rather than a set of unrelated floating cards.",
+      "scope": [
+        "shell"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-SHELL-002",
       "severity": "warning",
       "category": "shell",
-      "requirement": "Focus mode restores prior layout, selection, open tools, and scroll."
+      "requirement": "Focus mode restores prior layout, selection, open tools, and scroll.",
+      "scope": [
+        "shell"
+      ],
+      "checker": "design-verify:rendered-surface",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-CONTROL-001",
       "severity": "warning",
       "category": "controls",
-      "requirement": "Routine pointer-first desktop controls use approved 28px, 32px, or 36px tiers."
+      "requirement": "Routine pointer-first desktop controls use approved 28px, 32px, or 36px tiers.",
+      "scope": [
+        "controls"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-CONTROL-002",
       "severity": "error",
       "category": "controls",
-      "requirement": "No declared action region has more than one dominant primary action."
+      "requirement": "No declared action region has more than one dominant primary action.",
+      "scope": [
+        "controls"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-CONTROL-003",
       "severity": "error",
       "category": "accessibility",
-      "requirement": "Icon-only controls have an accessible name and non-hover access path."
+      "requirement": "Icon-only controls have an accessible name and non-hover access path.",
+      "scope": [
+        "accessibility"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-CONTROL-004",
       "severity": "error",
       "category": "accessibility",
-      "requirement": "Visible focus is not removed or replaced by an imperceptible treatment."
+      "requirement": "Visible focus is not removed or replaced by an imperceptible treatment.",
+      "scope": [
+        "accessibility"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-CONTROL-005",
       "severity": "error",
       "category": "accessibility",
-      "requirement": "Effective targets and spacing meet the selected platform and input-mode minimums."
+      "requirement": "Effective targets and spacing meet the selected platform and input-mode minimums.",
+      "scope": [
+        "accessibility"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-CONTROL-006",
       "severity": "error",
       "category": "controls",
-      "requirement": "Links navigate, buttons issue commands, and selection controls expose current value."
+      "requirement": "Links navigate, buttons issue commands, and selection controls expose current value.",
+      "scope": [
+        "controls"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-COLOR-001",
       "severity": "error",
       "category": "tokens",
-      "requirement": "Raw one-off colors are prohibited outside approved token definitions or exceptions."
+      "requirement": "Raw one-off colors are prohibited outside approved token definitions or exceptions.",
+      "scope": [
+        "tokens"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-COLOR-002",
       "severity": "error",
       "category": "accessibility",
-      "requirement": "State and meaning are not communicated by color alone."
+      "requirement": "State and meaning are not communicated by color alone.",
+      "scope": [
+        "accessibility"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-COLOR-003",
       "severity": "warning",
       "category": "color",
-      "requirement": "Accent color does not dominate persistent navigation or broad page backgrounds."
+      "requirement": "Accent color does not dominate persistent navigation or broad page backgrounds.",
+      "scope": [
+        "color"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-SHAPE-001",
       "severity": "warning",
       "category": "shape",
-      "requirement": "Routine radii above 16px require a documented component or brand reason."
+      "requirement": "Routine radii above 16px require a documented component or brand reason.",
+      "scope": [
+        "shape"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-DEPTH-001",
       "severity": "error",
       "category": "depth",
-      "requirement": "Nested paper shadows are prohibited."
+      "requirement": "Nested paper shadows are prohibited.",
+      "scope": [
+        "depth"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-DEPTH-002",
       "severity": "warning",
       "category": "depth",
-      "requirement": "Persistent rows and navigation items do not use external drop shadows."
+      "requirement": "Persistent rows and navigation items do not use external drop shadows.",
+      "scope": [
+        "depth"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-TYPE-001",
       "severity": "warning",
       "category": "typography",
-      "requirement": "Application text below 12px equivalent requires explicit accessibility review."
+      "requirement": "Application text below 12px equivalent requires explicit accessibility review.",
+      "scope": [
+        "typography"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-TYPE-002",
       "severity": "warning",
       "category": "typography",
-      "requirement": "Aligned metrics and dates use tabular numerals where supported."
+      "requirement": "Aligned metrics and dates use tabular numerals where supported.",
+      "scope": [
+        "typography"
+      ],
+      "checker": "design-check:source-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-TYPE-003",
       "severity": "error",
       "category": "content",
-      "requirement": "Essential instructions and status do not use muted contrast or ambiguous wording."
+      "requirement": "Essential instructions and status do not use muted contrast or ambiguous wording.",
+      "scope": [
+        "content"
+      ],
+      "checker": "design-check:content-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-CARD-001",
       "severity": "warning",
       "category": "composition",
-      "requirement": "Equal-card dashboard grids require a documented recurring decision need."
+      "requirement": "Equal-card dashboard grids require a documented recurring decision need.",
+      "scope": [
+        "composition"
+      ],
+      "checker": "design-check:component-mapping",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-CARD-002",
       "severity": "warning",
       "category": "composition",
-      "requirement": "Toolbar, body, and footer regions belonging to one object use one integrated outer surface."
+      "requirement": "Toolbar, body, and footer regions belonging to one object use one integrated outer surface.",
+      "scope": [
+        "composition"
+      ],
+      "checker": "design-check:component-mapping",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-NAV-001",
       "severity": "error",
       "category": "navigation",
-      "requirement": "Local tabs preserve object context and are not used for unrelated global destinations."
+      "requirement": "Local tabs preserve object context and are not used for unrelated global destinations.",
+      "scope": [
+        "navigation"
+      ],
+      "checker": "design-verify:keyboard+location",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-NAV-002",
       "severity": "warning",
       "category": "navigation",
-      "requirement": "Deep navigation nesting requires an information-architecture review."
+      "requirement": "Deep navigation nesting requires an information-architecture review.",
+      "scope": [
+        "navigation"
+      ],
+      "checker": "design-verify:keyboard+location",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-IA-001",
       "severity": "error",
       "category": "information-architecture",
-      "requirement": "Every screen has explicit global, object, view, local, metadata, and temporary ownership where applicable."
+      "requirement": "Every screen has explicit global, object, view, local, metadata, and temporary ownership where applicable.",
+      "scope": [
+        "information-architecture"
+      ],
+      "checker": "design-resolve:surface-map",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-IA-002",
       "severity": "warning",
       "category": "information-architecture",
-      "requirement": "Meaningful web location and view state are restorable or shareable when safe."
+      "requirement": "Meaningful web location and view state are restorable or shareable when safe.",
+      "scope": [
+        "information-architecture"
+      ],
+      "checker": "design-resolve:surface-map",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-COMMAND-001",
       "severity": "warning",
       "category": "commands",
-      "requirement": "Meaningful repeated actions are keyboard operable and discoverable through an appropriate command surface."
+      "requirement": "Meaningful repeated actions are keyboard operable and discoverable through an appropriate command surface.",
+      "scope": [
+        "commands"
+      ],
+      "checker": "design-check:command-implementation",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-COMMAND-002",
       "severity": "error",
       "category": "commands",
-      "requirement": "Buttons, menus, palettes, context menus, and shortcuts invoke one permission-aware command implementation."
+      "requirement": "Buttons, menus, palettes, context menus, and shortcuts invoke one permission-aware command implementation.",
+      "scope": [
+        "commands"
+      ],
+      "checker": "design-check:command-implementation",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-STATE-001",
       "severity": "error",
       "category": "states",
-      "requirement": "Loading, empty, error, permission, and unavailable states are implemented where applicable."
+      "requirement": "Loading, empty, error, permission, and unavailable states are implemented where applicable.",
+      "scope": [
+        "states"
+      ],
+      "checker": "design-verify:state-matrix",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-STATE-002",
       "severity": "warning",
       "category": "states",
-      "requirement": "Local mutations do not force a full-page or full-shell reset without justification."
+      "requirement": "Local mutations do not force a full-page or full-shell reset without justification.",
+      "scope": [
+        "states"
+      ],
+      "checker": "design-verify:state-matrix",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-STATE-003",
       "severity": "error",
       "category": "states",
-      "requirement": "Drafts and valid input survive validation, network, permission, and conflict failure where feasible."
+      "requirement": "Drafts and valid input survive validation, network, permission, and conflict failure where feasible.",
+      "scope": [
+        "states"
+      ],
+      "checker": "design-verify:state-matrix",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-RESP-001",
       "severity": "error",
       "category": "responsive",
-      "requirement": "The applicable viewport/window and input matrix is captured and reviewed."
+      "requirement": "The applicable viewport/window and input matrix is captured and reviewed.",
+      "scope": [
+        "responsive"
+      ],
+      "checker": "design-verify:viewport-matrix",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-RESP-002",
       "severity": "error",
       "category": "responsive",
-      "requirement": "Constrained layouts change representation before labels, relationships, or primary content become unusable."
+      "requirement": "Constrained layouts change representation before labels, relationships, or primary content become unusable.",
+      "scope": [
+        "responsive"
+      ],
+      "checker": "design-verify:viewport-matrix",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-A11Y-001",
       "severity": "error",
       "category": "accessibility",
-      "requirement": "Keyboard path, semantics, labels, contrast, focus, zoom/scaling, and screen-reader behavior pass automated and manual checks."
+      "requirement": "Keyboard path, semantics, labels, contrast, focus, zoom/scaling, and screen-reader behavior pass automated and manual checks.",
+      "scope": [
+        "accessibility"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-A11Y-002",
       "severity": "error",
       "category": "accessibility",
-      "requirement": "Drag, gesture, hover, chart, and spatial interactions provide non-spatial or non-gesture alternatives."
+      "requirement": "Drag, gesture, hover, chart, and spatial interactions provide non-spatial or non-gesture alternatives.",
+      "scope": [
+        "accessibility"
+      ],
+      "checker": "design-check:source-scan+render-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-MOTION-001",
       "severity": "error",
       "category": "motion",
-      "requirement": "Non-essential animation has reduced-motion behavior."
+      "requirement": "Non-essential animation has reduced-motion behavior.",
+      "scope": [
+        "motion"
+      ],
+      "checker": "design-verify:motion-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-MOTION-002",
       "severity": "warning",
       "category": "motion",
-      "requirement": "User-driven motion remains interruptible and begins from the presented value."
+      "requirement": "User-driven motion remains interruptible and begins from the presented value.",
+      "scope": [
+        "motion"
+      ],
+      "checker": "design-verify:motion-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-CONTENT-001",
       "severity": "warning",
       "category": "content",
-      "requirement": "Primary actions use specific verb-first result labels."
+      "requirement": "Primary actions use specific verb-first result labels.",
+      "scope": [
+        "content"
+      ],
+      "checker": "design-check:content-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-CONTENT-002",
       "severity": "error",
       "category": "content",
-      "requirement": "Errors and destructive actions name the object, consequence, retained state, and recovery."
+      "requirement": "Errors and destructive actions name the object, consequence, retained state, and recovery.",
+      "scope": [
+        "content"
+      ],
+      "checker": "design-check:content-scan",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-TRUST-001",
       "severity": "error",
       "category": "trust",
-      "requirement": "No completion, synchronization, publication, verification, collaboration, or deployment claim exceeds underlying evidence."
+      "requirement": "No completion, synchronization, publication, verification, collaboration, or deployment claim exceeds underlying evidence.",
+      "scope": [
+        "trust"
+      ],
+      "checker": "design-verify:evidence-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-TRUST-002",
       "severity": "error",
       "category": "trust",
-      "requirement": "High-impact work exposes scope, environment, permissions, side effects, authority, and recovery before commitment."
+      "requirement": "High-impact work exposes scope, environment, permissions, side effects, authority, and recovery before commitment.",
+      "scope": [
+        "trust"
+      ],
+      "checker": "design-verify:evidence-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-AGENT-001",
       "severity": "error",
       "category": "agentic",
-      "requirement": "Agent proposals, execution, evidence, acceptance, and deployment are represented as distinct states."
+      "requirement": "Agent proposals, execution, evidence, acceptance, and deployment are represented as distinct states.",
+      "scope": [
+        "agentic"
+      ],
+      "checker": "design-verify:agent-state-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-AGENT-002",
       "severity": "error",
       "category": "agentic",
-      "requirement": "People can pause, redirect, narrow, revoke, review, or take over agent work without losing valid isolated progress."
+      "requirement": "People can pause, redirect, narrow, revoke, review, or take over agent work without losing valid isolated progress.",
+      "scope": [
+        "agentic"
+      ],
+      "checker": "design-verify:agent-state-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-COLLAB-001",
       "severity": "error",
       "category": "collaboration",
-      "requirement": "Presence, notification, assignment, and shared-state claims correspond to durable system state."
+      "requirement": "Presence, notification, assignment, and shared-state claims correspond to durable system state.",
+      "scope": [
+        "collaboration"
+      ],
+      "checker": "design-verify:state-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-COLLAB-002",
       "severity": "error",
       "category": "collaboration",
-      "requirement": "Concurrent changes do not silently overwrite another participant’s work."
+      "requirement": "Concurrent changes do not silently overwrite another participant’s work.",
+      "scope": [
+        "collaboration"
+      ],
+      "checker": "design-verify:state-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-PERF-001",
       "severity": "warning",
       "category": "performance",
-      "requirement": "Primary interactions acknowledge input immediately and avoid avoidable blocking work."
+      "requirement": "Primary interactions acknowledge input immediately and avoid avoidable blocking work.",
+      "scope": [
+        "performance"
+      ],
+      "checker": "design-verify:runtime-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-PERF-002",
       "severity": "error",
       "category": "performance",
-      "requirement": "Loading, media, fonts, data updates, and animation do not create destructive layout instability."
+      "requirement": "Loading, media, fonts, data updates, and animation do not create destructive layout instability.",
+      "scope": [
+        "performance"
+      ],
+      "checker": "design-verify:runtime-review",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-PROJECT-001",
       "severity": "error",
       "category": "governance",
-      "requirement": "New UI uses an approved production component mapping or records a design-system gap."
+      "requirement": "New UI uses an approved production component mapping or records a design-system gap.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-PROJECT-002",
       "severity": "warning",
       "category": "governance",
-      "requirement": "Representative golden references in the project-owned reference registry and realistic fixtures exist for adopted shells and critical flows."
+      "requirement": "Representative golden references in the project-owned reference registry and realistic fixtures exist for adopted shells and critical flows.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-PROJECT-003",
       "severity": "warning",
       "category": "governance",
-      "requirement": "Project context, terminology, production mappings, and golden references are completed before claiming full design-system conformance."
+      "requirement": "Project context, terminology, production mappings, and golden references are completed before claiming full design-system conformance.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-PROJECT-004",
       "severity": "error",
       "category": "governance",
-      "requirement": "Every durable route, native screen, window, major modal flow, and public page maps to an approved shell, layout archetype, page or flow, regions, states, and production implementation."
+      "requirement": "Every durable route, native screen, window, major modal flow, and public page maps to an approved shell, layout archetype, page or flow, regions, states, and production implementation.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-PROJECT-005",
       "severity": "warning",
       "category": "governance",
-      "requirement": "Every shipped theme, asset family, and approved visual-reference family has an executable production source or registry entry, design mapping, target scope, accessibility behavior, and owner."
+      "requirement": "Every shipped theme, asset family, and approved visual-reference family has an executable production source or registry entry, design mapping, target scope, accessibility behavior, and owner.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-PROJECT-006",
       "severity": "warning",
       "category": "governance",
-      "requirement": "Component libraries are declared as optional or required project adapters; the engine does not require a component package by default."
+      "requirement": "Component libraries are declared as optional or required project adapters; the engine does not require a component package by default.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
       "id": "DS-EVIDENCE-001",
       "severity": "error",
       "category": "evidence",
-      "requirement": "Completion evidence is tied to the exact source revision, target, environment, fixture, and time."
+      "requirement": "Completion evidence is tied to the exact source revision, target, environment, fixture, and time.",
+      "scope": [
+        "evidence"
+      ],
+      "checker": "design-verify:receipt",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     },
     {
       "id": "DS-GOV-001",
       "severity": "error",
       "category": "governance",
-      "requirement": "Intentional exceptions identify rule, reason, scope, owner, accessibility impact, and expiration or migration."
+      "requirement": "Intentional exceptions identify rule, reason, scope, owner, accessibility impact, and expiration or migration.",
+      "scope": [
+        "governance"
+      ],
+      "checker": "design-check:governance",
+      "evidence": [
+        "source location",
+        "rendered state or receipt when applicable"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
+    },
+    {
+      "id": "DS-TOKEN-001",
+      "severity": "error",
+      "category": "tokens",
+      "scope": [
+        "source"
+      ],
+      "checker": "design-check:source-scan",
+      "requirement": "Utility classes must not smuggle arbitrary design values outside the token grammar.",
+      "evidence": [
+        "source location",
+        "machine-readable check or verification receipt"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
+    },
+    {
+      "id": "DS-TOKEN-002",
+      "severity": "warning",
+      "category": "tokens",
+      "scope": [
+        "source"
+      ],
+      "checker": "design-check:source-scan",
+      "requirement": "Inline style blocks require component, state, or exception evidence.",
+      "evidence": [
+        "source location",
+        "machine-readable check or verification receipt"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
+    },
+    {
+      "id": "DS-COMPONENT-001",
+      "severity": "error",
+      "category": "composition",
+      "scope": [
+        "source"
+      ],
+      "checker": "design-check:source-scan",
+      "requirement": "Unapproved component-library imports are prohibited unless the project declares that adapter.",
+      "evidence": [
+        "source location",
+        "machine-readable check or verification receipt"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
+    },
+    {
+      "id": "DS-COMPONENT-002",
+      "severity": "warning",
+      "category": "composition",
+      "scope": [
+        "source"
+      ],
+      "checker": "design-check:component-mapping",
+      "requirement": "Duplicated component implementations require a mapped reason or consolidation.",
+      "evidence": [
+        "source location",
+        "machine-readable check or verification receipt"
+      ],
+      "remediation": "Prefer the contract-compliant implementation; keep a reason when local divergence is intentional.",
+      "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
+    },
+    {
+      "id": "DS-CI-001",
+      "severity": "error",
+      "category": "evidence",
+      "scope": [
+        "receipt"
+      ],
+      "checker": "design-verify:receipt",
+      "requirement": "CI must block stale context, failed error rules, missing evidence, unapproved baselines, and expired exceptions.",
+      "evidence": [
+        "source location",
+        "machine-readable check or verification receipt"
+      ],
+      "remediation": "Fix the implementation or record an accepted, unexpired exception before verification can pass.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
     }
   ]
 }

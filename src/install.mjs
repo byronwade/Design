@@ -132,6 +132,7 @@ async function ensureAuthoredFacade(target) {
   for (const relative of PROJECT_FILES) {
     if (await copyIfMissing(path.join(templateRoot, relative), path.join(target, relative))) created.push(relative);
   }
+  await fs.mkdir(path.join(target, 'design/references'), { recursive: true });
   return created;
 }
 
@@ -155,6 +156,56 @@ async function ensureCompositionDefaults(target) {
   }
   if (changed) await writeJson(compositionPath, current);
   return changed;
+}
+
+async function migrateRegistryFilesIntoDesign(target) {
+  const designPath = path.join(target, 'DESIGN.md');
+  if (!await exists(designPath)) return null;
+  const registryFiles = [
+    ['design/PROJECT.md', 'Project Grammar'],
+    ['design/COMPONENTS.md', 'Production Mappings'],
+    ['design/REFERENCES.md', 'References'],
+    ['design/DECISIONS.md', 'Decisions and Exceptions'],
+    ['design/COMPOSITION.json', 'Component Source and Skills'],
+  ];
+  const backups = [];
+  const appended = [];
+  let design = await fs.readFile(designPath, 'utf8');
+  const sections = [];
+  for (const [relative, title] of registryFiles) {
+    const source = path.join(target, relative);
+    if (!await exists(source)) continue;
+    const content = await fs.readFile(source, 'utf8');
+    const digest = hash(content).slice(0, 12);
+    const marker = `design-contract:migrated:${relative}:${digest}`;
+    await backupMigration(target, relative, content, backups);
+    if (!design.includes(marker)) {
+      const fenced = relative.endsWith('.json') ? ['```json', content.trim(), '```'].join('\n') : content.trim();
+      sections.push(`<!-- ${marker} -->`, `### ${title}`, '', `Migrated from \`${relative}\` during one-file control-plane sync.`, '', fenced, '');
+      appended.push(relative);
+    }
+    await fs.rm(source, { force: true });
+  }
+  if (sections.length > 0) {
+    const insertion = ['## Migrated Legacy Design Files', '', ...sections].join('\n');
+    design = `${design.trim()}\n\n${insertion}\n`;
+    await writeText(designPath, design);
+  }
+  if (backups.length === 0 && appended.length === 0) return null;
+  return { from: '1.2-registry-facade', to: '1.3-one-file-control-plane', migratedAt: new Date().toISOString(), backups, appended, preserved: ['design/references/'] };
+}
+
+function combineMigrations(...entries) {
+  const present = entries.filter(Boolean);
+  if (present.length === 0) return null;
+  if (present.length === 1) return present[0];
+  return {
+    from: present.map((entry) => entry.from).join(' + '),
+    to: present[present.length - 1].to,
+    migratedAt: new Date().toISOString(),
+    steps: present,
+    backups: [...new Set(present.flatMap((entry) => entry.backups ?? []))],
+  };
 }
 
 async function writeLock(target, manifest, adapters, migration = null, previous = null) {
@@ -202,9 +253,11 @@ export async function installContract({ target, profiles, adapters, appType = nu
 
 export async function syncContract({ target }) {
   const manifest = await loadManifest();
-  const migration = await migrateLegacyInstall(target);
+  const legacyMigration = await migrateLegacyInstall(target);
   await ensureAuthoredFacade(target);
   await ensureCompositionDefaults(target);
+  const registryMigration = await migrateRegistryFilesIntoDesign(target);
+  const migration = combineMigrations(legacyMigration, registryMigration);
   const config = await loadProjectConfig(target);
   const previous = await (async () => {
     try { return await readJson(path.join(target, LOCK_FILE)); } catch { return null; }
