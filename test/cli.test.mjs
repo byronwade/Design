@@ -252,6 +252,16 @@ test('release verify blocks weak evidence and unapproved baseline changes', asyn
   assert.ok(changed.blocking.some((item) => item.type === 'unapproved-baseline-change'));
 });
 
+test('check detects invalid variants and unmapped surfaces', async () => {
+  const target = await temp();
+  await installContract({ target, profiles: ['web-app'], adapters: [] });
+  await fs.mkdir(path.join(target, 'src/app/settings'), { recursive: true });
+  await fs.writeFile(path.join(target, 'src/app/settings/page.tsx'), 'export default function SettingsPage() { return <Button variant="sparkle">Save</Button>; }\n');
+  const report = await checkDesign({ target });
+  assert.ok(report.findings.some((finding) => finding.ruleId === 'DS-COMPONENT-003'), JSON.stringify(report.findings));
+  assert.ok(report.findings.some((finding) => finding.ruleId === 'DS-PROJECT-004' && finding.evidence === '/settings'), JSON.stringify(report.findings));
+});
+
 test('explains profiles and stable quality rules', async () => {
   const target = await temp();
   await installContract({ target, profiles: ['web-app'], adapters: [] });

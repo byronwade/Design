@@ -1011,6 +1011,22 @@
       "exceptionPolicy": "May diverge with a recorded reason; repeated divergence should become a contract update."
     },
     {
+      "id": "DS-COMPONENT-003",
+      "severity": "error",
+      "category": "composition",
+      "scope": [
+        "source"
+      ],
+      "checker": "design-check:variant-scan",
+      "requirement": "Component variant props must use approved semantic variants or be recorded as a design-system exception.",
+      "evidence": [
+        "source location",
+        "machine-readable check or verification receipt"
+      ],
+      "remediation": "Use an approved semantic variant from DESIGN.md or record a mapped component exception before verification.",
+      "exceptionPolicy": "Requires accepted exception with rule ID, reason, owner, scope, accessibility impact, and expiration."
+    },
+    {
       "id": "DS-CI-001",
       "severity": "error",
       "category": "evidence",
