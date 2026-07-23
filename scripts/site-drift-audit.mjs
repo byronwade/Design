@@ -71,7 +71,9 @@ for (const route of ['/catalog/', '/blocks/', '/skills/', '/reference/', '/showc
 for (const section of ['class="discover-shell', 'class="discover-columns', 'class="discover-filterbar', 'class="discover-grid']) {
   if (!homepage.includes(section)) failures.push(`homepage is missing required region: ${section}`);
 }
-if (!homepage.includes('Skill stack') || !homepage.includes('Component bases')) failures.push('homepage must frame contracts as skill stacks with component bases');
+for (const phrase of ['One design system. Every AI. No unreviewed drift.', 'design resolve', 'design check', 'design verify']) {
+  if (!homepage.includes(phrase)) failures.push(`homepage must frame the one-file control plane with: ${phrase}`);
+}
 if (!homepage.includes('ContractPreview') || !contractsIndex.includes('ContractPreview')) failures.push('home and contracts must render contract previews instead of empty color blocks');
 if (!contractDetail.includes('theme={project.slug}') || !contractDetail.includes('ContractDemo')) failures.push('contract detail pages must apply their pack theme and rendered component showcase');
 if (contractsIndex.includes("querySelectorAll('[data-section]')")) failures.push('contract filters must not use a broad data-section selector that can intercept card navigation');

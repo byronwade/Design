@@ -7,6 +7,18 @@ status: normative
 
 # Changelog
 
+## 1.3.0 — 2026-07-23
+
+- accepted the one-file control-plane ADR: consuming projects author `DESIGN.md` and optionally store approved media under `design/references/`
+- added the public `design` binary while keeping `design-contract` as a compatibility binary
+- added bounded `design resolve --request` task packets with intent, actor, object, risk, permissions, states, consequences, next action, uncertainty, relevant context, constraints, and checks
+- added `design check` for deterministic TS, TSX, CSS, utility-class, import, duplicate-component, semantics, stale-context, and exception findings
+- added `design verify` receipts with revision, contract fingerprint, task model, rules, rendered surfaces, results, warnings, exceptions, visual changes, and blocking conditions
+- expanded stable quality rules with executable scope, checker, evidence, remediation, and exception policy fields
+- added the universal `design` Skill and reduced `design-system` and `design-review` to compatibility routers
+- changed new installs to create `DESIGN.md`, generated agent routers, hidden `.design/` state, and `design/references/` instead of required project registry files
+- added `sync` migration that backs up legacy `design/` registry files, folds them into `DESIGN.md`, removes the old registry files, and preserves `design/references/`
+
 ## 1.2.0 — 2026-07-22
 
 - added the project-owned `design/COMPOSITION.json` contract for optional component-source adapters, reusable blocks, app-type recipes, visual-reference policy, and AI reuse policies

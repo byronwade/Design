@@ -1,48 +1,45 @@
 # Design Contract
 
-An installable design façade and profile-aware compiler for AI-assisted product design and UI engineering.
+An installable design control plane for AI-assisted product design and UI engineering.
 
 The daily mental model is intentionally small:
 
 ```text
-DESIGN.md + AGENTS.md + Skill stack + selected profile + project references = compiled target contract
+DESIGN.md + optional design/references/ + generated adapters, checks, and receipts = enforceable AI design context
 ```
 
-Humans and agents work primarily with root `DESIGN.md`, root `AGENTS.md`, the installed design-system Skills, and the project-owned reference/mapping files. The full cross-platform engine remains versioned in this package and is compiled into focused context for each target.
+Humans author `DESIGN.md`. Optional screenshots, photos, golden states, and Mobbin-style notes live under `design/references/`. Agent instructions, schemas, caches, fingerprints, task packets, receipts, and adapters are generated or hidden so they do not become competing sources of truth.
 
 ## Why this architecture
 
-A single `DESIGN.md` is excellent for visual tokens and rationale. It becomes difficult to maintain when a system also needs platform inheritance, native interaction rules, shells, layouts, page and flow patterns, component intent, project mappings, governance, validation, and selective loading.
+A single `DESIGN.md` is useful only if it is a grammar, not a screen catalog. It must describe the product, people, terms, durable qualities, targets, token and component sources, layout, navigation, responsiveness, states, accessibility, content, trust, references, and acceptance.
 
-Copying a large design folder into every project creates a different problem: users see dozens of files they should not edit, package updates become migrations across project-owned content, and agents can accidentally load incompatible platform guidance.
+Copying a large design folder into every project creates a different problem: users see files they should not edit, package updates become migrations across project-owned content, and agents can accidentally load incompatible platform guidance.
 
-The package therefore uses a simple visible façade and a powerful hidden engine:
+The package therefore uses one authored file and a generated enforcement engine:
 
 - the project owns its identity and implementation truth
 - the package owns shared design reasoning and platform behavior
-- the compiler combines them into one narrow contract per target
-- deterministic checks verify that the compiled context is current and unmodified
+- `design resolve` turns a request into one narrow task packet
+- `design check` inspects code independently of the AI
+- `design verify` records revision-bound evidence and a receipt
 
 Consumers do not need to navigate the engine to use it correctly.
 
 ## Installed project
 
 ```text
-DESIGN.md                  project-owned Google-compatible visual identity
-AGENTS.md                  short shared AI workflow and routing instructions
-CLAUDE.md                  imports @AGENTS.md when Claude support is enabled
+DESIGN.md                  project-authored design grammar and token source
+AGENTS.md                  generated short AI router
+CLAUDE.md                  generated @AGENTS.md import when Claude support is enabled
 
 design/
-├── PROJECT.md              thin product registry: situations, surfaces, terms, constraints
-├── COMPONENTS.md           production mappings: intent → code/story/test/reference
-├── REFERENCES.md           metadata for screenshots, photos, golden states, and visual references
-├── references/             project-owned photos, screenshots, and approved media
-├── DECISIONS.md            decisions, exceptions, gaps, migrations, baselines
-└── COMPOSITION.json        skill stack, optional component source, app types, references, and AI reuse policy
+└── references/             optional project-owned photos, screenshots, golden states, and pattern notes
 
 .agents/skills/
-├── design-system/SKILL.md  executable design workflow for Codex-compatible agents
-└── design-review/SKILL.md  rendered review and evidence workflow
+├── design/SKILL.md         universal resolver/checker/verifier workflow
+├── design-system/SKILL.md  compatibility router
+└── design-review/SKILL.md  compatibility router
 
 .design/
 ├── config.json             targets, profiles, roots, adapters, overrides
@@ -51,11 +48,13 @@ design/
 │   ├── INDEX.md
 │   ├── <target>.md         focused agent-readable contract
 │   ├── <target>.json       tool-readable equivalent
-│   └── CONTEXT.json        fingerprints and generated-output hashes
+│   ├── CONTEXT.json        fingerprints and generated-output hashes
+│   └── TASK.json           latest bounded task packet from design resolve
+├── receipts/               check reports and verification receipts
 └── cache/                  disposable cache
 ```
 
-Normal users edit `DESIGN.md`, the thin project registry under `design/`, and files under `design/references/`. They do not edit `.design/generated/`; agents should route through Skills instead of browsing the engine manually.
+Normal users edit `DESIGN.md` and optionally add approved media under `design/references/`. They do not edit `.design/generated/` or `.design/receipts/`; agents should route through the universal Skill instead of browsing the engine manually.
 
 ## Central engine
 
@@ -94,63 +93,50 @@ npx --yes github:byronwade/Design init \
 
 Then:
 
-1. Complete `design/PROJECT.md` with verified product information.
-2. Map real production APIs and references in `design/COMPONENTS.md`.
-3. Add only approved, high-signal visual references in `design/REFERENCES.md`; keep binary assets project-owned under `design/references/` or an approved external source. Mobbin-style pattern references should name surface, flow, pattern, interaction, provenance, applicability, what to preserve, and what not to copy.
-4. Record durable decisions and bounded exceptions in `design/DECISIONS.md`.
-5. Refine root `DESIGN.md` without adding unsupported YAML keys.
-6. Compile and validate:
+1. Fill out `DESIGN.md` as the product grammar.
+2. Add only approved, high-signal visual references under `design/references/` when they help a specific surface.
+3. Resolve the current task, build from the packet, then check and verify:
 
 ```bash
-npx --yes github:byronwade/Design context
-npx --yes github:byronwade/Design doctor
-npx --yes github:byronwade/Design validate
+npx --yes github:byronwade/Design resolve --request "Add an approval workflow"
+npx --yes github:byronwade/Design check
+npx --yes github:byronwade/Design verify --surface approval --evidence path/to/evidence.html
 ```
 
-The examples below use `design-contract` as shorthand. When the package is not installed locally, replace it with `npx --yes github:byronwade/Design`.
+The examples below use `design` as shorthand. `design-contract` remains as a compatibility binary during migration.
 
 ## Commands
 
 ```bash
-# Show available profiles
-design-contract list
-
 # Create the project façade and initial compiled targets
-design-contract init --profile web-app
+design init --profile web-app
 
-# Recompile all configured targets
-design-contract context
+# Resolve a bounded task packet for the AI
+design resolve --request "Add an approval workflow"
 
-# Print one target for another tool or session
+# Check TypeScript, TSX, CSS, utility classes, imports, mappings, and exceptions
+design check
+
+# Verify rendered surfaces and write a design receipt
+design verify --surface approval --evidence artifacts/approval.html
+
+# Compatibility and maintenance commands
+design-contract list
 design-contract context --id app --stdout
-
-# Compatibility alias for context
-design-contract resolve
-
-# Check engine version, authored inputs, and generated output
 design-contract status
-
-# Explain incomplete adoption and corrective actions
-design-contract doctor
-design-contract doctor --mode release
-
-# Validate project structure and readiness
-design-contract validate
-design-contract validate --mode release
-
-# Measure component-to-component design fidelity
-npm run benchmark
-npm run benchmark:release
-
-# Update the engine and migrate legacy installations
 design-contract sync
-
-# Explain a stable rule, profile, layer, or target
 design-contract explain DS-ACTION-001
-design-contract explain web-app
 ```
 
-`context` compiles the selected engine layers and project-owned files. `status` detects stale, hand-edited, or version-incompatible output. `doctor` explains incomplete adoption. Release mode promotes readiness gaps to errors. `sync` updates the engine and adapters without replacing project-owned design truth.
+`resolve` writes `.design/generated/TASK.json`. `check` writes `.design/receipts/check-report.json`. `verify` writes `.design/receipts/latest.json` and a timestamped receipt. CI should block stale context, failed error rules, missing evidence, unapproved baseline changes, and expired exceptions.
+
+## Public Workflow
+
+```text
+Understand -> Resolve -> Build -> Check -> Verify
+```
+
+`resolve` must return only relevant components, tokens, patterns, references, constraints, and checks. It must not dump the full engine into the prompt.
 
 ## Profiles
 
@@ -171,53 +157,55 @@ A responsive web application viewed on an iPhone remains `web-app`; it does not 
 
 ## Compilation model
 
-The compiler resolves:
+The legacy context compiler resolves:
 
 ```text
 shared workflow
 → global engine layers
 → selected platform/surface profile
 → project DESIGN.md
-→ design-system Skill dispatch
-→ design/PROJECT.md
-→ design/COMPONENTS.md
-→ design/REFERENCES.md
-→ design/DECISIONS.md
-→ design/COMPOSITION.json
+→ generated universal Design Skill dispatch
 → explicit overrides
 ```
 
-Every source and generated output is hashed. `CONTEXT.json` records target fingerprints, output hashes, package version, and generation time. This makes three important failures visible:
+`design resolve` then narrows that state for one request:
+
+```text
+request
+→ task model
+→ relevant components, tokens, patterns, references, constraints, and checks
+→ .design/generated/TASK.json
+```
+
+Every authored source and generated output is hashed. `CONTEXT.json` records target fingerprints, output hashes, package version, and generation time. This makes three important failures visible:
 
 - **stale:** an authored design input or target configuration changed
 - **tampered:** generated output was edited directly
 - **engine-update-required:** the running compiler differs from the version in `.design/lock.json`
 
-`context` refuses to compile with a different engine version. Run `sync` deliberately, review its migration result, and then compile again.
+`context` refuses to compile with a different engine version. Run `sync` deliberately, review its migration result, and then compile again. Ordinary AI work should start from `design resolve --request`, not from the full compiled context.
 
 ## Agent workflow
 
-`AGENTS.md` is a router, not a duplicate design system. It requires an agent to:
+`AGENTS.md` is a generated router, not a duplicate design system. It requires an agent to:
 
-1. confirm compiled context is current
-2. select one target
-3. read `DESIGN.md`, the compiled target, and `design/`
-4. select the smallest applicable installed Skill before UI work
-5. inspect actual components, stories, tests, fixtures, routes, and visual references
-6. produce the required design brief and component map
-7. reuse mapped components and semantic tokens
-8. treat missing capability as a design-system gap
-9. verify realistic states, accessibility, platform behavior, and rendered output through the review Skill
-10. report the exact revision, environment, limitations, and evidence
-
-`design/COMPOSITION.json` is the composition seam. It records the Skill stack, optional component source, local component and block paths, app-type recipes, visual-reference policy, and the policies that keep an AI reusing mapped primitives instead of inventing page-local variants.
+1. run `design status`
+2. run `design resolve --request "<task>"`
+3. read `DESIGN.md` and only packet-relevant context
+4. use the universal `design` Skill
+5. inspect actual components, stories, tests, fixtures, routes, and applicable visual references
+6. reuse mapped components and semantic tokens
+7. treat missing capability as a design-system gap
+8. run `design check`
+9. run `design verify` with affected surfaces and evidence files
+10. report the exact revision, receipt path, limitations, and evidence
 
 shadcn/ui is supported as an optional reference adapter because its primitive and block vocabulary fits this system well. It is not required by the package, does not need to be installed beside the contract, and is never platform authority. A project can use shadcn/ui, another component source, or no component library at all.
 
 The installer creates thin adapters and managed Skills:
 
-- Codex: a managed `AGENTS.md` block, `.agents/skills/design-system`, `.agents/skills/design-review`, and target-root overrides
-- Claude Code: an actual `@AGENTS.md` import and Skills
+- Codex: a managed `AGENTS.md` block, `.agents/skills/design`, compatibility Skill routers, and target-root overrides
+- Claude Code: an actual `@AGENTS.md` import, `.claude/skills/design`, and compatibility Skill routers
 - GitHub Copilot: a managed repository instruction block
 
 The adapters use the zero-install GitHub command so they work immediately after initialization.
@@ -228,16 +216,12 @@ The package never silently overwrites:
 
 ```text
 DESIGN.md
-design/PROJECT.md
-design/COMPONENTS.md
-design/REFERENCES.md
-design/DECISIONS.md
-design/COMPOSITION.json
+design/references/
 ```
 
-Legacy installations that copied the full engine into `.design/` are migrated by `sync`. Existing context, mappings, decisions, exceptions, custom overrides, and the previous visual contract are preserved before obsolete engine copies are removed.
+Legacy installations that copied the full engine into `.design/` are migrated by `sync`. Existing context, mappings, decisions, exceptions, custom overrides, registry files, and the previous visual contract are preserved before obsolete engine copies are removed.
 
-When both the old and new authored file contain different content, the current façade file wins and the legacy content is written under `design/migrations/` with a content-derived filename. The migration result lists every backup.
+When registry files such as `design/PROJECT.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/DECISIONS.md`, or `design/COMPOSITION.json` exist, `sync` backs them up under `design/migrations/`, appends their content to `DESIGN.md` under migrated sections, removes the old registry files, and preserves `design/references/`. The migration result lists every backup and appended source.
 
 ## Official website
 
@@ -278,7 +262,7 @@ In this package repository, `.design/DESIGN.md` is an exact integrity mirror. An
 
 ## Component mappings
 
-The engine describes intent; `design/COMPONENTS.md` identifies the shipped implementation. A useful mapping records:
+The engine describes intent; `DESIGN.md` identifies the shipped implementation or the place where the consuming product owns it. A useful mapping records:
 
 - intent ID
 - production component and API
@@ -292,19 +276,19 @@ An unmapped critical intent is a visible system gap, not permission for arbitrar
 
 ## Visual references
 
-Visual references are project-owned evidence, not package assets. The installer creates `design/REFERENCES.md` as the registry and reserves `design/references/` as the local place for approved screenshots, photos, mood references, golden states, and Mobbin-style pattern references.
+Visual references are project-owned evidence, not package assets. The installer reserves `design/references/` as the local place for approved screenshots, photos, mood references, golden states, and Mobbin-style pattern references. Reference metadata belongs in the references section of `DESIGN.md`.
 
 Reference designs are not required for initial adoption. They become valuable when a team has product direction, brand intent, screenshots from an existing product, or a small set of examples that should keep future AI-generated work cohesive. Do not download hundreds of photos with the contract, and do not treat even ten photos as universal authority. Prefer the smallest approved set that applies to the surface being changed, then record why each reference matters.
 
 The Mobbin-style model is useful because it organizes real product inspiration by surface, flow, pattern, interaction, and screen state. Design Contract should learn from that browsing shape without copying Mobbin data, imagery, brand, or paywalled content. A reference entry must say what to preserve and what not to copy so inspiration does not become imitation.
 
-Agents must inspect applicable approved references before designing or visually modifying a surface and list the references used in the design brief. If no approved reference applies, they should say so and continue from the compiled contract, production mappings, and real rendered surface.
+Agents must inspect applicable approved references before designing or visually modifying a surface and list the references used in the task packet or receipt. If no approved reference applies, they should say so and continue from `DESIGN.md`, production code, and the real rendered surface.
 
 ## Component-source composition and app types
 
-The package can build on shadcn/ui without making shadcn’s defaults the product identity or a required dependency. The consuming project owns `design/COMPOSITION.json`, which is compiled into every target alongside its tokens, references, and production mappings.
+The package can build on shadcn/ui without making shadcn’s defaults the product identity or a required dependency. The consuming project records component-source policy, app types, Skill expectations, reference policy, and production mappings in `DESIGN.md`.
 
-The composition contract has four responsibilities:
+The composition grammar has four responsibilities:
 
 - identify the optional component source, registry, style, and local `ui`/`blocks`/`recipes`/`references` paths;
 - define app types such as `saas-workbench`, `admin-console`, `content-studio`, or `marketing-site`;
@@ -314,10 +298,10 @@ The composition contract has four responsibilities:
 Select an app type on initialization:
 
 ```bash
-design-contract init --profile web-app --app-type saas-workbench
+design init --profile web-app --app-type saas-workbench
 ```
 
-The target’s `appType` is routing metadata, not a new platform profile. `web-app` still owns browser behavior; the project composition contract chooses the product shape and optional block vocabulary layered on top of it. An app-specific Linear-inspired workbench is therefore a recipe in the consuming project, not a copied Linear identity in the shared engine.
+The target’s `appType` is routing metadata, not a new platform profile. `web-app` still owns browser behavior; the project grammar chooses the product shape and optional block vocabulary layered on top of it. An app-specific Linear-inspired workbench is therefore a recipe in the consuming project, not a copied Linear identity in the shared engine.
 
 ## Verification and production
 
@@ -333,7 +317,7 @@ npm run benchmark
 npm run check
 ```
 
-`npm run validate:strict` executes package structure checks and Google’s `DESIGN.md` linter. `npm test` covers façade installation, target isolation, stale/tampered output, engine pinning, sync preservation, legacy migration, conflict backups, readiness modes, explanation, and path safety. `npm run build` produces deterministic package metadata. `npm run smoke` packs the exact package shape, installs it into a clean consumer, initializes a project, compiles context, runs status/doctor/validation, and confirms that the engine was not copied into the consumer. `npm run benchmark` measures component fidelity against local clean-room-ready fixtures; `npm run benchmark:release` is reserved for clean AI-generated candidates with prompt hashes, allowed-input hashes, no-target-access attestation, and scores that meet the 99% target.
+`npm run validate:strict` executes package structure checks and Google’s `DESIGN.md` linter. `npm test` covers one-file façade installation, target isolation, bounded task resolution, source checking, verification receipts, stale/tampered output, engine pinning, sync preservation, legacy migration, conflict backups, readiness modes, explanation, and path safety. `npm run build` produces deterministic package metadata. `npm run smoke` packs the exact package shape, installs it into a clean consumer, initializes a project, compiles compatibility context, runs `design resolve`, `design check`, `design verify`, and validation, and confirms that the engine was not copied into the consumer. `npm run benchmark` measures component fidelity against local clean-room-ready fixtures; `npm run benchmark:release` is reserved for clean AI-generated candidates with prompt hashes, allowed-input hashes, no-target-access attestation, and scores that meet the 99% target.
 
 ## Component fidelity benchmarks
 
@@ -356,7 +340,7 @@ The package does not treat a generated file or a successful command as proof by 
 - release readiness fails when critical mappings are missing
 - the same package behavior passes on Ubuntu and Windows
 
-Product repositories then add their own rendered, interaction, accessibility, visual-regression, performance, and platform-native checks using the commands recorded in `design/COMPONENTS.md`.
+Product repositories then add their own rendered, interaction, accessibility, visual-regression, performance, and platform-native checks using the verification commands and mappings recorded in `DESIGN.md`.
 
 ## Authority
 

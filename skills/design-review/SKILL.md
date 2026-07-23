@@ -1,18 +1,18 @@
 ---
 name: design-review
-description: Review rendered UI and implementation against the selected compiled contract, stable rule IDs, and evidence requirements.
+description: Compatibility router for reviewing with the universal design verifier.
 ---
 
 # Design Review
 
-This is a reviewer workflow. It confirms evidence and reports findings; it does not excuse violations because a surface looks polished.
+Use the universal `design` Skill and review the generated receipt.
 
-1. Select the same compiled target used by implementation.
-2. Read `DESIGN.md`, `.design/generated/<target>.md`, `design/COMPONENTS.md`, `design/REFERENCES.md`, `design/DECISIONS.md`, and `design/COMPOSITION.json`.
-3. Inspect the rendered surface and relevant code, states, fixtures, tests, mappings, approved visual references, Mobbin-style pattern notes, required Skills, and evidence.
-4. Review situation, structure, capability, craft, momentum, trust, identity, coherence, performance, and implementation integrity.
-5. Reproduce every blocker and issue. Do not present speculation as a confirmed finding.
-6. State the surface or file, severity, rule or principle, evidence, consequence, and smallest credible correction.
-7. For a clean surface, record the target, states, inputs, environments, and evidence inspected.
+1. Confirm the implementation used `npx --yes github:byronwade/Design resolve`.
+2. Run `npx --yes github:byronwade/Design check`.
+3. Run `npx --yes github:byronwade/Design verify` with affected surfaces and
+   evidence files.
+4. Report confirmed findings only: rule ID, severity, file or surface, evidence,
+   consequence, and smallest credible correction.
 
-A screenshot cannot prove interaction, accessibility, performance, state completeness, or durable source implementation. A changed baseline is not accepted merely because a test was updated.
+A screenshot alone cannot prove interaction, accessibility, performance, state
+coverage, keyboard behavior, overflow, or durable source implementation.

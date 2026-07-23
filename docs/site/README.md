@@ -4,14 +4,14 @@
 
 ## Product shape
 
-Design Contract is a compact browser for AI-ready design contract packs, not a standalone component or block gallery. Local data in `website/src/data/contract-projects.ts` describes each pack as a Skill stack, agent prompt, command, roles, visual references, component bases, and canonical engine context.
+Design Contract is a compact browser for AI-ready design control-plane packs, not a standalone component or block gallery. Local data in `website/src/data/contract-projects.ts` describes each pack as one authored `DESIGN.md` grammar, a universal Skill, agent prompt, command, roles, optional visual references, component bases, checks, receipts, and canonical engine context.
 
 The primary routes are:
 
 - `/` — minimal Mobbin-style discovery surface for the contract system.
 - `/contracts/` — searchable contract-pack index with local filters.
-- `/contracts/<slug>/` — AI prompt, command, Skill stack, context anchors, roles, reference images, source links, and component showcase for one contract.
-- `/docs/` — the short path through installation, compilation, references, verification, and contribution.
+- `/contracts/<slug>/` — AI prompt, command, Skill stack, task packet anchors, roles, reference images, source links, checks, receipts, and component showcase for one contract.
+- `/docs/` — the short path through installation, one-file authoring, resolving, checking, references, verification, and contribution.
 
 ## Content boundary
 
@@ -40,7 +40,7 @@ Keep the surrounding site restrained:
 - make contract-specific detail pages inherit the tone, palette, type treatment, and component behavior described by that pack;
 - verify the actual rendered site at `1440px` and `390px` before approving a visual change.
 
-Projects can also use the package as a composition layer over shadcn/ui, another component source, or no component library. `design/COMPOSITION.json` records the Skill stack, optional adapter, local primitive/block paths, app-type recipes, visual-reference policy, and AI reuse policies. `design/REFERENCES.md` records metadata; `design/references/` or an approved external source holds project-owned screenshots, photos, golden states, and Mobbin-style pattern references without bundling images into the package. This lets a project use the same source blocks for a SaaS workbench, admin console, content studio, or marketing surface while keeping the project’s own `DESIGN.md`, Skills, mappings, references, and decisions authoritative.
+Projects can also use the package as a composition layer over shadcn/ui, another component source, or no component library. `DESIGN.md` records the Skill expectations, optional adapter, local primitive/block paths, app-type recipes, visual-reference policy, mappings, decisions, exceptions, and AI reuse policies. `design/references/` or an approved external source holds project-owned screenshots, photos, golden states, and Mobbin-style pattern references without bundling images into the package. This lets a project use the same source blocks for a SaaS workbench, admin console, content studio, or marketing surface while keeping the project’s own one-file grammar authoritative.
 
 The site should preserve the Mobbin lesson without copying Mobbin: fast browsing, searchable categories, flow and pattern metadata, visual evidence, and direct routes into the reference library. It must not claim copied screenshots, bundled media, or proprietary source data.
 

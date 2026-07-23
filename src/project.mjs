@@ -17,7 +17,7 @@ export function defaultTargets(profiles, { appType } = {}) {
 
 export async function loadProjectConfig(target) {
   const configPath = path.join(target, CONFIG_FILE);
-  if (!await exists(configPath)) throw new Error(`Missing ${CONFIG_FILE}. Run design-contract init.`);
+  if (!await exists(configPath)) throw new Error(`Missing ${CONFIG_FILE}. Run design init.`);
   const config = await readJson(configPath);
   if (config.schemaVersion !== 1) throw new Error(`Unsupported config schemaVersion: ${config.schemaVersion}`);
   if (!Array.isArray(config.targets) || config.targets.length === 0) throw new Error(`${CONFIG_FILE} must define at least one target.`);
@@ -32,12 +32,12 @@ export async function loadProjectConfig(target) {
     for (const override of item.overrides ?? []) resolveWithin(target, override, `Target override ${item.id}`);
     if (item.default) defaults += 1;
   }
-  if (config.targets.some((item) => item.appType)) {
+  if (config.targets.some((item) => item.appType) && await exists(path.join(target, 'design/COMPOSITION.json'))) {
     const composition = await readJson(path.join(target, 'design/COMPOSITION.json'));
     for (const item of config.targets) {
       if (!item.appType) continue;
       const recipe = composition.appTypes?.[item.appType];
-      if (!recipe) throw new Error(`Target ${item.id} selects unknown appType ${item.appType}. Add that recipe to design/COMPOSITION.json.`);
+      if (!recipe) throw new Error(`Target ${item.id} selects unknown appType ${item.appType}. Add that recipe to DESIGN.md or the legacy design/COMPOSITION.json before migration.`);
       if (recipe.targetProfile && recipe.targetProfile !== item.profile) throw new Error(`Target ${item.id} profile ${item.profile} does not match appType ${item.appType} profile ${recipe.targetProfile}.`);
     }
   }
@@ -48,18 +48,12 @@ export async function loadProjectConfig(target) {
 
 export async function loadProjectLock(target) {
   const lockPath = path.join(target, LOCK_FILE);
-  if (!await exists(lockPath)) throw new Error(`Missing ${LOCK_FILE}. Run design-contract init or sync.`);
+  if (!await exists(lockPath)) throw new Error(`Missing ${LOCK_FILE}. Run design init or sync.`);
   return readJson(lockPath);
 }
 
 export function projectDocuments() {
-  return [
-    { id: 'project.context', file: 'design/PROJECT.md', role: 'project context, surfaces, terminology, themes, and constraints' },
-    { id: 'project.components', file: 'design/COMPONENTS.md', role: 'production component, pattern, story, test, and design mappings' },
-    { id: 'project.references', file: 'design/REFERENCES.md', role: 'approved visual references, screenshots, photos, golden states, and AI reference policy' },
-    { id: 'project.decisions', file: 'design/DECISIONS.md', role: 'accepted decisions, exceptions, gaps, migrations, and baseline approvals' },
-    { id: 'project.composition', file: 'design/COMPOSITION.json', role: 'optional component source adapter, app-type recipes, visual-reference policy, block composition, and AI reuse policies' },
-  ];
+  return [];
 }
 
 export async function authoredInputHashes(target) {
@@ -76,33 +70,17 @@ export async function inspectProjectReadiness(target) {
   const checks = [];
   const add = (id, status, pathValue, message, remediation) => checks.push({ id, status, path: pathValue, message, remediation });
   const required = ['DESIGN.md', 'AGENTS.md', ...PROJECT_FILES, CONFIG_FILE, LOCK_FILE];
-  for (const relative of required) if (!await exists(path.join(target, relative))) add('required-file', 'error', relative, 'Required façade file is missing.', 'Run design-contract init or restore the file.');
+  for (const relative of required) if (!await exists(path.join(target, relative))) add('required-file', 'error', relative, 'Required façade file is missing.', 'Run design init or restore the file.');
 
-  const projectPath = path.join(target, 'design/PROJECT.md');
-  if (await exists(projectPath)) {
-    const value = await fs.readFile(projectPath, 'utf8');
-    const incomplete = /\*\*Name:\*\*\s*$/m.test(value) || /\|\s*\|\s*\|\s*\|\s*\|\s*\|\s*\|/m.test(value) || /\[replace|\[describe|TODO|TBD/i.test(value);
-    add('project-context', incomplete ? 'warning' : 'pass', 'design/PROJECT.md', incomplete ? 'Product context still contains placeholders.' : 'Product context is populated.', incomplete ? 'Replace placeholders with verified product information.' : undefined);
-  }
-
-  const componentPath = path.join(target, 'design/COMPONENTS.md');
-  if (await exists(componentPath)) {
-    const value = await fs.readFile(componentPath, 'utf8');
-    const gaps = [...value.matchAll(/\|\s*gap\s*\|/gi)].length;
-    add('component-mappings', gaps > 0 ? 'warning' : 'pass', 'design/COMPONENTS.md', gaps > 0 ? `${gaps} production mapping gap${gaps === 1 ? '' : 's'} remain.` : 'No explicit component mapping gaps remain.', gaps > 0 ? 'Map each critical intent to production code, stories/tests, and an approved reference.' : undefined);
-  }
-
-  const decisionsPath = path.join(target, 'design/DECISIONS.md');
-  if (await exists(decisionsPath)) {
-    const value = await fs.readFile(decisionsPath, 'utf8');
-    const expired = [...value.matchAll(/status:\s*expired/gi)].length;
-    add('decisions', expired > 0 ? 'error' : 'pass', 'design/DECISIONS.md', expired > 0 ? `${expired} expired exception${expired === 1 ? '' : 's'} remain.` : 'No expired exceptions are declared.', expired > 0 ? 'Remove, renew, or migrate every expired exception.' : undefined);
-  }
-  const compositionPath = path.join(target, 'design/COMPOSITION.json');
-  if (await exists(compositionPath)) {
-    const value = await fs.readFile(compositionPath, 'utf8');
-    const incomplete = /replace-me/i.test(value);
-    add('composition', incomplete ? 'warning' : 'pass', 'design/COMPOSITION.json', incomplete ? 'Composition contract still contains its starter recipe.' : 'Composition source, app-type recipes, visual references, and AI policies are populated.', incomplete ? 'Choose the component source, define app-type recipes, and replace starter intent/block values.' : undefined);
+  const designPath = path.join(target, 'DESIGN.md');
+  if (await exists(designPath)) {
+    const value = await fs.readFile(designPath, 'utf8');
+    for (const heading of ['Product Grammar', 'Invariant Guidance', 'Preferred Guidance', 'Open Guidance', 'Targets and Sources', 'Tokens and Component Sources', 'Layout and Navigation', 'States and Interaction', 'Accessibility', 'Content and Terminology', 'Trust and Acceptance', 'References']) {
+      add(`design-grammar-${heading.toLowerCase().replaceAll(' ', '-')}`, value.includes(`## ${heading}`) ? 'pass' : 'warning', 'DESIGN.md', value.includes(`## ${heading}`) ? `${heading} is present.` : `Missing ${heading}.`, value.includes(`## ${heading}`) ? undefined : `Add a ## ${heading} section to DESIGN.md.`);
+    }
+    const expired = [...value.matchAll(/status:\s*expired|expires:\s*(?:expired|[0-9]{4}-[0-9]{2}-[0-9]{2})/gi)]
+      .filter((match) => !/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(match[0]) || match[0].slice(-10) < new Date().toISOString().slice(0, 10)).length;
+    add('decisions', expired > 0 ? 'error' : 'pass', 'DESIGN.md', expired > 0 ? `${expired} expired exception${expired === 1 ? '' : 's'} remain.` : 'No expired exceptions are declared.', expired > 0 ? 'Remove, renew, or migrate every expired exception.' : undefined);
   }
   return checks;
 }

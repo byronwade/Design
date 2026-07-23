@@ -2,5 +2,8 @@ export { installContract, syncContract } from './install.mjs';
 export { explainContract } from './explain.mjs';
 export { expandProfile, listProfiles } from './manifest.mjs';
 export { resolveInstalledContract, getResolutionStatus } from './resolve.mjs';
+export { resolveTaskContext } from './task.mjs';
+export { checkDesign } from './check.mjs';
+export { verifyDesign } from './verify.mjs';
 export { doctorContract, statusContract } from './status.mjs';
 export { validateContract, validatePackage, validateProject } from './validate.mjs';

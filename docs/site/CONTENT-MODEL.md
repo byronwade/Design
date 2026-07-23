@@ -37,7 +37,7 @@ type ReferenceItem = {
 
 Benchmark summaries for the public site live in `website/src/data/benchmarks.ts` and must be traceable to `benchmarks/component-fidelity/` plus `npm run benchmark` output. Public accuracy claims require release-eligible clean-room candidates with matching prompt and allowed-input hashes, a public-claim holdout suite, and no calibration fixtures. When a clean run is below target, show the measured score and misses as product evidence. When a trained suite reaches target after miss-derived contract updates, label it as training evidence instead of public accuracy.
 
-The current static site is the transport. Contract pages should render the AI handoff, Skill stack, context anchors, reference memory, and component showcase from the pack while still linking to canonical engine context. They should not know whether the record later came from a TypeScript module, API route, or database query.
+The current static site is the transport. Contract pages should render the AI handoff, universal Skill, task packet anchors, checks, receipts, reference memory, and component showcase from the pack while still linking to canonical engine context. They should not know whether the record later came from a TypeScript module, API route, or database query.
 
 ## Current contribution workflow
 
@@ -50,7 +50,7 @@ When a backend is introduced, preserve these public invariants:
 1. Contract pack `slug` remains the stable public URL under `/contracts/<slug>/`.
 2. `title`, `status`, `description`, `command`, `prompt`, `files`, `roles`, `skills`, `photos`, `components`, and `references` remain available for cards, filters, metadata, and sharing.
 3. The source contract remains authoritative; rendered HTML is never the editable record.
-4. Skills remain the executable AI layer; source contracts remain compiled context.
+4. The universal Skill remains the executable AI layer; `DESIGN.md` remains the authored source and task packets remain generated context.
 5. Visual references stay project-owned and must not become bundled default media.
 6. Component showcases remain examples of contract-applied primitives, not separate component documentation pages.
 7. Benchmark calibration fixtures remain labeled as calibration and do not count as public model-performance claims.

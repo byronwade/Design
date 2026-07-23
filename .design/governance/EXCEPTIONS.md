@@ -9,7 +9,7 @@ status: normative
 
 An exception is intentional, bounded debt. Unrecorded drift is not an exception. Remove expired exceptions or convert durable improvements into accepted engine decisions.
 
-Installed projects record their own exceptions in `design/DECISIONS.md`; this file is only for exceptions to the shared package engine.
+Installed projects record their own exceptions in `DESIGN.md`; this file is only for exceptions to the shared package engine.
 
 ## Template
 

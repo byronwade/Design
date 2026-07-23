@@ -26,17 +26,22 @@ await fs.mkdir(project, { recursive: true });
 const packed = JSON.parse(runNpm(['pack', '--json', '--pack-destination', packDir], { cwd: packageRoot }));
 const tarball = path.join(packDir, packed[0].filename);
 runNpm(['install', '--prefix', consumer, '--ignore-scripts', tarball]);
-const bin = path.join(consumer, 'node_modules/@byronwade/design-contract/bin/design-contract.mjs');
+const bin = path.join(consumer, 'node_modules/@byronwade/design-contract/bin/design.mjs');
 for (const args of [
   ['init', '--target', project, '--profile', 'web-app'],
   ['status', '--target', project],
   ['context', '--target', project],
-  ['doctor', '--target', project],
+  ['resolve', '--target', project, '--request', 'Add an approval button to the workbench header'],
+  ['check', '--target', project],
   ['validate', '--target', project, '--no-google'],
 ]) run(process.execPath, [bin, ...args]);
+await fs.writeFile(path.join(project, 'rendered-home.html'), '<main><button>Approve</button></main>\n');
+run(process.execPath, [bin, 'verify', '--target', project, '--surface', 'home', '--evidence', 'rendered-home.html']);
 await fs.access(path.join(project, 'DESIGN.md'));
-await fs.access(path.join(project, 'design/PROJECT.md'));
-await fs.access(path.join(project, 'design/REFERENCES.md'));
+await fs.access(path.join(project, 'design/references'));
+await fs.access(path.join(project, '.agents/skills/design/SKILL.md'));
 await fs.access(path.join(project, '.design/generated/web-app.md'));
+await fs.access(path.join(project, '.design/generated/TASK.json'));
+await fs.access(path.join(project, '.design/receipts/latest.json'));
 await assert.rejects(() => fs.access(path.join(project, '.design/global/PRINCIPLES.md')));
 console.log('Package façade smoke test passed.');

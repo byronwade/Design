@@ -58,7 +58,8 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
   for (const targetConfig of config.targets) {
     const profile = manifest.profiles[targetConfig.profile];
     if (!profile) throw new Error(`Unknown profile in .design/config.json: ${targetConfig.profile}`);
-    const composition = await readJson(path.join(target, 'design/COMPOSITION.json'));
+    const compositionPath = path.join(target, 'design/COMPOSITION.json');
+    const composition = await exists(compositionPath) ? await readJson(compositionPath) : null;
     const id = safeId(targetConfig.id);
     const layers = expandProfile(manifest, targetConfig.profile);
     const overrides = [...(config.overrides ?? []), ...(targetConfig.overrides ?? [])];
@@ -83,7 +84,7 @@ export async function buildResolutionPlan({ target, allowVersionMismatch = false
       root: targetConfig.root ?? '.',
       default: Boolean(targetConfig.default),
       appType: targetConfig.appType ?? null,
-      composition: compositionSummary(composition, targetConfig.appType),
+      composition: composition ? compositionSummary(composition, targetConfig.appType) : null,
       description: targetConfig.description ?? profile.description,
       documents,
       fingerprint,
@@ -136,9 +137,9 @@ function markdownForTarget(targetPlan, generatedAt) {
     `# Compiled design contract: ${targetPlan.id}`, '',
     `Profile: **${targetPlan.profileId}** — ${targetPlan.description}`, '',
     `Product root: \`${targetPlan.root}\`${targetPlan.default ? ' · default target' : ''}${targetPlan.appType ? ` · app type: \`${targetPlan.appType}\`` : ''}`, '',
-    '> This is generated context. Project-authored truth lives in DESIGN.md and design/. Engine rules come from the pinned Design package. Later project documents specialize engine defaults without weakening accessibility, safety, legal, privacy, security, or explicit product requirements.', '',
+    '> This is generated context. Project-authored truth lives in DESIGN.md. Optional reference media lives in design/references/. Engine rules come from the pinned Design package. Generated packets specialize engine defaults without weakening accessibility, safety, legal, privacy, security, or explicit product requirements.', '',
     '## Contract model', '',
-    '`global engine + selected profile + project visual identity + project mappings, references, and decisions = this target contract`', '',
+    '`global engine + selected profile + project DESIGN.md grammar + optional project references = this target contract`', '',
     '## Selected composition', '',
     selectedComposition, '',
     '## Source order', '',
